@@ -1,0 +1,42 @@
+@function parse-expression($expression) {
+  $operator: "";
+  $value: "";
+  $element: "";
+  $result: "";
+  $is-width: true;  
+  
+  // Separating the operator from the rest of the expression
+  @if (str-slice($expression, 2, 2) == "=") {
+    $operator: str-slice($expression, 1, 2);
+    $value: str-slice($expression, 3);
+  } @else {
+    $operator: str-slice($expression, 1, 1);
+    $value: str-slice($expression, 2);
+  }
+  
+  // Checking what type of expression we're dealing with
+  @if map-has-key($breakpoints, $value) {
+    $result: map-get($breakpoints, $value);
+  } @else if map-has-key($media-expressions, $expression) {
+    $result: map-get($media-expressions, $expression);
+    $is-width: false;
+  } @else {
+    $result: to-number($value);
+  }
+  
+  @if ($is-width) {
+    @if ($operator == ">") {
+      $element: "(min-width: #{$result + 1})";
+    } @else if ($operator == "<") {
+      $element: "(max-width: #{$result - 1})";
+    } @else if ($operator == ">=") {
+      $element: "(min-width: #{$result})";
+    } @else if ($operator == "<=") {
+      $element: "(max-width: #{$result})";
+    }
+  } @else {
+    $element: $result;
+  }
+  
+  @return $element;
+}
