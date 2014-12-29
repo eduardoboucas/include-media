@@ -45,81 +45,66 @@ $media-expressions: (screen: "screen",
 
 ## Examples
 
-#### Using one or two breakpoints as conditions
+#### 1. Using one or two breakpoints as conditions
 
-**1)**
 ``` sass
 @include media(">=phone") {
 	// Your rules here
 }
-```
 
-compiles to
+// Compiles to:
 
-``` css
 @media (min-width: 320px) {
 	// Your rules here
 }
 ```
 
-**2)**
 ``` sass
 @include media(">=tablet", "<desktop") {
 	// Your rules here
 }
-```
 
-compiles to
+// Compiles to:
 
-``` css
 @media (min-width: 768px) and (max-width: 1023px) {
 	// Your rules here
 }
 ```
 
-#### Using a breakpoint and a custom value as conditions
+#### 2. Using a breakpoint and a custom value as conditions
 
-**1)**
 ``` sass
 @include media(">=desktop", "<1280px") {
 	// Your rules here
 }
-```
 
-compiles to
+// Compiles to:
 
-``` css
 @media (min-width: 1024px) and (max-width: 1279px) {
 	// Your rules here
 }
 ```
 
-#### Using media types and static expressions
-**1)**
+#### 3. Using media types and static expressions
 ``` sass
 @include media("screen", ">tablet") {
 	// Your rules here
 }
-```
 
-compiles to
+// Compiles to:
 
-``` css
 @media screen and (min-width: 769px) {
 	// Your rules here
 }
 ```
 
-**2)**
 ``` sass
 @include media("retina2x", ">=tablet") {
 	// Your rules here
 }
-```
 
-compiles to
+// Compiles to:
 
-``` css
 @media (-webkit-min-device-pixel-ratio: 2) and (min-width: 768px),
 	   (min-resolution: 192dpi) and (min-width: 768px) {
 	// Your rules here
