@@ -110,3 +110,6 @@ $media-expressions: (screen: "screen",
 	// Your rules here
 }
 ```
+
+## Want to contribute?
+Feel free to submit issues/pull requests. Ping me on [Twitter](https://twitter.com/eduardoboucas) if you have any questions.
