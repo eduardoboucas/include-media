@@ -45,7 +45,7 @@ $media-expressions: (screen: "screen",
 
 ## Examples
 
-#### 1. Using one or two breakpoints as conditions
+#### Using one or two breakpoints as conditions
 
 ``` sass
 @include media(">=phone") {
@@ -71,7 +71,7 @@ $media-expressions: (screen: "screen",
 }
 ```
 
-#### 2. Using a breakpoint and a custom value as conditions
+#### Using a breakpoint and a custom value as conditions
 
 ``` sass
 @include media(">=desktop", "<1280px") {
@@ -85,7 +85,7 @@ $media-expressions: (screen: "screen",
 }
 ```
 
-#### 3. Using media types and static expressions
+#### Using media types and static expressions
 ``` sass
 @include media("screen", ">tablet") {
 	// Your rules here
