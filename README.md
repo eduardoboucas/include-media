@@ -1,13 +1,12 @@
 # include-media
-**Direct download:** [Latest version](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
-
-## What is it?
 A SASS mixin for writing media queries with a clean and natural syntax and with total control of the conditions. 
 
-## How to use it?
-Download the *include-media* SCSS file and `@import` it into your project. Next, you can tweak a few things.
+**Direct download:** [Latest version](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
 
-### Breakpoints
+## Installation
+Download the *include-media* SCSS file and `@import` it into your project. Then there's a few things you can tweak
+
+#### Breakpoints
 It comes with a couple of default breakpoints by default:
 
 | Breakpoint name | Width  |
@@ -22,7 +21,7 @@ You can override this list by re-declaring the variable `$breakpoints` anywhere 
 $breakpoints: (phone: 320px, tablet: 768px, desktop: 1024px);
 ```
 
-### Media expressions
+#### Media expressions
 **import-media** comes with a list of media expressions that include media types and expressions that do not depend on the breakpoints.
 
 | Name     | Value                                                              | Description                                                                            |
@@ -42,4 +41,22 @@ $media-expressions: (screen: "screen",
                     retina2x: ("(-webkit-min-device-pixel-ratio: 2)", "(min-resolution: 192dpi)"), 
                     retina3x: ("(-webkit-min-device-pixel-ratio: 3)", "(min-resolution: 350dpi)")
                     ) !default;
+```
+
+## Usage
+
+#### Using one or two breakpoints as conditions
+
+``` sass
+@include media(">=tablet", "<desktop") {
+	// Your rules here
+}
+```
+
+compiles to
+
+``` css
+@media (min-width: 768px) and (max-width: 1023px) {
+	// Your rules here
+}
 ```
