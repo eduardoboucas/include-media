@@ -1,16 +1,16 @@
 {
-  "name": "import-media",
+  "name": "include-media",
   "version": "1.0.0",
   "description": "A SASS mixin for creating media queries",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eduardoboucas/import-media.git"
+    "url": "https://github.com/eduardoboucas/include-media.git"
   },
   "author": "Eduardo Boucas <mail@eduardoboucas.com>",
   "bugs": {
-    "url": "https://github.com/eduardoboucas/import-media/issues"
+    "url": "https://github.com/eduardoboucas/include-media/issues"
   },
-  "homepage": "https://github.com/eduardoboucas/import-media",
+  "homepage": "https://github.com/eduardoboucas/include-media",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "latest"
