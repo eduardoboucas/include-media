@@ -1,13 +1,13 @@
 @function str-replace-first($search, $replace, $subject) {
   $search-start: str-index($subject, $search);
-  
-  @if not $search-start {
+
+  @if $search-start == null {
     @return $subject;
   }
-  
+
   $result: str-slice($subject, 0, $search-start - 1);
   $result: $result + $replace;
   $result: $result + str-slice($subject, $search-start + str-length($search));
-  
+
   @return $result;
 }

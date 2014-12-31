@@ -1,21 +1,20 @@
 @mixin media($conditions...) {
-  $i: 1;
-  
-  @each $condition in $conditions {
+  @for $i from 1 through length($conditions) {
     $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
-    $i: $i + 1;
   }
-  
+
   $branches: get-query-branches($conditions);
   $query: "";
-  
+
   @each $branch in $branches {
-    @if ($query != "") {
+    @if (str-length($query) != 0) {
       $query: $query + ", ";
     }
-    
+
     $query: $query + $branch;
   }
-  
-  @media #{$query} { @content; }
+
+  @media #{$query} {
+    @content;
+  }
 }

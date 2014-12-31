@@ -1,27 +1,27 @@
 @function get-query-branches($expressions) {
   $result: "";
   $has-groups: false;
-  
+
   // Getting initial snapshot and looking for groups
   @each $expression in $expressions {
-    @if ($result != "") {
+    @if (str-length($result) != 0) {
       $result: $result + " and ";
     }
-    
+
     @if (type-of($expression) == "string") {
       $result: $result + $expression;
     } @else if (type-of($expression) == "list") {
       $result: $result + nth($expression, 1);
       $has-groups: true;
     }
-  }  
-  
+  }
+
   // If we have groups, we have to create all possible combinations
   @if $has-groups {
     @each $expression in $expressions {
       @if (type-of($expression) == "list") {
         $first: nth($expression, 1);
-        
+
         @each $member in $expression {
           @if ($member != $first) {
             @each $partial in $result {
@@ -30,8 +30,8 @@
           }
         }
       }
-    }    
+    }
   }
-  
+
   @return $result;
 }
