@@ -3,8 +3,8 @@
   $value: "";
   $element: "";
   $result: "";
-  $is-width: true;  
-  
+  $is-width: true;
+
   // Separating the operator from the rest of the expression
   @if (str-slice($expression, 2, 2) == "=") {
     $operator: str-slice($expression, 1, 2);
@@ -13,7 +13,7 @@
     $operator: str-slice($expression, 1, 1);
     $value: str-slice($expression, 2);
   }
-  
+
   // Checking what type of expression we're dealing with
   @if map-has-key($breakpoints, $value) {
     $result: map-get($breakpoints, $value);
@@ -23,7 +23,7 @@
   } @else {
     $result: to-number($value);
   }
-  
+
   @if ($is-width) {
     @if ($operator == ">") {
       $element: "(min-width: #{$result + 1})";
@@ -37,6 +37,6 @@
   } @else {
     $element: $result;
   }
-  
+
   @return $element;
 }
