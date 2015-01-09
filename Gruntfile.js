@@ -7,20 +7,9 @@ module.exports = function(grunt) {
 				separator: '\n',
 			},
 			dist: {
-	  			src: ['src/banner.md', 'src/_config.scss', 'src/_media.scss', 'src/helpers/*.scss', 'src/vendor/*.scss'],
+	  			src: ['src/banner.scss', 'src/_config.scss', 'src/_media.scss', 'src/helpers/*.scss', 'src/vendor/*.scss'],
 	  			dest: 'dist/_include-media.scss',
 			},
-		},
-
-		watch: {
-			stylesheets: {
-				files: ['src/**/*.css', 'src/**/*.less'],
-				tasks: ['less', 'cssmin']
-			},
-			scripts: {
-				files: 'src/**/*.js',
-				tasks: ['jshint', 'uglify']
-			}
 		}
 	});
 

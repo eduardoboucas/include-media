@@ -22,50 +22,50 @@ $media-expressions: (screen: "screen",
                     retina3x: ("(-webkit-min-device-pixel-ratio: 3)", "(min-resolution: 350dpi)")
                     ) !default;
 @mixin media($conditions...) {
-  $i: 1;
-  
-  @each $condition in $conditions {
+  @for $i from 1 through length($conditions) {
     $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
-    $i: $i + 1;
   }
-  
+
   $branches: get-query-branches($conditions);
   $query: "";
-  
+
   @each $branch in $branches {
-    @if ($query != "") {
+    @if (str-length($query) != 0) {
       $query: $query + ", ";
     }
-    
+
     $query: $query + $branch;
   }
-  
-  @media #{$query} { @content; }
+
+  @media #{$query} {
+    @content;
+  }
 }
+
 @function get-query-branches($expressions) {
   $result: "";
   $has-groups: false;
-  
+
   // Getting initial snapshot and looking for groups
   @each $expression in $expressions {
-    @if ($result != "") {
+    @if (str-length($result) != 0) {
       $result: $result + " and ";
     }
-    
+
     @if (type-of($expression) == "string") {
       $result: $result + $expression;
     } @else if (type-of($expression) == "list") {
       $result: $result + nth($expression, 1);
       $has-groups: true;
     }
-  }  
-  
+  }
+
   // If we have groups, we have to create all possible combinations
   @if $has-groups {
     @each $expression in $expressions {
       @if (type-of($expression) == "list") {
         $first: nth($expression, 1);
-        
+
         @each $member in $expression {
           @if ($member != $first) {
             @each $partial in $result {
@@ -74,18 +74,19 @@ $media-expressions: (screen: "screen",
           }
         }
       }
-    }    
+    }
   }
-  
+
   @return $result;
 }
+
 @function parse-expression($expression) {
   $operator: "";
   $value: "";
   $element: "";
   $result: "";
-  $is-width: true;  
-  
+  $is-width: true;
+
   // Separating the operator from the rest of the expression
   @if (str-slice($expression, 2, 2) == "=") {
     $operator: str-slice($expression, 1, 2);
@@ -94,7 +95,7 @@ $media-expressions: (screen: "screen",
     $operator: str-slice($expression, 1, 1);
     $value: str-slice($expression, 2);
   }
-  
+
   // Checking what type of expression we're dealing with
   @if map-has-key($breakpoints, $value) {
     $result: map-get($breakpoints, $value);
@@ -104,7 +105,7 @@ $media-expressions: (screen: "screen",
   } @else {
     $result: to-number($value);
   }
-  
+
   @if ($is-width) {
     @if ($operator == ">") {
       $element: "(min-width: #{$result + 1})";
@@ -118,22 +119,24 @@ $media-expressions: (screen: "screen",
   } @else {
     $element: $result;
   }
-  
+
   @return $element;
 }
+
 @function str-replace-first($search, $replace, $subject) {
   $search-start: str-index($subject, $search);
-  
-  @if not $search-start {
+
+  @if $search-start == null {
     @return $subject;
   }
-  
+
   $result: str-slice($subject, 0, $search-start - 1);
   $result: $result + $replace;
   $result: $result + str-slice($subject, $search-start + str-length($search));
-  
+
   @return $result;
 }
+
 /**
 *
 * Function to cast strings into numbers in SASS
