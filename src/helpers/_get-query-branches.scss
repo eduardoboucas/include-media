@@ -1,3 +1,14 @@
+/**
+ * Reads a list of media query expressions and separates logical disjunctions into different branches
+ *
+ * @author Eduardo Boucas
+ *
+ * @param {List}   $expressions  - list of expressions
+ *
+ * @throws `$expression` is not a valid expression
+ *
+ * @return {List | Null}
+ */
 @function get-query-branches($expressions) {
   $result: "";
   $has-groups: false;
@@ -13,6 +24,8 @@
     } @else if (type-of($expression) == "list") {
       $result: $result + nth($expression, 1);
       $has-groups: true;
+    } @else {
+      @error "'#{$expression}' is not a valid expression.";
     }
   }
 

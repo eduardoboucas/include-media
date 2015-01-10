@@ -1,25 +1,12 @@
 /**
-*
-* Function to cast strings into numbers in SASS
-*
-* Author: Hugo Giraudel (@hugogiraudel)
-* https://github.com/HugoGiraudel/SassyCast
-*
-**/
-
-@function _length($number, $unit) {
-  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
-  $units:   1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
-  $index: index($strings, $unit);
-  
-  @if not $index {
-    @warn "Unknown unit `#{$unit}`.";
-    @return false;
-  }
-  
-  @return $number * nth($units, $index);
-}
-
+ * Casts a number to a string
+ *
+ * @author Hugo Giraudel
+ *
+ * @param {String}   $string  - Number to be parsed
+ *
+ * @return {List | Null}
+ */
 @function to-number($string) {
   // Matrices
   $strings: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9';
@@ -67,4 +54,17 @@
   }
   
   @return if($minus, $result * -1, $result);
+}
+
+@function _length($number, $unit) {
+  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
+  $units:   1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
+  $index: index($strings, $unit);
+  
+  @if not $index {
+    @warn "Unknown unit `#{$unit}`.";
+    @return false;
+  }
+  
+  @return $number * nth($units, $index);
 }
