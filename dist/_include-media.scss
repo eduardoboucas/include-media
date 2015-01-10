@@ -21,51 +21,89 @@ $media-expressions: (screen: "screen",
                     retina2x: ("(-webkit-min-device-pixel-ratio: 2)", "(min-resolution: 192dpi)"), 
                     retina3x: ("(-webkit-min-device-pixel-ratio: 3)", "(min-resolution: 350dpi)")
                     ) !default;
+/**
+ * Generates a media query based on a list of conditions
+ *
+ * @author Eduardo Boucas
+ *
+ * @param {List}   $conditions  - Media query conditions
+ *
+ * @example scss - With a single set breakpoint
+ *  @include media(">phone") { }
+ *
+ * @example scss - With two set breakpoints
+ *  @include media(">phone", "<=tablet") { } 
+ *
+ * @example scss - With custom values
+ *  @include media(">=358px", "<850px") { } 
+ *
+ * @example scss - With set breakpoints with custom values
+ *  @include media(">desktop", "<=1350px") { } 
+ *
+ * @example scss - With a static expression
+ *  @include media("retina2x") { } 
+ *
+ * @example scss - Mixing everything
+ *  @include media(">=350px", "<tablet", "retina3x") { } 
+ */
 @mixin media($conditions...) {
-  $i: 1;
-  
-  @each $condition in $conditions {
+  @for $i from 1 through length($conditions) {
     $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
-    $i: $i + 1;
   }
-  
+
   $branches: get-query-branches($conditions);
   $query: "";
-  
+
   @each $branch in $branches {
-    @if ($query != "") {
+    @if (str-length($query) != 0) {
       $query: $query + ", ";
     }
-    
+
     $query: $query + $branch;
   }
-  
-  @media #{$query} { @content; }
+
+  @media #{$query} {
+    @content;
+  }
 }
+
+/**
+ * Reads a list of media query expressions and separates logical disjunctions into different branches
+ *
+ * @author Eduardo Boucas
+ *
+ * @param {List}   $expressions  - list of expressions
+ *
+ * @throws `$expression` is not a valid expression
+ *
+ * @return {List | Null}
+ */
 @function get-query-branches($expressions) {
   $result: "";
   $has-groups: false;
-  
+
   // Getting initial snapshot and looking for groups
   @each $expression in $expressions {
-    @if ($result != "") {
+    @if (str-length($result) != 0) {
       $result: $result + " and ";
     }
-    
+
     @if (type-of($expression) == "string") {
       $result: $result + $expression;
     } @else if (type-of($expression) == "list") {
       $result: $result + nth($expression, 1);
       $has-groups: true;
+    } @else {
+      @error "'#{$expression}' is not a valid expression.";
     }
-  }  
-  
+  }
+
   // If we have groups, we have to create all possible combinations
   @if $has-groups {
     @each $expression in $expressions {
       @if (type-of($expression) == "list") {
         $first: nth($expression, 1);
-        
+
         @each $member in $expression {
           @if ($member != $first) {
             @each $partial in $result {
@@ -74,18 +112,35 @@ $media-expressions: (screen: "screen",
           }
         }
       }
-    }    
+    }
   }
-  
+
   @return $result;
 }
+
+/**
+ * Parses a string to form a media query expression
+ *
+ * @author Eduardo Boucas
+ *
+ * @param {String}   $expression  - expression (in string)
+ *
+ * @throws Expression with type `type-of($expression)` detected, string expected
+ * @throws `$expression` is missing an operator
+ *
+ * @return {String | Null}
+ */
 @function parse-expression($expression) {
   $operator: "";
   $value: "";
   $element: "";
   $result: "";
-  $is-width: true;  
-  
+  $is-width: true;
+
+  @if (type-of($expression) != "string") {
+    @error "Expression with type '#{type-of($expression)}' detected, string expected.";
+  }
+
   // Separating the operator from the rest of the expression
   @if (str-slice($expression, 2, 2) == "=") {
     $operator: str-slice($expression, 1, 2);
@@ -94,7 +149,7 @@ $media-expressions: (screen: "screen",
     $operator: str-slice($expression, 1, 1);
     $value: str-slice($expression, 2);
   }
-  
+
   // Checking what type of expression we're dealing with
   @if map-has-key($breakpoints, $value) {
     $result: map-get($breakpoints, $value);
@@ -104,7 +159,7 @@ $media-expressions: (screen: "screen",
   } @else {
     $result: to-number($value);
   }
-  
+
   @if ($is-width) {
     @if ($operator == ">") {
       $element: "(min-width: #{$result + 1})";
@@ -114,48 +169,50 @@ $media-expressions: (screen: "screen",
       $element: "(min-width: #{$result})";
     } @else if ($operator == "<=") {
       $element: "(max-width: #{$result})";
+    } @else {
+      @error "'#{$expression}' is missing an operator.";
     }
   } @else {
     $element: $result;
   }
-  
+
   @return $element;
 }
+
+/**
+ * Replaces the first occurence of the string with the replacement string
+ *
+ * @author Eduardo Boucas
+ *
+ * @param {String}   $search  - The value being searched for
+ * @param {String}   $replace  - The replacement string
+ * @param {String}   $subject  - The string being replaced on
+ *
+ * @return {String | Null}
+ */
 @function str-replace-first($search, $replace, $subject) {
   $search-start: str-index($subject, $search);
-  
-  @if not $search-start {
+
+  @if $search-start == null {
     @return $subject;
   }
-  
+
   $result: str-slice($subject, 0, $search-start - 1);
   $result: $result + $replace;
   $result: $result + str-slice($subject, $search-start + str-length($search));
-  
+
   @return $result;
 }
+
 /**
-*
-* Function to cast strings into numbers in SASS
-*
-* Author: Hugo Giraudel (@hugogiraudel)
-* https://github.com/HugoGiraudel/SassyCast
-*
-**/
-
-@function _length($number, $unit) {
-  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
-  $units:   1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
-  $index: index($strings, $unit);
-  
-  @if not $index {
-    @warn "Unknown unit `#{$unit}`.";
-    @return false;
-  }
-  
-  @return $number * nth($units, $index);
-}
-
+ * Casts a number to a string
+ *
+ * @author Hugo Giraudel
+ *
+ * @param {String}   $string  - Number to be parsed
+ *
+ * @return {List | Null}
+ */
 @function to-number($string) {
   // Matrices
   $strings: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9';
@@ -203,4 +260,17 @@ $media-expressions: (screen: "screen",
   }
   
   @return if($minus, $result * -1, $result);
+}
+
+@function _length($number, $unit) {
+  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
+  $units:   1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
+  $index: index($strings, $unit);
+  
+  @if not $index {
+    @warn "Unknown unit `#{$unit}`.";
+    @return false;
+  }
+  
+  @return $number * nth($units, $index);
 }
