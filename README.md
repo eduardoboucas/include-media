@@ -1,7 +1,9 @@
 # include-media
 A SASS mixin for writing media queries with a clean and natural syntax and with total control of the conditions. 
 
-**Direct download:** [Latest version](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
+Quick links: 
+- [Direct download](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
+- [Documentation](http://eduardoboucas.com/include-media/doc/)
 
 ## Installation
 Download the *include-media* SCSS file and `@import` it into your project. Then there's a few things you can tweak
