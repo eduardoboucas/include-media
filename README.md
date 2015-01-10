@@ -1,7 +1,7 @@
 # include-media
 A SASS mixin for writing media queries with a clean and natural syntax and with total control of the conditions. 
 
-Quick links: 
+**Quick links:**
 - [Direct download](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
 - [Documentation](http://eduardoboucas.com/include-media/doc/)
 
