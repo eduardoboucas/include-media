@@ -7,9 +7,6 @@
   ],
   "description": "Write simple, elegant and maintainable media queries with Sass",
   "main": "dist/_include-media.scss",
-  "moduleType": [
-    "globals"
-  ],
   "keywords": [
     "breakpoint",
     "breakpoints",
