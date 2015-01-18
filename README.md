@@ -6,7 +6,11 @@ A SASS mixin for writing media queries with a clean and natural syntax and with 
 - [Documentation](http://eduardoboucas.com/include-media/doc/)
 
 ## Installation
-Download the *include-media* SCSS file and `@import` it into your project. Then there's a few things you can tweak
+- **Manually:** Download the [*include-media* SCSS file](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss) and `@import` it into your project.
+- **Using Bower:** Run `bower install include-media` and import `dist/_include-media.scss` into your project.
+
+## Configuration
+The mixin comes ready to use, but you can tweak a few things if you want.
 
 #### Breakpoints
 It comes with a couple of default breakpoints by default:
