@@ -162,16 +162,16 @@ $unit-intervals: ("px": 1, "em": 0.065, "rem": 0.065) !default;
     $result: to-number($value);
   }
 
-  $unit: unit($result);
-  $interval: 0;
-  
-  @if (map-has-key($unit-intervals, $unit)) {
-    $interval: map-get($unit-intervals, $unit);
-  } @else {
-    @error "Unknown unit: #{$unit}";
-  }
-
   @if ($is-width) {
+    $unit: unit($result);
+    $interval: 0;
+    
+    @if (map-has-key($unit-intervals, $unit)) {
+      $interval: map-get($unit-intervals, $unit);
+    } @else {
+      @error "Unknown unit: #{$unit}";
+    } 
+       
     @if ($operator == ">") {
       $element: "(min-width: #{$result + $interval})";
     } @else if ($operator == "<") {
