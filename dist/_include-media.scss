@@ -21,6 +21,7 @@ $media-expressions: (screen: "screen",
                     retina2x: ("(-webkit-min-device-pixel-ratio: 2)", "(min-resolution: 192dpi)"), 
                     retina3x: ("(-webkit-min-device-pixel-ratio: 3)", "(min-resolution: 350dpi)")
                     ) !default;
+$unit-intervals: ("px": 1, "em": 0.065, "rem": 0.065) !default;
 /**
  * Generates a media query based on a list of conditions
  *
@@ -127,6 +128,7 @@ $media-expressions: (screen: "screen",
  *
  * @throws Expression with type `type-of($expression)` detected, string expected
  * @throws `$expression` is missing an operator
+ * @throws Unknown unit: `$unit`
  *
  * @return {String | Null}
  */
@@ -161,10 +163,19 @@ $media-expressions: (screen: "screen",
   }
 
   @if ($is-width) {
+    $unit: unit($result);
+    $interval: 0;
+    
+    @if (map-has-key($unit-intervals, $unit)) {
+      $interval: map-get($unit-intervals, $unit);
+    } @else {
+      @error "Unknown unit: #{$unit}";
+    } 
+       
     @if ($operator == ">") {
-      $element: "(min-width: #{$result + 1})";
+      $element: "(min-width: #{$result + $interval})";
     } @else if ($operator == "<") {
-      $element: "(max-width: #{$result - 1})";
+      $element: "(max-width: #{$result - $interval})";
     } @else if ($operator == ">=") {
       $element: "(min-width: #{$result})";
     } @else if ($operator == "<=") {
