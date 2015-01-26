@@ -1,9 +1,7 @@
-# include-media
-A SASS mixin for writing media queries with a clean and natural syntax and with total control of the conditions. 
+<a href="http://include-media.com">!['At' sign](http://include-media.com/assets/images/logo.png)</a>
 
-**Quick links:**
-- [Direct download](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
-- [Documentation](http://eduardoboucas.com/include-media/doc/)
+[include-media.com](http://include-media.com)
+
 
 ## Installation
 - **Manually:** Download the [*include-media* SCSS file](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss) and `@import` it into your project.
