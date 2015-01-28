@@ -1,16 +1,16 @@
-/**
- * Parses a string to form a media query expression
- *
- * @author Eduardo Boucas
- *
- * @param {String}   $expression  - expression (in string)
- *
- * @throws Expression with type `type-of($expression)` detected, string expected
- * @throws `$expression` is missing an operator
- * @throws Unknown unit: `$unit`
- *
- * @return {String | Null}
- */
+///
+/// Parses a string to form a media query expression
+///
+/// @author Eduardo Boucas
+///
+/// @param {String}   $expression  - expression (in string)
+///
+/// @throws Expression with type `type-of($expression)` detected, string expected
+/// @throws `$expression` is missing an operator
+/// @throws Unknown unit: `$unit`
+///
+/// @return {String | Null}
+///
 @function parse-expression($expression) {
   $operator: "";
   $value: "";
@@ -19,7 +19,7 @@
   $is-width: true;
 
   @if (type-of($expression) != "string") {
-    @error "Expression with type '#{type-of($expression)}' detected, string expected.";
+    @warn "Expression with type '#{type-of($expression)}' detected, string expected.";
   }
 
   // Separating the operator from the rest of the expression
@@ -48,7 +48,7 @@
     @if (map-has-key($unit-intervals, $unit)) {
       $interval: map-get($unit-intervals, $unit);
     } @else {
-      @error "Unknown unit: #{$unit}";
+      @warn "Unknown unit: #{$unit}";
     } 
        
     @if ($operator == ">") {
@@ -60,7 +60,7 @@
     } @else if ($operator == "<=") {
       $element: "(max-width: #{$result})";
     } @else {
-      @error "'#{$expression}' is missing an operator.";
+      @warn "'#{$expression}' is missing an operator.";
     }
   } @else {
     $element: $result;
