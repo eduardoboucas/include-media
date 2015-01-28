@@ -12,18 +12,18 @@
 /// @return {String | Null}
 ///
 @function parse-expression($expression) {
-  $operator: "";
-  $value: "";
-  $element: "";
-  $result: "";
+  $operator: '';
+  $value: '';
+  $element: '';
+  $result: '';
   $is-width: true;
 
-  @if (type-of($expression) != "string") {
-    @warn "Expression with type '#{type-of($expression)}' detected, string expected.";
+  @if (type-of($expression) != 'string') {
+    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';
   }
 
   // Separating the operator from the rest of the expression
-  @if (str-slice($expression, 2, 2) == "=") {
+  @if (str-slice($expression, 2, 2) == '=') {
     $operator: str-slice($expression, 1, 2);
     $value: str-slice($expression, 3);
   } @else {
@@ -48,19 +48,19 @@
     @if (map-has-key($unit-intervals, $unit)) {
       $interval: map-get($unit-intervals, $unit);
     } @else {
-      @warn "Unknown unit: #{$unit}";
+      @warn 'Unknown unit: #{$unit}';
     } 
        
-    @if ($operator == ">") {
-      $element: "(min-width: #{$result + $interval})";
-    } @else if ($operator == "<") {
-      $element: "(max-width: #{$result - $interval})";
-    } @else if ($operator == ">=") {
-      $element: "(min-width: #{$result})";
-    } @else if ($operator == "<=") {
-      $element: "(max-width: #{$result})";
+    @if ($operator == '>') {
+      $element: '(min-width: #{$result + $interval})';
+    } @else if ($operator == '<') {
+      $element: '(max-width: #{$result - $interval})';
+    } @else if ($operator == '>=') {
+      $element: '(min-width: #{$result})';
+    } @else if ($operator == '<=') {
+      $element: '(max-width: #{$result})';
     } @else {
-      @warn "'#{$expression}' is missing an operator.";
+      @warn '#{$expression} is missing an operator.';
     }
   } @else {
     $element: $result;

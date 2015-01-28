@@ -1,9 +1,9 @@
-//* 	 _            _           _                           _ _       
-//* 	(_)          | |         | |                         | (_)      
-//* 	 _ _ __   ___| |_   _  __| | ___   _ __ ___   ___  __| |_  __ _ 
-//* 	| | '_ \ / __| | | | |/ _` |/ _ \ | '_ ` _ \ / _ \/ _` | |/ _` |
-//* 	| | | | | (__| | |_| | (_| |  __/ | | | | | |  __/ (_| | | (_| |
-//* 	|_|_| |_|\___|_|\__,_|\__,_|\___| |_| |_| |_|\___|\__,_|_|\__,_|
+//  	 _            _           _                           _ _       
+//  	(_)          | |         | |                         | (_)      
+//  	 _ _ __   ___| |_   _  __| | ___   _ __ ___   ___  __| |_  __ _ 
+//  	| | '_ \ / __| | | | |/ _` |/ _ \ | '_ ` _ \ / _ \/ _` | |/ _` |
+//  	| | | | | (__| | |_| | (_| |  __/ | | | | | |  __/ (_| | | (_| |
+//  	|_|_| |_|\___|_|\__,_|\__,_|\___| |_| |_| |_|\___|\__,_|_|\__,_|
 //
 //			Simple, elegant and maintainable media queries in Sass
 //
@@ -67,11 +67,11 @@ $unit-intervals: (
   }
 
   $branches: get-query-branches($conditions);
-  $query: "";
+  $query: '';
 
   @each $branch in $branches {
     @if (str-length($query) != 0) {
-      $query: $query + ", ";
+      $query: $query + ', ';
     }
 
     $query: $query + $branch;
@@ -94,29 +94,29 @@ $unit-intervals: (
 /// @return {List | Null}
 ///
 @function get-query-branches($expressions) {
-  $result: "";
+  $result: '';
   $has-groups: false;
 
   // Getting initial snapshot and looking for groups
   @each $expression in $expressions {
     @if (str-length($result) != 0) {
-      $result: $result + " and ";
+      $result: $result + ' and ';
     }
 
-    @if (type-of($expression) == "string") {
+    @if (type-of($expression) == 'string') {
       $result: $result + $expression;
-    } @else if (type-of($expression) == "list") {
+    } @else if (type-of($expression) == 'list') {
       $result: $result + nth($expression, 1);
       $has-groups: true;
     } @else {
-      @warn "'#{$expression}' is not a valid expression.";
+      @warn '#{$expression} is not a valid expression.';
     }
   }
 
   // If we have groups, we have to create all possible combinations
   @if $has-groups {
     @each $expression in $expressions {
-      @if (type-of($expression) == "list") {
+      @if (type-of($expression) == 'list') {
         $first: nth($expression, 1);
 
         @each $member in $expression {
@@ -147,18 +147,18 @@ $unit-intervals: (
 /// @return {String | Null}
 ///
 @function parse-expression($expression) {
-  $operator: "";
-  $value: "";
-  $element: "";
-  $result: "";
+  $operator: '';
+  $value: '';
+  $element: '';
+  $result: '';
   $is-width: true;
 
-  @if (type-of($expression) != "string") {
-    @warn "Expression with type '#{type-of($expression)}' detected, string expected.";
+  @if (type-of($expression) != 'string') {
+    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';
   }
 
   // Separating the operator from the rest of the expression
-  @if (str-slice($expression, 2, 2) == "=") {
+  @if (str-slice($expression, 2, 2) == '=') {
     $operator: str-slice($expression, 1, 2);
     $value: str-slice($expression, 3);
   } @else {
@@ -183,19 +183,19 @@ $unit-intervals: (
     @if (map-has-key($unit-intervals, $unit)) {
       $interval: map-get($unit-intervals, $unit);
     } @else {
-      @warn "Unknown unit: #{$unit}";
+      @warn 'Unknown unit: #{$unit}';
     } 
        
-    @if ($operator == ">") {
-      $element: "(min-width: #{$result + $interval})";
-    } @else if ($operator == "<") {
-      $element: "(max-width: #{$result - $interval})";
-    } @else if ($operator == ">=") {
-      $element: "(min-width: #{$result})";
-    } @else if ($operator == "<=") {
-      $element: "(max-width: #{$result})";
+    @if ($operator == '>') {
+      $element: '(min-width: #{$result + $interval})';
+    } @else if ($operator == '<') {
+      $element: '(max-width: #{$result - $interval})';
+    } @else if ($operator == '>=') {
+      $element: '(min-width: #{$result})';
+    } @else if ($operator == '<=') {
+      $element: '(max-width: #{$result})';
     } @else {
-      @warn "'#{$expression}' is missing an operator.";
+      @warn '#{$expression} is missing an operator.';
     }
   } @else {
     $element: $result;
@@ -293,7 +293,7 @@ $unit-intervals: (
   $index: index($strings, $unit);
   
   @if type-of($index) != 'number' {
-    @warn "Unknown unit `#{$unit}`.";
+    @warn 'Unknown unit `#{$unit}`.';
     @return false;
   }
   

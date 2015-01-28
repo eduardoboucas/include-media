@@ -29,11 +29,11 @@
   }
 
   $branches: get-query-branches($conditions);
-  $query: "";
+  $query: '';
 
   @each $branch in $branches {
     @if (str-length($query) != 0) {
-      $query: $query + ", ";
+      $query: $query + ', ';
     }
 
     $query: $query + $branch;

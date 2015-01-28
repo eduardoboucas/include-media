@@ -62,7 +62,7 @@
   $index: index($strings, $unit);
   
   @if type-of($index) != 'number' {
-    @warn "Unknown unit `#{$unit}`.";
+    @warn 'Unknown unit `#{$unit}`.';
     @return false;
   }
   
