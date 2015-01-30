@@ -1,8 +1,25 @@
-$breakpoints: (phone: 320px, tablet: 768px, desktop: 1024px) !default;
-$media-expressions: (screen: "screen", 
-                    print: "print", 
-                    handheld: "handheld",
-                    retina2x: ("(-webkit-min-device-pixel-ratio: 2)", "(min-resolution: 192dpi)"), 
-                    retina3x: ("(-webkit-min-device-pixel-ratio: 3)", "(min-resolution: 350dpi)")
-                    ) !default;
-$unit-intervals: ("px": 1, "em": 0.065, "rem": 0.065) !default;
+$breakpoints: (
+	'phone': 320px, 
+	'tablet': 768px, 
+	'desktop': 1024px
+) !default;
+
+$media-expressions: (
+	'screen': 'screen', 
+	'print': 'print', 
+	'handheld': 'handheld',
+	'retina2x': (
+		'(-webkit-min-device-pixel-ratio: 2)', 
+		'(min-resolution: 192dpi)'
+	), 
+	'retina3x': (
+		'(-webkit-min-device-pixel-ratio: 3)', 
+		'(min-resolution: 350dpi)'
+	)
+) !default;
+
+$unit-intervals: (
+	'px': 1, 
+	'em': 0.065, 
+	'rem': 0.065
+) !default;

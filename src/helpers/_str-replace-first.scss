@@ -1,14 +1,14 @@
-/**
- * Replaces the first occurence of the string with the replacement string
- *
- * @author Eduardo Boucas
- *
- * @param {String}   $search  - The value being searched for
- * @param {String}   $replace  - The replacement string
- * @param {String}   $subject  - The string being replaced on
- *
- * @return {String | Null}
- */
+///
+/// Replaces the first occurence of the string with the replacement string
+///
+/// @author Eduardo Boucas
+///
+/// @param {String}   $search  - The value being searched for
+/// @param {String}   $replace  - The replacement string
+/// @param {String}   $subject  - The string being replaced on
+///
+/// @return {String | Null}
+///
 @function str-replace-first($search, $replace, $subject) {
   $search-start: str-index($subject, $search);
 

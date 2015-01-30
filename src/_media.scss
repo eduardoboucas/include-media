@@ -1,39 +1,39 @@
-/**
- * Generates a media query based on a list of conditions
- *
- * @author Eduardo Boucas
- *
- * @param {List}   $conditions  - Media query conditions
- *
- * @example scss - With a single set breakpoint
- *  @include media(">phone") { }
- *
- * @example scss - With two set breakpoints
- *  @include media(">phone", "<=tablet") { } 
- *
- * @example scss - With custom values
- *  @include media(">=358px", "<850px") { } 
- *
- * @example scss - With set breakpoints with custom values
- *  @include media(">desktop", "<=1350px") { } 
- *
- * @example scss - With a static expression
- *  @include media("retina2x") { } 
- *
- * @example scss - Mixing everything
- *  @include media(">=350px", "<tablet", "retina3x") { } 
- */
+///
+/// Generates a media query based on a list of conditions
+///
+/// @author Eduardo Boucas
+///
+/// @param {List}   $conditions  - Media query conditions
+///
+/// @example scss - With a single set breakpoint
+///  @include media(">phone") { }
+///
+/// @example scss - With two set breakpoints
+///  @include media(">phone", "<=tablet") { } 
+///
+/// @example scss - With custom values
+///  @include media(">=358px", "<850px") { } 
+///
+/// @example scss - With set breakpoints with custom values
+///  @include media(">desktop", "<=1350px") { } 
+///
+/// @example scss - With a static expression
+///  @include media("retina2x") { } 
+///
+/// @example scss - Mixing everything
+///  @include media(">=350px", "<tablet", "retina3x") { } 
+///
 @mixin media($conditions...) {
   @for $i from 1 through length($conditions) {
     $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
   }
 
   $branches: get-query-branches($conditions);
-  $query: "";
+  $query: '';
 
   @each $branch in $branches {
     @if (str-length($query) != 0) {
-      $query: $query + ", ";
+      $query: $query + ', ';
     }
 
     $query: $query + $branch;

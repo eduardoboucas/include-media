@@ -1,12 +1,12 @@
-/**
- * Casts a number to a string
- *
- * @author Hugo Giraudel
- *
- * @param {String}   $string  - Number to be parsed
- *
- * @return {List | Null}
- */
+///
+/// Casts a number to a string
+///
+/// @author Hugo Giraudel
+///
+/// @param {String}   $string  - Number to be parsed
+///
+/// @return {List | Null}
+///
 @function to-number($string) {
   // Matrices
   $strings: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9';
@@ -32,7 +32,7 @@
     }
     
     @else {
-      @if not $index {
+      @if type-of($index) != 'number' {
         $result: if($minus, $result * -1, $result);
         @return _length($result, str-slice($string, $i));
       }
@@ -61,8 +61,8 @@
   $units:   1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
   $index: index($strings, $unit);
   
-  @if not $index {
-    @warn "Unknown unit `#{$unit}`.";
+  @if type-of($index) != 'number' {
+    @warn 'Unknown unit `#{$unit}`.';
     @return false;
   }
   
