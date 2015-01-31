@@ -14,7 +14,7 @@
   "bugs": {
     "url": "https://github.com/eduardoboucas/include-media/issues"
   },
-  "homepage": "https://include-media.com",
+  "homepage": "http://include-media.com",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "latest"
