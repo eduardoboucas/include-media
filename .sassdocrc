@@ -1,0 +1,11 @@
+basePath: https://github.com/eduardoboucas/include-media/blob/master
+display:
+    access:
+        - public
+    alias: false
+    watermark: true
+
+package: ./package.json
+theme: default
+groups:
+    undefined: General
