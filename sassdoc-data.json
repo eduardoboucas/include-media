@@ -1,0 +1,489 @@
+[
+  {
+    "description": "\nCreates a list of global breakpoints\n\n",
+    "commentRange": {
+      "start": 14,
+      "end": 21
+    },
+    "context": {
+      "type": "variable",
+      "name": "breakpoints",
+      "value": "(\n\t'phone': 320px, \n\t'tablet': 768px, \n\t'desktop': 1024px\n)",
+      "scope": "default",
+      "line": {
+        "start": 22,
+        "end": 26
+      }
+    },
+    "author": [
+      "Eduardo Boucas"
+    ],
+    "example": [
+      {
+        "type": "scss",
+        "code": " $breakpoints: ('phone': 320px);",
+        "description": "Creates a single breakpoint with the label `phone`"
+      }
+    ],
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    },
+    "usedBy": [
+      {
+        "description": "\nParses a string to form a media query expression\n\n",
+        "context": {
+          "type": "function",
+          "name": "parse-expression",
+          "code": "\n  $operator: '';\n  $value: '';\n  $element: '';\n  $result: '';\n  $is-width: true;\n\n  @if (type-of($expression) != 'string') {\n    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';\n  }\n\n  // Separating the operator from the rest of the expression\n  @if (str-slice($expression, 2, 2) == '=') {\n    $operator: str-slice($expression, 1, 2);\n    $value: str-slice($expression, 3);\n  } @else {\n    $operator: str-slice($expression, 1, 1);\n    $value: str-slice($expression, 2);\n  }\n\n  // Checking what type of expression we're dealing with\n  @if map-has-key($breakpoints, $value) {\n    $result: map-get($breakpoints, $value);\n  } @else if map-has-key($media-expressions, $expression) {\n    $result: map-get($media-expressions, $expression);\n    $is-width: false;\n  } @else {\n    $result: to-number($value);\n  }\n\n  @if ($is-width) {\n    $unit: unit($result);\n    $interval: 0;\n    \n    @if (map-has-key($unit-intervals, $unit)) {\n      $interval: map-get($unit-intervals, $unit);\n    } @else {\n      @warn 'Unknown unit: #{$unit}';\n    } \n       \n    @if ($operator == '>') {\n      $element: '(min-width: #{$result + $interval})';\n    } @else if ($operator == '<') {\n      $element: '(max-width: #{$result - $interval})';\n    } @else if ($operator == '>=') {\n      $element: '(min-width: #{$result})';\n    } @else if ($operator == '<=') {\n      $element: '(max-width: #{$result})';\n    } @else {\n      @warn '#{$expression} is missing an operator.';\n    }\n  } @else {\n    $element: $result;\n  }\n\n  @return $element;\n",
+          "line": {
+            "start": 196,
+            "end": 252
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "\nCreates a list of static expressions or media types\n\n",
+    "commentRange": {
+      "start": 28,
+      "end": 43
+    },
+    "context": {
+      "type": "variable",
+      "name": "media-expressions",
+      "value": "(\n\t'screen': 'screen', \n\t'print': 'print', \n\t'handheld': 'handheld',\n\t'retina2x': (\n\t\t'(-webkit-min-device-pixel-ratio: 2)', \n\t\t'(min-resolution: 192dpi)'\n\t), \n\t'retina3x': (\n\t\t'(-webkit-min-device-pixel-ratio: 3)', \n\t\t'(min-resolution: 350dpi)'\n\t)\n)",
+      "scope": "default",
+      "line": {
+        "start": 44,
+        "end": 56
+      }
+    },
+    "author": [
+      "Eduardo Boucas"
+    ],
+    "example": [
+      {
+        "type": "scss",
+        "code": " $media-expressions: ('screen': 'screen');",
+        "description": "Creates a single media type (screen)"
+      },
+      {
+        "type": "scss",
+        "code": " $media-expressions: (\n\t'retina2x': (\n\t\t'(-webkit-min-device-pixel-ratio: 2)', \n\t\t'(min-resolution: 192dpi)'\n\t)\n);",
+        "description": "Creates a static expression with logical disjunction (OR operator)"
+      }
+    ],
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    },
+    "usedBy": [
+      {
+        "description": "\nParses a string to form a media query expression\n\n",
+        "context": {
+          "type": "function",
+          "name": "parse-expression",
+          "code": "\n  $operator: '';\n  $value: '';\n  $element: '';\n  $result: '';\n  $is-width: true;\n\n  @if (type-of($expression) != 'string') {\n    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';\n  }\n\n  // Separating the operator from the rest of the expression\n  @if (str-slice($expression, 2, 2) == '=') {\n    $operator: str-slice($expression, 1, 2);\n    $value: str-slice($expression, 3);\n  } @else {\n    $operator: str-slice($expression, 1, 1);\n    $value: str-slice($expression, 2);\n  }\n\n  // Checking what type of expression we're dealing with\n  @if map-has-key($breakpoints, $value) {\n    $result: map-get($breakpoints, $value);\n  } @else if map-has-key($media-expressions, $expression) {\n    $result: map-get($media-expressions, $expression);\n    $is-width: false;\n  } @else {\n    $result: to-number($value);\n  }\n\n  @if ($is-width) {\n    $unit: unit($result);\n    $interval: 0;\n    \n    @if (map-has-key($unit-intervals, $unit)) {\n      $interval: map-get($unit-intervals, $unit);\n    } @else {\n      @warn 'Unknown unit: #{$unit}';\n    } \n       \n    @if ($operator == '>') {\n      $element: '(min-width: #{$result + $interval})';\n    } @else if ($operator == '<') {\n      $element: '(max-width: #{$result - $interval})';\n    } @else if ($operator == '>=') {\n      $element: '(min-width: #{$result})';\n    } @else if ($operator == '<=') {\n      $element: '(max-width: #{$result})';\n    } @else {\n      @warn '#{$expression} is missing an operator.';\n    }\n  } @else {\n    $element: $result;\n  }\n\n  @return $element;\n",
+          "line": {
+            "start": 196,
+            "end": 252
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "\nDefines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals\n\n",
+    "commentRange": {
+      "start": 58,
+      "end": 80
+    },
+    "context": {
+      "type": "variable",
+      "name": "unit-intervals",
+      "value": "(\n\t'px': 1, \n\t'em': 0.01, \n\t'rem': 0.1\n)",
+      "scope": "default",
+      "line": {
+        "start": 81,
+        "end": 85
+      }
+    },
+    "author": [
+      "Eduardo Boucas"
+    ],
+    "example": [
+      {
+        "type": "scss",
+        "code": " @include media(\">128px\") {}\n\n /* Generates: */\n @media (min-width: 129px) {}",
+        "description": "Interval for pixels is defined as `1` by default"
+      },
+      {
+        "type": "scss",
+        "code": " @include media(\">20em\") {}\n\n /* Generates: */\n @media (min-width: 20.01em) {}",
+        "description": "Interval for ems is defined as `0.01` by default"
+      },
+      {
+        "type": "scss",
+        "code": " @include media(\">2.0rem\") {}\n\n /* Generates: */\n @media (min-width: 2.1rem) {}",
+        "description": "Interval for rems is defined as `0.1` by default, to be used with `font-size: 62.5%;`"
+      }
+    ],
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    },
+    "usedBy": [
+      {
+        "description": "\nParses a string to form a media query expression\n\n",
+        "context": {
+          "type": "function",
+          "name": "parse-expression",
+          "code": "\n  $operator: '';\n  $value: '';\n  $element: '';\n  $result: '';\n  $is-width: true;\n\n  @if (type-of($expression) != 'string') {\n    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';\n  }\n\n  // Separating the operator from the rest of the expression\n  @if (str-slice($expression, 2, 2) == '=') {\n    $operator: str-slice($expression, 1, 2);\n    $value: str-slice($expression, 3);\n  } @else {\n    $operator: str-slice($expression, 1, 1);\n    $value: str-slice($expression, 2);\n  }\n\n  // Checking what type of expression we're dealing with\n  @if map-has-key($breakpoints, $value) {\n    $result: map-get($breakpoints, $value);\n  } @else if map-has-key($media-expressions, $expression) {\n    $result: map-get($media-expressions, $expression);\n    $is-width: false;\n  } @else {\n    $result: to-number($value);\n  }\n\n  @if ($is-width) {\n    $unit: unit($result);\n    $interval: 0;\n    \n    @if (map-has-key($unit-intervals, $unit)) {\n      $interval: map-get($unit-intervals, $unit);\n    } @else {\n      @warn 'Unknown unit: #{$unit}';\n    } \n       \n    @if ($operator == '>') {\n      $element: '(min-width: #{$result + $interval})';\n    } @else if ($operator == '<') {\n      $element: '(max-width: #{$result - $interval})';\n    } @else if ($operator == '>=') {\n      $element: '(min-width: #{$result})';\n    } @else if ($operator == '<=') {\n      $element: '(max-width: #{$result})';\n    } @else {\n      @warn '#{$expression} is missing an operator.';\n    }\n  } @else {\n    $element: $result;\n  }\n\n  @return $element;\n",
+          "line": {
+            "start": 196,
+            "end": 252
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "\nGenerates a media query based on a list of conditions\n\n",
+    "commentRange": {
+      "start": 86,
+      "end": 110
+    },
+    "context": {
+      "type": "mixin",
+      "name": "media",
+      "code": "\n  @for $i from 1 through length($conditions) {\n    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));\n  }\n\n  $branches: get-query-branches($conditions);\n  $query: '';\n\n  @each $branch in $branches {\n    @if (str-length($query) != 0) {\n      $query: $query + ', ';\n    }\n\n    $query: $query + $branch;\n  }\n\n  @media #{$query} {\n    @content;\n  }\n",
+      "line": {
+        "start": 111,
+        "end": 130
+      }
+    },
+    "author": [
+      "Eduardo Boucas"
+    ],
+    "parameter": [
+      {
+        "type": "List",
+        "name": "conditions",
+        "description": "Media query conditions\n"
+      }
+    ],
+    "example": [
+      {
+        "type": "scss",
+        "code": " @include media(\">phone\") { }",
+        "description": "With a single set breakpoint"
+      },
+      {
+        "type": "scss",
+        "code": " @include media(\">phone\", \"<=tablet\") { } ",
+        "description": "With two set breakpoints"
+      },
+      {
+        "type": "scss",
+        "code": " @include media(\">=358px\", \"<850px\") { } ",
+        "description": "With custom values"
+      },
+      {
+        "type": "scss",
+        "code": " @include media(\">desktop\", \"<=1350px\") { } ",
+        "description": "With set breakpoints with custom values"
+      },
+      {
+        "type": "scss",
+        "code": " @include media(\"retina2x\") { } ",
+        "description": "With a static expression"
+      },
+      {
+        "type": "scss",
+        "code": " @include media(\">=350px\", \"<tablet\", \"retina3x\") { }",
+        "description": "Mixing everything"
+      }
+    ],
+    "access": "public",
+    "content": "",
+    "group": [
+      "undefined"
+    ],
+    "require": [
+      {
+        "type": "function",
+        "name": "parse-expression"
+      },
+      {
+        "type": "function",
+        "name": "get-query-branches"
+      }
+    ],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    }
+  },
+  {
+    "description": "\nReads a list of media query expressions and separates logical disjunctions into different branches\n\n",
+    "commentRange": {
+      "start": 132,
+      "end": 142
+    },
+    "context": {
+      "type": "function",
+      "name": "get-query-branches",
+      "code": "\n  $result: '';\n  $has-groups: false;\n\n  // Getting initial snapshot and looking for groups\n  @each $expression in $expressions {\n    @if (str-length($result) != 0) {\n      $result: $result + ' and ';\n    }\n\n    @if (type-of($expression) == 'string') {\n      $result: $result + $expression;\n    } @else if (type-of($expression) == 'list') {\n      $result: $result + nth($expression, 1);\n      $has-groups: true;\n    } @else {\n      @warn '#{$expression} is not a valid expression.';\n    }\n  }\n\n  // If we have groups, we have to create all possible combinations\n  @if $has-groups {\n    @each $expression in $expressions {\n      @if (type-of($expression) == 'list') {\n        $first: nth($expression, 1);\n\n        @each $member in $expression {\n          @if ($member != $first) {\n            @each $partial in $result {\n              $result: join($result, str-replace-first($first, $member, $partial));\n            }\n          }\n        }\n      }\n    }\n  }\n\n  @return $result;\n",
+      "line": {
+        "start": 143,
+        "end": 181
+      }
+    },
+    "author": [
+      "Eduardo Boucas"
+    ],
+    "parameter": [
+      {
+        "type": "List",
+        "name": "expressions",
+        "description": "list of expressions\n"
+      }
+    ],
+    "throw": [
+      "`$expression` is not a valid expression"
+    ],
+    "return": {
+      "type": "List | Null"
+    },
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "require": [
+      {
+        "type": "function",
+        "name": "str-replace-first"
+      }
+    ],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    },
+    "usedBy": [
+      {
+        "description": "\nGenerates a media query based on a list of conditions\n\n",
+        "context": {
+          "type": "mixin",
+          "name": "media",
+          "code": "\n  @for $i from 1 through length($conditions) {\n    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));\n  }\n\n  $branches: get-query-branches($conditions);\n  $query: '';\n\n  @each $branch in $branches {\n    @if (str-length($query) != 0) {\n      $query: $query + ', ';\n    }\n\n    $query: $query + $branch;\n  }\n\n  @media #{$query} {\n    @content;\n  }\n",
+          "line": {
+            "start": 111,
+            "end": 130
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "\nParses a string to form a media query expression\n\n",
+    "commentRange": {
+      "start": 183,
+      "end": 195
+    },
+    "context": {
+      "type": "function",
+      "name": "parse-expression",
+      "code": "\n  $operator: '';\n  $value: '';\n  $element: '';\n  $result: '';\n  $is-width: true;\n\n  @if (type-of($expression) != 'string') {\n    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';\n  }\n\n  // Separating the operator from the rest of the expression\n  @if (str-slice($expression, 2, 2) == '=') {\n    $operator: str-slice($expression, 1, 2);\n    $value: str-slice($expression, 3);\n  } @else {\n    $operator: str-slice($expression, 1, 1);\n    $value: str-slice($expression, 2);\n  }\n\n  // Checking what type of expression we're dealing with\n  @if map-has-key($breakpoints, $value) {\n    $result: map-get($breakpoints, $value);\n  } @else if map-has-key($media-expressions, $expression) {\n    $result: map-get($media-expressions, $expression);\n    $is-width: false;\n  } @else {\n    $result: to-number($value);\n  }\n\n  @if ($is-width) {\n    $unit: unit($result);\n    $interval: 0;\n    \n    @if (map-has-key($unit-intervals, $unit)) {\n      $interval: map-get($unit-intervals, $unit);\n    } @else {\n      @warn 'Unknown unit: #{$unit}';\n    } \n       \n    @if ($operator == '>') {\n      $element: '(min-width: #{$result + $interval})';\n    } @else if ($operator == '<') {\n      $element: '(max-width: #{$result - $interval})';\n    } @else if ($operator == '>=') {\n      $element: '(min-width: #{$result})';\n    } @else if ($operator == '<=') {\n      $element: '(max-width: #{$result})';\n    } @else {\n      @warn '#{$expression} is missing an operator.';\n    }\n  } @else {\n    $element: $result;\n  }\n\n  @return $element;\n",
+      "line": {
+        "start": 196,
+        "end": 252
+      }
+    },
+    "author": [
+      "Eduardo Boucas"
+    ],
+    "parameter": [
+      {
+        "type": "String",
+        "name": "expression",
+        "description": "expression (in string)\n"
+      }
+    ],
+    "throw": [
+      "Expression with type `type-of($expression)` detected, string expected",
+      "`$expression` is missing an operator",
+      "Unknown unit: `$unit`"
+    ],
+    "return": {
+      "type": "String | Null"
+    },
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "require": [
+      {
+        "type": "function",
+        "name": "to-number"
+      },
+      {
+        "type": "variable",
+        "name": "breakpoints"
+      },
+      {
+        "type": "variable",
+        "name": "media-expressions"
+      },
+      {
+        "type": "variable",
+        "name": "unit-intervals"
+      }
+    ],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    },
+    "usedBy": [
+      {
+        "description": "\nGenerates a media query based on a list of conditions\n\n",
+        "context": {
+          "type": "mixin",
+          "name": "media",
+          "code": "\n  @for $i from 1 through length($conditions) {\n    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));\n  }\n\n  $branches: get-query-branches($conditions);\n  $query: '';\n\n  @each $branch in $branches {\n    @if (str-length($query) != 0) {\n      $query: $query + ', ';\n    }\n\n    $query: $query + $branch;\n  }\n\n  @media #{$query} {\n    @content;\n  }\n",
+          "line": {
+            "start": 111,
+            "end": 130
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "\nReplaces the first occurence of the string with the replacement string\n\n",
+    "commentRange": {
+      "start": 254,
+      "end": 264
+    },
+    "context": {
+      "type": "function",
+      "name": "str-replace-first",
+      "code": "\n  $search-start: str-index($subject, $search);\n\n  @if $search-start == null {\n    @return $subject;\n  }\n\n  $result: str-slice($subject, 0, $search-start - 1);\n  $result: $result + $replace;\n  $result: $result + str-slice($subject, $search-start + str-length($search));\n\n  @return $result;\n",
+      "line": {
+        "start": 265,
+        "end": 277
+      }
+    },
+    "author": [
+      "Eduardo Boucas"
+    ],
+    "parameter": [
+      {
+        "type": "String",
+        "name": "search",
+        "description": "The value being searched for"
+      },
+      {
+        "type": "String",
+        "name": "replace",
+        "description": "The replacement string"
+      },
+      {
+        "type": "String",
+        "name": "subject",
+        "description": "The string being replaced on\n"
+      }
+    ],
+    "return": {
+      "type": "String | Null"
+    },
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "require": [],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    },
+    "usedBy": [
+      {
+        "description": "\nReads a list of media query expressions and separates logical disjunctions into different branches\n\n",
+        "context": {
+          "type": "function",
+          "name": "get-query-branches",
+          "code": "\n  $result: '';\n  $has-groups: false;\n\n  // Getting initial snapshot and looking for groups\n  @each $expression in $expressions {\n    @if (str-length($result) != 0) {\n      $result: $result + ' and ';\n    }\n\n    @if (type-of($expression) == 'string') {\n      $result: $result + $expression;\n    } @else if (type-of($expression) == 'list') {\n      $result: $result + nth($expression, 1);\n      $has-groups: true;\n    } @else {\n      @warn '#{$expression} is not a valid expression.';\n    }\n  }\n\n  // If we have groups, we have to create all possible combinations\n  @if $has-groups {\n    @each $expression in $expressions {\n      @if (type-of($expression) == 'list') {\n        $first: nth($expression, 1);\n\n        @each $member in $expression {\n          @if ($member != $first) {\n            @each $partial in $result {\n              $result: join($result, str-replace-first($first, $member, $partial));\n            }\n          }\n        }\n      }\n    }\n  }\n\n  @return $result;\n",
+          "line": {
+            "start": 143,
+            "end": 181
+          }
+        }
+      }
+    ]
+  },
+  {
+    "description": "\nCasts a number to a string\n\n",
+    "commentRange": {
+      "start": 279,
+      "end": 287
+    },
+    "context": {
+      "type": "function",
+      "name": "to-number",
+      "code": "\n  // Matrices\n  $strings: '0' '1' '2' '3' '4' '5' '6' '7' '8' '9';\n  $numbers:  0   1   2   3   4   5   6   7   8   9;\n  \n  // Result\n  $result: 0;\n  $divider: 0;\n  $minus: false;\n\n  // Looping through all characters\n  @for $i from 1 through str-length($string) {\n    $character: str-slice($string, $i, $i);\n    $index: index($strings, $character);\n    \n  \n    @if $character == '-' {\n      $minus: true;\n    }\n    \n    @else if $character == '.' {\n      $divider: 1;\n    }\n    \n    @else {\n      @if type-of($index) != 'number' {\n        $result: if($minus, $result * -1, $result);\n        @return _length($result, str-slice($string, $i));\n      }\n\n      $number: nth($numbers, $index);\n      \n      @if $divider == 0 {\n        $result: $result * 10;\n      }\n      \n      @else {\n        // Move the decimal dot to the left\n        $divider: $divider * 10;\n        $number: $number / $divider;\n      }\n      \n      $result: $result + $number;\n    }\n  }\n  \n  @return if($minus, $result * -1, $result);\n",
+      "line": {
+        "start": 288,
+        "end": 335
+      }
+    },
+    "author": [
+      "Hugo Giraudel"
+    ],
+    "parameter": [
+      {
+        "type": "String",
+        "name": "string",
+        "description": "Number to be parsed\n"
+      }
+    ],
+    "return": {
+      "type": "List | Null"
+    },
+    "access": "public",
+    "group": [
+      "undefined"
+    ],
+    "require": [],
+    "file": {
+      "path": "_include-media.scss",
+      "name": "_include-media.scss"
+    },
+    "usedBy": [
+      {
+        "description": "\nParses a string to form a media query expression\n\n",
+        "context": {
+          "type": "function",
+          "name": "parse-expression",
+          "code": "\n  $operator: '';\n  $value: '';\n  $element: '';\n  $result: '';\n  $is-width: true;\n\n  @if (type-of($expression) != 'string') {\n    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';\n  }\n\n  // Separating the operator from the rest of the expression\n  @if (str-slice($expression, 2, 2) == '=') {\n    $operator: str-slice($expression, 1, 2);\n    $value: str-slice($expression, 3);\n  } @else {\n    $operator: str-slice($expression, 1, 1);\n    $value: str-slice($expression, 2);\n  }\n\n  // Checking what type of expression we're dealing with\n  @if map-has-key($breakpoints, $value) {\n    $result: map-get($breakpoints, $value);\n  } @else if map-has-key($media-expressions, $expression) {\n    $result: map-get($media-expressions, $expression);\n    $is-width: false;\n  } @else {\n    $result: to-number($value);\n  }\n\n  @if ($is-width) {\n    $unit: unit($result);\n    $interval: 0;\n    \n    @if (map-has-key($unit-intervals, $unit)) {\n      $interval: map-get($unit-intervals, $unit);\n    } @else {\n      @warn 'Unknown unit: #{$unit}';\n    } \n       \n    @if ($operator == '>') {\n      $element: '(min-width: #{$result + $interval})';\n    } @else if ($operator == '<') {\n      $element: '(max-width: #{$result - $interval})';\n    } @else if ($operator == '>=') {\n      $element: '(min-width: #{$result})';\n    } @else if ($operator == '<=') {\n      $element: '(max-width: #{$result})';\n    } @else {\n      @warn '#{$expression} is missing an operator.';\n    }\n  } @else {\n    $element: $result;\n  }\n\n  @return $element;\n",
+          "line": {
+            "start": 196,
+            "end": 252
+          }
+        }
+      }
+    ]
+  }
+]
