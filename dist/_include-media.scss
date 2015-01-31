@@ -11,12 +11,36 @@
 //		
 //	  		 Author: Eduardo Boucas <mail@eduardoboucas.com>
 //
+///
+/// Creates a list of global breakpoints
+/// @name $breakpoints
+/// @author Eduardo Boucas
+///
+/// @example scss - Creates a single breakpoint with the label `phone`
+///  $breakpoints: ('phone': 320px);
+///
 $breakpoints: (
 	'phone': 320px, 
 	'tablet': 768px, 
 	'desktop': 1024px
 ) !default;
 
+///
+/// Creates a list of static expressions or media types
+///
+/// @author Eduardo Boucas
+///
+/// @example scss - Creates a single media type (screen)
+///  $media-expressions: ('screen': 'screen');
+///
+/// @example scss - Creates a static expression with logical disjunction (OR operator)
+///  $media-expressions: (
+///		'retina2x': (
+///			'(-webkit-min-device-pixel-ratio: 2)', 
+///			'(min-resolution: 192dpi)'
+///		)
+///	);
+///
 $media-expressions: (
 	'screen': 'screen', 
 	'print': 'print', 
@@ -33,8 +57,8 @@ $media-expressions: (
 
 $unit-intervals: (
 	'px': 1, 
-	'em': 0.065, 
-	'rem': 0.065
+	'em': 0.01, 
+	'rem': 0.1
 ) !default;
 ///
 /// Generates a media query based on a list of conditions
