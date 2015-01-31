@@ -9,3 +9,4 @@ package: ./package.json
 theme: default
 groups:
     undefined: General
+googleAnalytics: UA-54012006-4
