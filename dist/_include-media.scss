@@ -13,7 +13,7 @@
 //
 ///
 /// Creates a list of global breakpoints
-/// @name $breakpoints
+///
 /// @author Eduardo Boucas
 ///
 /// @example scss - Creates a single breakpoint with the label `phone`
@@ -55,6 +55,29 @@ $media-expressions: (
 	)
 ) !default;
 
+///
+/// Defines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals
+///
+/// @author Eduardo Boucas
+///
+/// @example scss - Interval for pixels is defined as `1` by default
+///  @include media(">128px") {}
+///
+///	 /* Generates: */
+///	 @media (min-width: 129px) {}
+///
+/// @example scss - Interval for ems is defined as `0.01` by default
+///  @include media(">20em") {}
+///
+///	 /* Generates: */
+///	 @media (min-width: 20.01em) {}
+///
+/// @example scss - Interval for rems is defined as `0.1` by default, to be used with `font-size: 62.5%;`
+///  @include media(">2.0rem") {}
+///
+///	 /* Generates: */
+///	 @media (min-width: 2.1rem) {}
+///
 $unit-intervals: (
 	'px': 1, 
 	'em': 0.01, 
