@@ -24,11 +24,20 @@
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
 @mixin media($conditions...) {
+  $conditions_parsed: ();
+
   @for $i from 1 through length($conditions) {
-    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
+    @if type_of(nth($conditions, $i )) == 'list' {
+      @for $j from 1 through length(nth($conditions, $i )) {
+        $conditions_parsed: append($conditions_parsed, parse-expression(nth(nth($conditions, $i), $j)));
+      }
+    }
+    @else {
+      $conditions_parsed: append($conditions_parsed, parse-expression(nth($conditions, $i)));
+    }
   }
 
-  $branches: get-query-branches($conditions);
+  $branches: get-query-branches($conditions_parsed);
   $query: '';
 
   @each $branch in $branches {
@@ -43,3 +52,4 @@
     @content;
   }
 }
+
