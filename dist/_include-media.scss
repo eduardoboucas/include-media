@@ -56,6 +56,23 @@ $media-expressions: (
 ) !default;
 
 ///
+/// Creates a list of global aliases
+///
+/// Aliases can only refer to breakpoints and expressions, no to other aliases.
+/// Values can be single references, or lists of references. No nested lists.
+///
+/// @author joseLuís
+///
+/// @example scss - Create your own aliases
+///  $media-aliases: (
+///    "palm":  "<=phone",
+///    "lap":   ( ">phone", "<=tablet" ),
+///    "lap3x": ( ">phone", "<=tablet", "retina3x" ),
+///  );
+///
+$media-aliases: () !default;
+
+///
 /// Defines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals
 ///
 /// @author Eduardo Boucas
@@ -83,10 +100,12 @@ $unit-intervals: (
 	'em': 0.01, 
 	'rem': 0.1
 ) !default;
+
 ///
 /// Generates a media query based on a list of conditions
 ///
 /// @author Eduardo Boucas
+/// @author joseLuís
 ///
 /// @param {List}   $conditions  - Media query conditions
 ///
@@ -108,12 +127,51 @@ $unit-intervals: (
 /// @example scss - Mixing everything
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
+/// @example scss - With aliases
+///  $media-aliases: (
+///    "palm" : "<=phone",
+///    "lap3x": ( ">=350px", "<tablet", "retina3x" )
+///  );
+///  @include media("lap3x") { }
+///  @include media("palm", "retina2x") { }
+///
+/// @example scsss - With lists
+///   $palm2x: ( "<=phone", "retina2x" ); 
+///   @include media($palm2x) { }
+///  
 @mixin media($conditions...) {
+  $conditions_parsed: ();
+
   @for $i from 1 through length($conditions) {
-    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
+    
+    // Is it a list of conditions
+    @if type_of(nth($conditions, $i )) == 'list' {
+      @for $li from 1 through length(nth($conditions, $i )) {
+        $conditions_parsed: append($conditions_parsed, parse-expression(nth(nth($conditions, $i), $li)));
+      }
+    }
+    
+   // Is it an alias
+    @else if map-has-key($media-aliases, nth($conditions, $i )) {
+      $alias: map-get($media-aliases, nth($conditions, $i ));
+
+      @if type_of($alias) == 'list' {
+        @for $li from 1 through length($alias) {
+          $conditions_parsed: append($conditions_parsed, parse-expression(nth($alias, $li)));
+        }
+      }
+      @else {
+        $conditions_parsed: append($conditions_parsed, parse-expression($alias));
+      }
+    }
+    
+    // Is it a single condition
+    @else {
+      $conditions_parsed: append($conditions_parsed, parse-expression(nth($conditions, $i)));
+    }
   }
 
-  $branches: get-query-branches($conditions);
+  $branches: get-query-branches($conditions_parsed);
   $query: '';
 
   @each $branch in $branches {
