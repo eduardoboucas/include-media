@@ -43,6 +43,23 @@ $media-expressions: (
 ) !default;
 
 ///
+/// Creates a list of global aliases
+///
+/// Aliases can only refer to breakpoints and expressions, no to other aliases.
+/// Values can be single references, or lists of references. No nested lists.
+///
+/// @author joseLuís
+///
+/// @example scss - Create your own aliases
+///  $media-aliases: (
+///    "palm":  "<=phone",
+///    "lap":   ( ">phone", "<=tablet" ),
+///    "lap3x": ( ">phone", "<=tablet", "retina3x" ),
+///  );
+///
+$media-aliases: () !default;
+
+///
 /// Defines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals
 ///
 /// @author Eduardo Boucas
