@@ -45,6 +45,8 @@ $media-expressions: (
 	'screen': 'screen', 
 	'print': 'print', 
 	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
 	'retina2x': (
 		'(-webkit-min-device-pixel-ratio: 2)', 
 		'(min-resolution: 192dpi)'
@@ -198,10 +200,22 @@ $unit-intervals: (
   $value: '';
   $element: '';
   $result: '';
-  $is-width: true;
+  $is-value: true;
+  $dimension: 'width';
 
   @if (type-of($expression) != 'string') {
     @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';
+  }
+  
+  // Detecting the 'height' prefix
+  @if (str-slice($expression, 1, 6) == 'height') {
+    $dimension: 'height';
+    $expression: str-slice($expression, 7);
+  }
+  
+  // Detecting (and ignoring) the 'width' prefix for consistency
+  @if (str-slice($expression, 1, 5) == 'width') {
+    $expression: str-slice($expression, 6);
   }
 
   // Separating the operator from the rest of the expression
@@ -218,12 +232,12 @@ $unit-intervals: (
     $result: map-get($breakpoints, $value);
   } @else if map-has-key($media-expressions, $expression) {
     $result: map-get($media-expressions, $expression);
-    $is-width: false;
+    $is-value: false;
   } @else {
     $result: to-number($value);
   }
 
-  @if ($is-width) {
+  @if ($is-value) {
     $unit: unit($result);
     $interval: 0;
     
@@ -231,16 +245,16 @@ $unit-intervals: (
       $interval: map-get($unit-intervals, $unit);
     } @else {
       @warn 'Unknown unit: #{$unit}';
-    } 
-       
+    }
+    
     @if ($operator == '>') {
-      $element: '(min-width: #{$result + $interval})';
+      $element: '(min-#{$dimension}: #{$result + $interval})';
     } @else if ($operator == '<') {
-      $element: '(max-width: #{$result - $interval})';
+      $element: '(max-#{$dimension}: #{$result - $interval})';
     } @else if ($operator == '>=') {
-      $element: '(min-width: #{$result})';
+      $element: '(min-#{$dimension}: #{$result})';
     } @else if ($operator == '<=') {
-      $element: '(max-width: #{$result})';
+      $element: '(max-#{$dimension}: #{$result})';
     } @else {
       @warn '#{$expression} is missing an operator.';
     }
@@ -250,7 +264,6 @@ $unit-intervals: (
 
   @return $element;
 }
-
 ///
 /// Replaces the first occurence of the string with the replacement string
 ///
