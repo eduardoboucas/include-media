@@ -32,6 +32,8 @@ $media-expressions: (
 	'screen': 'screen', 
 	'print': 'print', 
 	'handheld': 'handheld',
+	'landscape': '(orientation: landscape)',
+	'portrait': '(orientation: portrait)',
 	'retina2x': (
 		'(-webkit-min-device-pixel-ratio: 2)', 
 		'(min-resolution: 192dpi)'
