@@ -85,6 +85,37 @@ $unit-intervals: (
 	'em': 0.01, 
 	'rem': 0.1
 ) !default;
+
+///
+/// Defines if media mixin should output CSS or not
+///
+/// @author Julien Cabanes
+///
+/// @example scss - This will generate nothing
+///  $media-query-output: false;
+///  @include media(">=desktop") {}
+///
+$media-query-output: true !default;
+
+///
+/// Defines if media mixin should wrap CSS within a media-query or not
+///
+/// @author Julien Cabanes
+///
+/// @example scss - This will generate CSS but no media-query
+///  $media-query-support: false;
+///  @include media(">=desktop") {
+///  	div {
+///  		color: black;
+///  	}
+///  }
+///
+///	 /* Generates: */
+///  div {
+///  	color: black;
+///  }
+///
+$media-query-support: true !default;
 ///
 /// Generates a media query based on a list of conditions
 ///
@@ -111,23 +142,29 @@ $unit-intervals: (
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
 @mixin media($conditions...) {
-  @for $i from 1 through length($conditions) {
-    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
-  }
+  @if $media-query-output {
+    @if not $media-query-support {
+      @content;
+    } @else {
+      @for $i from 1 through length($conditions) {
+        $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
+      }
 
-  $branches: get-query-branches($conditions);
-  $query: '';
+      $branches: get-query-branches($conditions);
+      $query: '';
 
-  @each $branch in $branches {
-    @if (str-length($query) != 0) {
-      $query: $query + ', ';
+      @each $branch in $branches {
+        @if (str-length($query) != 0) {
+          $query: $query + ', ';
+        }
+
+        $query: $query + $branch;
+      }
+
+      @media #{$query} {
+        @content;
+      }
     }
-
-    $query: $query + $branch;
-  }
-
-  @media #{$query} {
-    @content;
   }
 }
 

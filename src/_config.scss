@@ -72,3 +72,34 @@ $unit-intervals: (
 	'em': 0.01, 
 	'rem': 0.1
 ) !default;
+
+///
+/// Defines if media mixin should output CSS or not
+///
+/// @author Julien Cabanes
+///
+/// @example scss - This will generate nothing
+///  $media-query-output: false;
+///  @include media(">=desktop") {}
+///
+$media-query-output: true !default;
+
+///
+/// Defines if media mixin should wrap CSS within a media-query or not
+///
+/// @author Julien Cabanes
+///
+/// @example scss - This will generate CSS but no media-query
+///  $media-query-support: false;
+///  @include media(">=desktop") {
+///  	div {
+///  		color: black;
+///  	}
+///  }
+///
+///	 /* Generates: */
+///  div {
+///  	color: black;
+///  }
+///
+$media-query-support: true !default;
