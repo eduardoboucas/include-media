@@ -67,9 +67,9 @@
       $element: '(min-#{$dimension}: #{$result + $interval})';
     } @else if ($operator == '<') {
       $element: '(max-#{$dimension}: #{$result - $interval})';
-    } @else if ($operator == '>=') {
+    } @else if ($operator == '>=' or $operator == '≥') {
       $element: '(min-#{$dimension}: #{$result})';
-    } @else if ($operator == '<=') {
+    } @else if ($operator == '<=' or $operator == '≤') {
       $element: '(max-#{$dimension}: #{$result})';
     } @else {
       @warn '#{$expression} is missing an operator.';
