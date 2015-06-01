@@ -23,6 +23,9 @@
 /// @example scss - Mixing everything
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
+/// @example scss - With ligatured operators
+///  @include media("≥350px", "≤tablet") { } 
+///
 @mixin media($conditions...) {
   $list: ();
   
