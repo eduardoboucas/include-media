@@ -24,11 +24,15 @@
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
 @mixin media($conditions...) {
-  @for $i from 1 through length($conditions) {
-    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
+  $list: ();
+  
+  @each $condition in $conditions {
+    // Cannot use `set-nth` on an arglist because of an issue:
+    // @see https://github.com/sass/libsass/issues/1255
+    $list: append($list, parse-expression($condition), 'comma');
   }
 
-  $branches: get-query-branches($conditions);
+  $branches: get-query-branches($list);
   $query: '';
 
   @each $branch in $branches {
