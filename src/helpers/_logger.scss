@@ -6,12 +6,7 @@
 /// @param {String} $message - Message to log
 ///
 @function log($message) {
-  // `== true` is needed for Sass 3.2 which has no support
-  // for `function-exists(..)`. In Sass 3.2, this function
-  // call is actually evaluated as string which is truthy.
-  // By making sure it's `true`, we make Sass 3.2 go in
-  // the `@else` condition.
-  @if function-exists('at-error') == true {
+  @if function-exists('at-error') {
     @error $message;
   } @else {
     @warn $message;
