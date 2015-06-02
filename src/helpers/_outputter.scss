@@ -1,0 +1,26 @@
+///
+/// Internal recursive mixin for include-media
+/// 
+/// @access private
+///
+/// @param {List} $queries - List of parsed queries
+/// 
+@mixin outputter($queries) {
+  @if length($queries) == 0 {
+    @content;
+  } @else {
+    $element: nth($queries, 1);
+    $value: if(
+      type-of($element) == 'map', 
+      (map-keys($element): map-values($element)), 
+      $element
+    );
+
+    @media #{inspect($value)} {
+      // Recursive call
+      @include outputter(slice($queries, 2)) {
+        @content;
+      }
+    }
+  }
+}
