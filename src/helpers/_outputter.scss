@@ -14,14 +14,7 @@
   @if length($queries) == 0 {
     @content;
   } @else {
-    $element: nth($queries, 1);
-    $value: if(
-      type-of($element) == 'map', 
-      (map-keys($element): map-values($element)), 
-      $element
-    );
-
-    @media #{inspect($value)} {
+    @media #{inspect(nth($queries, 1))} {
       // Recursive call
       @include outputter(slice($queries, 2)) {
         @content;
