@@ -14,6 +14,11 @@
     }
   }
 
+  // It is not possible to include a mixin inside a function, so we have to
+  // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+  // functions cannot be called anywhere in Sass, we need to hack the call in
+  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+  // Sass 3.3, change this line in `@if log(..) {}` instead.
   $_: log('No operator found in `#{$expression}`.');
 }
 
@@ -30,9 +35,14 @@
 ///
 @function get-expression-dimension($expression, $operator) {
   $operator-index: str-index($expression, $operator);
-  $dimension: str-slice($expression, 0, $operator-index - 1);
+  $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
+  $dimension: 'width';
 
-  @return if(str-length($dimension) == 0, 'width', $dimension);
+  @if str-length($parsed-dimension) {
+    $dimension: $parsed-dimension;
+  }
+
+  @return $dimension;
 }
 
 
@@ -66,8 +76,6 @@
 
   @if map-has-key($breakpoints, $value) {
     $value: map-get($breakpoints, $value);
-  } @else if map-has-key($media-expressions, $value) {
-    $value: map-get($media-expressions, $value);
   } @else {
     $value: to-number($value);
   }
@@ -75,6 +83,11 @@
   $interval: map-get($unit-intervals, unit($value));
 
   @if not $interval {
+    // It is not possible to include a mixin inside a function, so we have to
+    // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+    // functions cannot be called anywhere in Sass, we need to hack the call in
+    // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+    // Sass 3.3, change this line in `@if log(..) {}` instead.
     $_: log('Unknown unit `#{unit($value)}`.');
   }
 

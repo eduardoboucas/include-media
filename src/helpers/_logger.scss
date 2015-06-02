@@ -27,6 +27,10 @@
 /// within functions because it is not possible to include a mixin in a function
 /// and use the mixin everywhere else because it's much more elegant.
 ///
+/// @access private
+///
+/// @param {String} $message - Message to log
+///
 @mixin log($message) {
   @if log($message) {}
 }
