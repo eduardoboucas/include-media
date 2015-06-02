@@ -95,12 +95,7 @@ $unit-intervals: (
 /// @param {String} $message - Message to log
 ///
 @function log($message) {
-  // `== true` is needed for Sass 3.2 which has no support
-  // for `function-exists(..)`. In Sass 3.2, this function
-  // call is actually evaluated as string which is truthy.
-  // By making sure it's `true`, we make Sass 3.2 go in
-  // the `@else` condition.
-  @if function-exists('at-error') == true {
+  @if function-exists('at-error') {
     @error $message;
   } @else {
     @warn $message;
@@ -116,6 +111,10 @@ $unit-intervals: (
 /// within functions because it is not possible to include a mixin in a function
 /// and use the mixin everywhere else because it's much more elegant.
 ///
+/// @access private
+///
+/// @param {String} $message - Message to log
+///
 @mixin log($message) {
   @if log($message) {}
 }
@@ -130,9 +129,14 @@ $unit-intervals: (
 @function noop() {}
 
 ///
-/// Internal recursive mixin for include-media
+/// Internal recursive mixin for include-media; start with a list of queries,
+/// output the first, then call itself inside the freshly created `@media`
+/// block with the same list of queries but without the first (since it has been
+/// printed already); goes on until the list is empty, in which case it quits.
 /// 
 /// @access private
+///
+/// @link http://www.sitepoint.com/sass-mixin-media-merging/ Sass Mixin and Media Merging
 ///
 /// @param {List} $queries - List of parsed queries
 /// 
@@ -172,6 +176,11 @@ $unit-intervals: (
     }
   }
 
+  // It is not possible to include a mixin inside a function, so we have to
+  // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+  // functions cannot be called anywhere in Sass, we need to hack the call in
+  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+  // Sass 3.3, change this line in `@if log(..) {}` instead.
   $_: log('No operator found in `#{$expression}`.');
 }
 
@@ -188,9 +197,14 @@ $unit-intervals: (
 ///
 @function get-expression-dimension($expression, $operator) {
   $operator-index: str-index($expression, $operator);
-  $dimension: str-slice($expression, 0, $operator-index - 1);
+  $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
+  $dimension: 'width';
 
-  @return if(str-length($dimension) == 0, 'width', $dimension);
+  @if str-length($parsed-dimension) {
+    $dimension: $parsed-dimension;
+  }
+
+  @return $dimension;
 }
 
 
@@ -224,8 +238,6 @@ $unit-intervals: (
 
   @if map-has-key($breakpoints, $value) {
     $value: map-get($breakpoints, $value);
-  } @else if map-has-key($media-expressions, $value) {
-    $value: map-get($media-expressions, $value);
   } @else {
     $value: to-number($value);
   }
@@ -233,6 +245,11 @@ $unit-intervals: (
   $interval: map-get($unit-intervals, unit($value));
 
   @if not $interval {
+    // It is not possible to include a mixin inside a function, so we have to
+    // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+    // functions cannot be called anywhere in Sass, we need to hack the call in
+    // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+    // Sass 3.3, change this line in `@if log(..) {}` instead.
     $_: log('Unknown unit `#{unit($value)}`.');
   }
 
@@ -374,13 +391,12 @@ $unit-intervals: (
 }
 
 @function _length($number, $unit) {
-  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
-  $units:   1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
+  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pc' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
+  $units:   1px  1cm  1mm  1%  1ch  1pc  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
   $index: index($strings, $unit);
   
   @if type-of($index) != 'number' {
-    @warn 'Unknown unit `#{$unit}`.';
-    @return false;
+    $_: log('Unknown unit `#{$unit}`.');
   }
   
   @return $number * nth($units, $index);
