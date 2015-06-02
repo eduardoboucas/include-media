@@ -7,10 +7,11 @@
 //
 //      Simple, elegant and maintainable media queries in Sass
 //
-//            http://include-media.com
-//    
+//             http://include-media.com
+//
 //         Author: Eduardo Boucas <mail@eduardoboucas.com>
 //
+
 ///
 /// Creates a list of global breakpoints
 ///
@@ -20,8 +21,8 @@
 ///  $breakpoints: ('phone': 320px);
 ///
 $breakpoints: (
-  'phone': 320px, 
-  'tablet': 768px, 
+  'phone': 320px,
+  'tablet': 768px,
   'desktop': 1024px
 ) !default;
 
@@ -35,24 +36,24 @@ $breakpoints: (
 ///
 /// @example scss - Creates a static expression with logical disjunction (OR operator)
 ///  $media-expressions: (
-///   'retina2x': (
-///     '(-webkit-min-device-pixel-ratio: 2)', 
-///     '(min-resolution: 192dpi)'
-///   )
-/// );
+///    'retina2x': (
+///      '(-webkit-min-device-pixel-ratio: 2)',
+///      '(min-resolution: 192dpi)'
+///    )
+///  );
 ///
 $media-expressions: (
-  'screen': 'screen', 
-  'print': 'print', 
+  'screen': 'screen',
+  'print': 'print',
   'handheld': 'handheld',
   'landscape': '(orientation: landscape)',
   'portrait': '(orientation: portrait)',
   'retina2x': (
-    '(-webkit-min-device-pixel-ratio: 2)', 
+    '(-webkit-min-device-pixel-ratio: 2)',
     '(min-resolution: 192dpi)'
   ), 
   'retina3x': (
-    '(-webkit-min-device-pixel-ratio: 3)', 
+    '(-webkit-min-device-pixel-ratio: 3)',
     '(min-resolution: 350dpi)'
   )
 ) !default;
@@ -65,230 +66,261 @@ $media-expressions: (
 /// @example scss - Interval for pixels is defined as `1` by default
 ///  @include media(">128px") {}
 ///
-///  /* Generates: */
-///  @media (min-width: 129px) {}
+///   /* Generates: */
+///   @media (min-width: 129px) {}
 ///
 /// @example scss - Interval for ems is defined as `0.01` by default
 ///  @include media(">20em") {}
 ///
-///  /* Generates: */
-///  @media (min-width: 20.01em) {}
+///   /* Generates: */
+///   @media (min-width: 20.01em) {}
 ///
 /// @example scss - Interval for rems is defined as `0.1` by default, to be used with `font-size: 62.5%;`
 ///  @include media(">2.0rem") {}
 ///
-///  /* Generates: */
-///  @media (min-width: 2.1rem) {}
+///   /* Generates: */
+///   @media (min-width: 2.1rem) {}
 ///
 $unit-intervals: (
-  'px': 1, 
-  'em': 0.01, 
+  'px': 1,
+  'em': 0.01,
   'rem': 0.1
 ) !default;
+
 ///
-/// Generates a media query based on a list of conditions
+/// Log a message either with `@error` if supported 
+/// else with `@warn`, using `function-exists('at-error')`
+/// to detect support.
+/// 
+/// @param {String} $message - Message to log
 ///
-/// @author Eduardo Boucas
-///
-/// @param {List}   $conditions  - Media query conditions
-///
-/// @example scss - With a single set breakpoint
-///  @include media(">phone") { }
-///
-/// @example scss - With two set breakpoints
-///  @include media(">phone", "<=tablet") { } 
-///
-/// @example scss - With custom values
-///  @include media(">=358px", "<850px") { } 
-///
-/// @example scss - With set breakpoints with custom values
-///  @include media(">desktop", "<=1350px") { } 
-///
-/// @example scss - With a static expression
-///  @include media("retina2x") { } 
-///
-/// @example scss - Mixing everything
-///  @include media(">=350px", "<tablet", "retina3x") { } 
-///
-@mixin media($conditions...) {
-  $list: ();
-  
-  @each $condition in $conditions {
-    // Cannot use `set-nth` on an arglist because of an issue:
-    // @see https://github.com/sass/libsass/issues/1255
-    $list: append($list, parse-expression($condition), 'comma');
+@function log($message) {
+  @if function-exists('at-error') {
+    @error $message;
+  } @else {
+    @warn $message;
+    $_: noop();
   }
 
-  $branches: get-query-branches($list);
-  $query: '';
-
-  @each $branch in $branches {
-    @if (str-length($query) != 0) {
-      $query: $query + ', ';
-    }
-
-    $query: $query + $branch;
-  }
-
-  @media #{$query} {
-    @content;
-  }
+  @return $message;
 }
 
+/// 
+/// Wrapper mixin for the log function so it can be used with a more friendly
+/// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
+/// within functions because it is not possible to include a mixin in a function
+/// and use the mixin everywhere else because it's much more elegant.
 ///
-/// Reads a list of media query expressions and separates logical disjunctions into different branches
+/// @access private
 ///
-/// @author Eduardo Boucas
+/// @param {String} $message - Message to log
 ///
-/// @param {List}   $expressions  - list of expressions
-///
-/// @throws `$expression` is not a valid expression
-///
-/// @return {List | Null}
-///
-@function get-query-branches($expressions) {
-  $result: '';
-  $has-groups: false;
+@mixin log($message) {
+  @if log($message) {}
+}
 
-  // Getting initial snapshot and looking for groups
-  @each $expression in $expressions {
-    @if (str-length($result) != 0) {
-      $result: $result + ' and ';
-    }
 
-    @if (type-of($expression) == 'string') {
-      $result: $result + $expression;
-    } @else if (type-of($expression) == 'list') {
-      $result: $result + nth($expression, 1);
-      $has-groups: true;
-    } @else {
-      @warn '#{$expression} is not a valid expression.';
-    }
-  }
+///
+/// Function with no `@return` called next to `@warn` in Sass 3.3
+/// to trigger a compiling error and stop the process.
+/// 
+/// @access private
+///
+@function noop() {}
 
-  // If we have groups, we have to create all possible combinations
-  @if $has-groups {
-    @each $expression in $expressions {
-      @if (type-of($expression) == 'list') {
-        $first: nth($expression, 1);
-
-        @each $member in $expression {
-          @if ($member != $first) {
-            @each $partial in $result {
-              $result: join($result, str-replace-first($first, $member, $partial));
-            }
-          }
-        }
+///
+/// Internal recursive mixin for include-media; start with a list of queries,
+/// output the first, then call itself inside the freshly created `@media`
+/// block with the same list of queries but without the first (since it has been
+/// printed already); goes on until the list is empty, in which case it quits.
+/// 
+/// @access private
+///
+/// @link http://www.sitepoint.com/sass-mixin-media-merging/ Sass Mixin and Media Merging
+///
+/// @param {List} $queries - List of parsed queries
+/// 
+@mixin outputter($queries) {
+  @if length($queries) == 0 {
+    @content;
+  } @else {
+    @media #{inspect(nth($queries, 1))} {
+      // Recursive call
+      @include outputter(slice($queries, 2)) {
+        @content;
       }
     }
   }
-
-  @return $result;
 }
 
 ///
-/// Parses a string to form a media query expression
+/// Get operator of an expression
 ///
-/// @author Eduardo Boucas
+/// @access private
 ///
-/// @param {String}   $expression  - expression (in string)
+/// @param {String} $expression - Expression to extract operator from
 ///
-/// @throws Expression with type `type-of($expression)` detected, string expected
-/// @throws `$expression` is missing an operator
-/// @throws Unknown unit: `$unit`
+/// @return {String} - Any of `>=`, `>`, `<=`, `<`, `≥`, `≤`
 ///
-/// @return {String | Null}
+@function get-expression-operator($expression) {
+  @each $operator in ('>=', '>', '<=', '<', '≥', '≤') {
+    @if str-index($expression, $operator) {
+      @return $operator;
+    }
+  }
+
+  // It is not possible to include a mixin inside a function, so we have to
+  // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+  // functions cannot be called anywhere in Sass, we need to hack the call in
+  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+  // Sass 3.3, change this line in `@if log(..) {}` instead.
+  $_: log('No operator found in `#{$expression}`.');
+}
+
+
 ///
-@function parse-expression($expression) {
-  $operator: '';
-  $value: '';
-  $element: '';
-  $result: '';
-  $is-value: true;
+/// Get dimension of an expression, based on a found operator
+///
+/// @access private
+///
+/// @param {String} $expression - Expression to extract dimension from
+/// @param {String} $operator - Operator from `$expression`
+///
+/// @return {String} - `width` or `height` (or potentially anything else)
+///
+@function get-expression-dimension($expression, $operator) {
+  $operator-index: str-index($expression, $operator);
+  $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
   $dimension: 'width';
 
-  @if (type-of($expression) != 'string') {
-    @warn 'Expression with type `#{type-of($expression)}` detected, string expected.';
-  }
-  
-  // Detecting the 'height' prefix
-  @if (str-slice($expression, 1, 6) == 'height') {
-    $dimension: 'height';
-    $expression: str-slice($expression, 7);
-  }
-  
-  // Detecting (and ignoring) the 'width' prefix for consistency
-  @if (str-slice($expression, 1, 5) == 'width') {
-    $expression: str-slice($expression, 6);
+  @if str-length($parsed-dimension) {
+    $dimension: $parsed-dimension;
   }
 
-  // Separating the operator from the rest of the expression
-  @if (str-slice($expression, 2, 2) == '=') {
-    $operator: str-slice($expression, 1, 2);
-    $value: str-slice($expression, 3);
-  } @else {
-    $operator: str-slice($expression, 1, 1);
-    $value: str-slice($expression, 2);
-  }
-
-  // Checking what type of expression we're dealing with
-  @if map-has-key($breakpoints, $value) {
-    $result: map-get($breakpoints, $value);
-  } @else if map-has-key($media-expressions, $expression) {
-    $result: map-get($media-expressions, $expression);
-    $is-value: false;
-  } @else {
-    $result: to-number($value);
-  }
-
-  @if ($is-value) {
-    $unit: unit($result);
-    $interval: 0;
-    
-    @if (map-has-key($unit-intervals, $unit)) {
-      $interval: map-get($unit-intervals, $unit);
-    } @else {
-      @warn 'Unknown unit: #{$unit}';
-    }
-    
-    @if ($operator == '>') {
-      $element: '(min-#{$dimension}: #{$result + $interval})';
-    } @else if ($operator == '<') {
-      $element: '(max-#{$dimension}: #{$result - $interval})';
-    } @else if ($operator == '>=') {
-      $element: '(min-#{$dimension}: #{$result})';
-    } @else if ($operator == '<=') {
-      $element: '(max-#{$dimension}: #{$result})';
-    } @else {
-      @warn '#{$expression} is missing an operator.';
-    }
-  } @else {
-    $element: $result;
-  }
-
-  @return $element;
+  @return $dimension;
 }
-///
-/// Replaces the first occurence of the string with the replacement string
-///
-/// @author Eduardo Boucas
-///
-/// @param {String}   $search  - The value being searched for
-/// @param {String}   $replace  - The replacement string
-/// @param {String}   $subject  - The string being replaced on
-///
-/// @return {String | Null}
-///
-@function str-replace-first($search, $replace, $subject) {
-  $search-start: str-index($subject, $search);
 
-  @if $search-start == null {
-    @return $subject;
+
+///
+/// Get dimension prefix based on an operator
+///
+/// @access private
+///
+/// @param {String} $operator - Operator
+///
+/// @return {String} - `min` or `max`
+///
+@function get-expression-prefix($operator) {
+  @return if(index(('<', '<=', '≤'), $operator), 'max', 'min');
+}
+
+
+///
+/// Get value of an expression, based on a found operator
+///
+/// @access private
+///
+/// @param {String} $expression - Expression to extract value from
+/// @param {String} $operator - Operator from `$expression`
+///
+/// @return {Number} - A numeric value 
+///
+@function get-expression-value($expression, $operator) {
+  $operator-index: str-index($expression, $operator);
+  $value: str-slice($expression, $operator-index + str-length($operator));
+
+  @if map-has-key($breakpoints, $value) {
+    $value: map-get($breakpoints, $value);
+  } @else {
+    $value: to-number($value);
   }
 
-  $result: str-slice($subject, 0, $search-start - 1);
-  $result: $result + $replace;
-  $result: $result + str-slice($subject, $search-start + str-length($search));
+  $interval: map-get($unit-intervals, unit($value));
+
+  @if not $interval {
+    // It is not possible to include a mixin inside a function, so we have to
+    // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+    // functions cannot be called anywhere in Sass, we need to hack the call in
+    // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+    // Sass 3.3, change this line in `@if log(..) {}` instead.
+    $_: log('Unknown unit `#{unit($value)}`.');
+  }
+
+  @if $operator == '>' {
+    $value: $value + $interval;
+  } @else if $operator == '<' {
+    $value: $value - $interval;
+  }
+
+  @return $value;
+}
+
+
+///
+/// Parse an expression to return a valid media-query expression
+///
+/// @access private
+///
+/// @param {String} $expression - Expression to parse
+///
+/// @return {Map} - Valid media query
+///
+@function parse-expression($expression) {
+  // If it is part of $media-expressions, it has no operator
+  // then there is no need to go any further, just return the value
+  @if map-has-key($media-expressions, $expression) {
+    @return map-get($media-expressions, $expression);
+  }
+
+  $operator: get-expression-operator($expression);
+  $dimension: get-expression-dimension($expression, $operator);
+  $prefix: get-expression-prefix($operator);
+  $value: get-expression-value($expression, $operator);
+
+  @return (#{$prefix}-#{$dimension}: $value);
+}
+
+
+///
+/// Parse a list of expressions to return a list of valid media-query expressions
+///
+/// @access private
+///
+/// @param {Arglist} $expressions - Expressions to parse
+/// @return {List} - Valid media queries
+///
+@function parse-expressions($expressions...) {
+  $queries: ();
+
+  // Parse each $expression in $expressions
+  @each $expression in $expressions {
+    $queries: append($queries, parse-expression($expression));
+  }
+
+  @return $queries;
+}
+
+///
+/// Slice `$list` between `$start` and `$end` indexes
+///
+/// @access private
+///
+/// @param {List} $list - List to slice
+/// @param {Number} $start [1] - Start index
+/// @param {Number} $end [length($list)] - End index
+///
+/// @return {List} Sliced list
+///
+@function slice($list, $start: 1, $end: length($list)) {
+  @if length($list) < 1 or $start > $end {
+    @return ();
+  }
+
+  $result: ();
+
+  @for $i from $start through $end {
+    $result: append($result, nth($list, $i));
+  }
 
   @return $result;
 }
@@ -352,14 +384,44 @@ $unit-intervals: (
 }
 
 @function _length($number, $unit) {
-  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pica' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
-  $units:   1px  1cm  1mm  1%  1ch  1pica  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
+  $strings: 'px' 'cm' 'mm' '%' 'ch' 'pc' 'in' 'em' 'rem' 'pt' 'pc' 'ex' 'vw' 'vh' 'vmin' 'vmax';
+  $units:   1px  1cm  1mm  1%  1ch  1pc  1in  1em  1rem  1pt  1pc  1ex  1vw  1vh  1vmin  1vmax;
   $index: index($strings, $unit);
   
   @if type-of($index) != 'number' {
-    @warn 'Unknown unit `#{$unit}`.';
-    @return false;
+    $_: log('Unknown unit `#{$unit}`.');
   }
   
   @return $number * nth($units, $index);
+}
+
+///
+/// Generates a media query based on a list of conditions
+///
+/// @author Eduardo Boucas
+///
+/// @param {Arglist}   $conditions  - Media query conditions
+///
+/// @example scss - With a single set breakpoint
+///  @include media(">phone") { }
+///
+/// @example scss - With two set breakpoints
+///  @include media(">phone", "<=tablet") { } 
+///
+/// @example scss - With custom values
+///  @include media(">=358px", "<850px") { } 
+///
+/// @example scss - With set breakpoints with custom values
+///  @include media(">desktop", "<=1350px") { } 
+///
+/// @example scss - With a static expression
+///  @include media("retina2x") { } 
+///
+/// @example scss - Mixing everything
+///  @include media(">=350px", "<tablet", "retina3x") { } 
+///
+@mixin media($conditions...) {
+  @include outputter(parse-expressions($conditions...)) {
+    @content;
+  }
 }
