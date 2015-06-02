@@ -1,16 +1,17 @@
-//  	 _            _           _                           _ _       
-//  	(_)          | |         | |                         | (_)      
-//  	 _ _ __   ___| |_   _  __| | ___   _ __ ___   ___  __| |_  __ _ 
-//  	| | '_ \ / __| | | | |/ _` |/ _ \ | '_ ` _ \ / _ \/ _` | |/ _` |
-//  	| | | | | (__| | |_| | (_| |  __/ | | | | | |  __/ (_| | | (_| |
-//  	|_|_| |_|\___|_|\__,_|\__,_|\___| |_| |_| |_|\___|\__,_|_|\__,_|
+//     _            _           _                           _ _       
+//    (_)          | |         | |                         | (_)      
+//     _ _ __   ___| |_   _  __| | ___   _ __ ___   ___  __| |_  __ _ 
+//    | | '_ \ / __| | | | |/ _` |/ _ \ | '_ ` _ \ / _ \/ _` | |/ _` |
+//    | | | | | (__| | |_| | (_| |  __/ | | | | | |  __/ (_| | | (_| |
+//    |_|_| |_|\___|_|\__,_|\__,_|\___| |_| |_| |_|\___|\__,_|_|\__,_|
 //
-//			Simple, elegant and maintainable media queries in Sass
+//      Simple, elegant and maintainable media queries in Sass
 //
-//			 			http://include-media.com
-//		
-//	  		 Author: Eduardo Boucas <mail@eduardoboucas.com>
+//             http://include-media.com
 //
+//         Author: Eduardo Boucas <mail@eduardoboucas.com>
+//
+
 ///
 /// Creates a list of global breakpoints
 ///
@@ -20,9 +21,9 @@
 ///  $breakpoints: ('phone': 320px);
 ///
 $breakpoints: (
-	'phone': 320px, 
-	'tablet': 768px, 
-	'desktop': 1024px
+  'phone': 320px,
+  'tablet': 768px,
+  'desktop': 1024px
 ) !default;
 
 ///
@@ -35,26 +36,26 @@ $breakpoints: (
 ///
 /// @example scss - Creates a static expression with logical disjunction (OR operator)
 ///  $media-expressions: (
-///		'retina2x': (
-///			'(-webkit-min-device-pixel-ratio: 2)', 
-///			'(min-resolution: 192dpi)'
-///		)
-///	);
+///    'retina2x': (
+///      '(-webkit-min-device-pixel-ratio: 2)',
+///      '(min-resolution: 192dpi)'
+///    )
+///  );
 ///
 $media-expressions: (
-	'screen': 'screen', 
-	'print': 'print', 
-	'handheld': 'handheld',
-	'landscape': (orientation: landscape),
-	'portrait': (orientation: portrait),
-	'retina2x': (
-		(-webkit-min-device-pixel-ratio: 2), 
-		(min-resolution: 192dpi)
-	), 
-	'retina3x': (
-		(-webkit-min-device-pixel-ratio: 3), 
-		(min-resolution: 350dpi)
-	)
+  'screen': 'screen',
+  'print': 'print',
+  'handheld': 'handheld',
+  'landscape': '(orientation: landscape)',
+  'portrait': '(orientation: portrait)',
+  'retina2x': (
+    '(-webkit-min-device-pixel-ratio: 2)',
+    '(min-resolution: 192dpi)'
+  ), 
+  'retina3x': (
+    '(-webkit-min-device-pixel-ratio: 3)',
+    '(min-resolution: 350dpi)'
+  )
 ) !default;
 
 ///
@@ -65,25 +66,25 @@ $media-expressions: (
 /// @example scss - Interval for pixels is defined as `1` by default
 ///  @include media(">128px") {}
 ///
-///	 /* Generates: */
-///	 @media (min-width: 129px) {}
+///   /* Generates: */
+///   @media (min-width: 129px) {}
 ///
 /// @example scss - Interval for ems is defined as `0.01` by default
 ///  @include media(">20em") {}
 ///
-///	 /* Generates: */
-///	 @media (min-width: 20.01em) {}
+///   /* Generates: */
+///   @media (min-width: 20.01em) {}
 ///
 /// @example scss - Interval for rems is defined as `0.1` by default, to be used with `font-size: 62.5%;`
 ///  @include media(">2.0rem") {}
 ///
-///	 /* Generates: */
-///	 @media (min-width: 2.1rem) {}
+///   /* Generates: */
+///   @media (min-width: 2.1rem) {}
 ///
 $unit-intervals: (
-	'px': 1, 
-	'em': 0.01, 
-	'rem': 0.1
+  'px': 1,
+  'em': 0.01,
+  'rem': 0.1
 ) !default;
 
 ///
