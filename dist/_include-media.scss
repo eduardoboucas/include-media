@@ -193,7 +193,7 @@ $unit-intervals: (
   $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
   $dimension: 'width';
 
-  @if str-length($parsed-dimension) {
+  @if str-length($parsed-dimension) > 0 {
     $dimension: $parsed-dimension;
   }
 
