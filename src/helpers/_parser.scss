@@ -38,7 +38,7 @@
   $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
   $dimension: 'width';
 
-  @if str-length($parsed-dimension) {
+  @if str-length($parsed-dimension) > 0 {
     $dimension: $parsed-dimension;
   }
 
@@ -108,7 +108,7 @@
 ///
 /// @param {String} $expression - Expression to parse
 ///
-/// @return {Map} - Valid media query
+/// @return {String} - Valid media query
 ///
 @function parse-expression($expression) {
   // If it is part of $media-expressions, it has no operator
@@ -122,7 +122,7 @@
   $prefix: get-expression-prefix($operator);
   $value: get-expression-value($expression, $operator);
 
-  @return (#{$prefix}-#{$dimension}: $value);
+  @return '(#{$prefix}-#{$dimension}: #{$value})';
 }
 
 
