@@ -1,7 +1,12 @@
+////
+/// String to number converter
+/// @author Hugo Giraudel
+/// @access private
+////
+
+
 ///
 /// Casts a string into a number
-///
-/// @author Hugo Giraudel
 ///
 /// @param {String | Number} $value - Value to be parsed
 ///
@@ -39,10 +44,9 @@
   @return if($minus, -$result, $result);;
 }
 
+
 ///
 /// Add `$unit` to `$value`
-///
-/// @author Hugo Giraudel
 ///
 /// @param {Number} $value - Value to add unit to
 /// @param {String} $unit - String representation of the unit

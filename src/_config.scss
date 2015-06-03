@@ -1,7 +1,12 @@
+////
+/// include-media library public configuration
+/// @author Eduardo Boucas
+/// @access public
+////
+
+
 ///
 /// Creates a list of global breakpoints
-///
-/// @author Eduardo Boucas
 ///
 /// @example scss - Creates a single breakpoint with the label `phone`
 ///  $breakpoints: ('phone': 320px);
@@ -12,10 +17,9 @@ $breakpoints: (
   'desktop': 1024px
 ) !default;
 
+
 ///
 /// Creates a list of static expressions or media types
-///
-/// @author Eduardo Boucas
 ///
 /// @example scss - Creates a single media type (screen)
 ///  $media-expressions: ('screen': 'screen');
@@ -44,10 +48,9 @@ $media-expressions: (
   )
 ) !default;
 
+
 ///
 /// Defines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals
-///
-/// @author Eduardo Boucas
 ///
 /// @example scss - Interval for pixels is defined as `1` by default
 ///  @include media(">128px") {}
