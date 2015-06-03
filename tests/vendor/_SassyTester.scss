@@ -1,0 +1,76 @@
+/// Test `$function` with `$test-suite` test suite
+///
+/// @author Hugo Giraudel
+///
+/// @param {String} $function - Name of function to test
+/// @param {Map} $test-suite - Test suite to run `$function` against
+///
+/// @return {Map}
+///   * `function`: `$function`
+///   * `length`: the length of `$tests`
+///   * `pass`: number of passing tests out of `length`
+///   * `fail`: number of failing tests out of `length`
+///   * `tests`: list of maps containing:
+///       * `input`: test input (key from `$tests`) 
+///       * `expected`: expected result from `input`
+///       * `actual`: actual result from `input`
+///       * `pass`: whether the test passed or not
+///       * `fail`: whether the test failed or not
+///
+/// @example scss - Testing of a `double` function
+///   @function double($value) { @return $value * 2 }
+///
+///   $test: test('double', (
+///     1: 2,
+///     2: 4,
+///     3: 6,
+///     4: 8,
+///   ));
+///
+/// @example scss - Result of `double` tests
+///   (
+///     'function': 'double',
+///     'length': 4,
+///     'pass': 4,
+///     'fail': 0,
+///     'tests': ( ... ),
+///   )
+///
+/// @example scss - `tests` value from result of `double` tests
+///   (
+///     (
+///       'input': 1,
+///       'expected': 2,
+///       'actual': 2,
+///       'pass': true,
+///       'fail': false,
+///     ),
+///     // ...
+///   )
+@function test($function, $test-suite) {
+  $passing-tests: 0;
+  $tests: ();
+
+  @each $test, $expected-result in $test-suite {
+    $result: call($function, $test...);
+    $tests: append($tests, (
+      'input': $test,
+      'expected': $expected-result,
+      'actual': $result,
+      'pass': $result == $expected-result,
+      'fail': $result == $expected-result
+    ), 'comma');
+
+    @if $result == $expected-result {
+      $passing-tests: $passing-tests + 1;
+    }
+  }
+  
+  @return (
+    'function': $function,
+    'length': length($tests),
+    'tests': $tests,
+    'pass': $passing-tests,
+    'fail': length($tests) - $passing-tests
+  );
+}
