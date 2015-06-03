@@ -41,12 +41,25 @@ gulp.task('concat', function () {
 // Tests
 // -----------------------------------------------------------------------------
 
-gulp.task('test', function () {
+gulp.task('test_libsass', function () {
   return gulp
     .src('./tests/tests.scss')
     .pipe(plugins.sass(sassOptions).on('error', plugins.sass.logError))
+    .pipe(plugins.rename('output.libsass.css'))
     .pipe(gulp.dest('./tests'));
 });
+
+gulp.task('test_rubysass', function () {
+  return plugins
+    .rubySass('./tests/tests.scss')
+    .on('error', function (err) {
+        console.error('Error!', err.message);
+    })
+    .pipe(plugins.rename('output.rubysass.css'))
+    .pipe(gulp.dest('./tests'));
+});
+
+gulp.task('test', ['test_libsass', 'test_rubysass']);
 
 
 // -----------------------------------------------------------------------------

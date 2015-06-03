@@ -20,6 +20,8 @@
     "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
     "gulp-load-plugins": "^0.10.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-ruby-sass": "^1.0.5",
     "gulp-sass": "^2.0.1",
     "gulp-header": "^1.2.2",
     "sassdoc": "^2.1.13"
