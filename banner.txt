@@ -1,15 +1,17 @@
-//     _            _           _                           _ _       
-//    (_)          | |         | |                         | (_)      
-//     _ _ __   ___| |_   _  __| | ___   _ __ ___   ___  __| |_  __ _ 
+//     _            _           _                           _ _
+//    (_)          | |         | |                         | (_)
+//     _ _ __   ___| |_   _  __| | ___   _ __ ___   ___  __| |_  __ _
 //    | | '_ \ / __| | | | |/ _` |/ _ \ | '_ ` _ \ / _ \/ _` | |/ _` |
 //    | | | | | (__| | |_| | (_| |  __/ | | | | | |  __/ (_| | | (_| |
 //    |_|_| |_|\___|_|\__,_|\__,_|\___| |_| |_| |_|\___|\__,_|_|\__,_|
 //
 //      Simple, elegant and maintainable media queries in Sass
+//                        v@version@
 //
-//             http://include-media.com
+//                http://include-media.com
 //
-//         Author: Eduardo Boucas <mail@eduardoboucas.com>
+//         Authors: Eduardo Boucas (@eduardoboucas)
+//                  Hugo Giraudel (@hugogiraudel)
 //
 
 
