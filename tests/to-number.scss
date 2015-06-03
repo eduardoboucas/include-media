@@ -1,8 +1,5 @@
-// Import the current state of the library
 @import '../dist/include-media';
-
-// Import SassyTester
-@import 'vendor/SassyTester';
+@import 'helpers/SassyTester';
 
 $tests-to-number: ();
 
