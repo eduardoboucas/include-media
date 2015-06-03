@@ -96,18 +96,5 @@
 ///   ----------
 ///   Finished: 0 test(s) failing out of 4
 @mixin run($data) {
-  $output: '';
-  $length: map-get($data, 'length');
-  $tests: map-get($data, 'tests');
-  
-  @test __#{map-get($data, 'function')} {
-    @each $test in $tests {
-      .test-#{index($tests, $test)} {
-        input: map-get($test, 'input');
-        output: map-get($test, 'actual');
-        expected: map-get($test, 'expected');
-        status: if(map-get($test, 'pass'), '✔', '✘');
-      }
-    }
-  }
+  .__ { data: json-encode($data); }
 }

@@ -1,3 +1,11 @@
+// Import the current state of the library
+@import '../dist/include-media';
+
+// Import SassyTester
+@import 'vendor/JSONEncode';
+@import 'vendor/SassyTester';
+
+
 $tests-parse-expression: map-merge($media-expressions, (
   '>phone': '(min-width: 321px)',
   '<phone': '(max-width: 319px)',

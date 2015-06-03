@@ -1,3 +1,10 @@
+// Import the current state of the library
+@import '../dist/include-media';
+
+// Import SassyTester
+@import 'vendor/JSONEncode';
+@import 'vendor/SassyTester';
+
 $tests-to-number: ();
 
 @for $i from 1 through 10 {
