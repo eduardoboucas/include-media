@@ -74,3 +74,41 @@
     'fail': length($tests) - $passing-tests
   );
 }
+
+
+
+/// Mixin decorating the result of `test(..)` function to throw it as an error
+/// 
+/// @author Hugo Giraudel
+///
+/// @param {Map} $data - Return of `test(..)` function
+///
+/// @example scss - Printing the result of `double` function test
+///   @include run(test('double', $tests-double));
+///
+/// @example scss - Result of `double` function test
+///   Started tests for function `double`
+///   ----------
+///   Test 1 out of 4... ✔
+///   Test 2 out of 4... ✔
+///   Test 3 out of 4... ✔
+///   Test 4 out of 4... ✔
+///   ----------
+///   Finished: 0 test(s) failing out of 4
+@mixin run($data) {
+  $output: '';
+  $length: map-get($data, 'length');
+  $tests: map-get($data, 'tests');
+  
+  @each $test in $tests {
+    $output: $output 
+      + 'Test #{index($tests, $test)} out of #{$length}... '
+      + if(map-get($test, 'pass'), '✔', '✘\a   Expected : `#{map-get($test, "expected")}`\a   Actual   : `#{map-get($test, "actual")}`') + '\a ';
+  }
+  
+  @error 'Started tests for function `#{map-get($data, "function")}`\a '
+    + '----------\a '
+    + $output + '\a '
+    + '----------\a '
+    + 'Finished: #{map-get($data, "fail")} test(s) failing out of #{$length}';
+}
