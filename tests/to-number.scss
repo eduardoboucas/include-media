@@ -1,3 +1,6 @@
+@import '../dist/include-media';
+@import 'helpers/SassyTester';
+
 $tests-to-number: ();
 
 @for $i from 1 through 10 {

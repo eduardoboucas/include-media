@@ -1,3 +1,6 @@
+@import '../dist/include-media';
+@import 'helpers/SassyTester';
+
 $tests-parse-expression: map-merge($media-expressions, (
   '>phone': '(min-width: 321px)',
   '<phone': '(max-width: 319px)',

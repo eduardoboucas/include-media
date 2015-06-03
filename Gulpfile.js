@@ -10,10 +10,6 @@ var sassInput = [
   'src/_media.scss'
 ];
 
-var sassOptions = {
-  errLogToConsole: true
-};
-
 
 // -----------------------------------------------------------------------------
 // Dependencies
@@ -24,12 +20,11 @@ var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var packageInfo = require('./package.json');
 
-
 // -----------------------------------------------------------------------------
 // Dist
 // -----------------------------------------------------------------------------
 
-gulp.task('concat', function () {
+gulp.task('build', function () {
   return gulp
     .src(sassInput)
     .pipe(plugins.concat('_include-media.scss'))
@@ -45,21 +40,24 @@ gulp.task('concat', function () {
 
 gulp.task('test_libsass', function () {
   return gulp
-    .src('./tests/tests.scss')
-    .pipe(plugins.sass(sassOptions).on('error', plugins.sass.logError))
-    .pipe(plugins.rename('output.libsass.css'))
-    .pipe(gulp.dest('./tests'));
+    .src(['./tests/*.scss'])
+    .pipe(plugins.sass({ errLogToConsole: true })
+      .on('error', function (err) {
+        plugins.sass.logError(err);
+        process.exit(1);
+      })
+    );
 });
 
 gulp.task('test_rubysass', function () {
   return plugins
-    .rubySass('./tests/tests.scss')
+    .rubySass('./tests')
     .on('error', function (err) {
-        console.error('Error!', err.message);
-    })
-    .pipe(plugins.rename('output.rubysass.css'))
-    .pipe(gulp.dest('./tests'));
+      console.error('Error!', err.message);
+      process.exit(1);
+    });
 });
+
 
 gulp.task('test', ['test_libsass', 'test_rubysass']);
 
@@ -68,4 +66,4 @@ gulp.task('test', ['test_libsass', 'test_rubysass']);
 // Default task
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['test', 'concat']);
+gulp.task('default', ['test', 'build']);

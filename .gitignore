@@ -2,4 +2,3 @@ node_modules
 .sass-cache
 .DS_Store
 *.map
-tests/*.css
