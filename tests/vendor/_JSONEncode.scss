@@ -1,0 +1,53 @@
+@function proof-quote($value) {
+  @return quote('"' + $value + '"');
+}
+
+@function json-encode-bool($boolean) {
+  @return $boolean;
+}
+
+@function json-encode-color($color) {
+  @return proof-quote($color);
+}
+
+@function json-encode-list($list) {
+  $str: '';
+  
+  @each $item in $list {
+    $str: $str + ', ' + json-encode($item);
+  }
+  
+  @return unquote('[' + str-slice($str, 3) + ']');
+}
+
+@function json-encode-map($map) {
+  $str: '';
+  
+  @each $key, $value in $map {
+    $str: $str + ', ' + json-encode($key) + ': ' + json-encode($value);
+  }
+  
+  @return unquote('{' + str-slice($str, 3) + '}');
+}
+
+@function json-encode-number($number) {
+  @return if(unitless($number), $number, proof-quote($number));
+}
+
+@function json-encode-string($string) {
+  @return proof-quote($string);
+}
+
+@function json-encode--null($null) {
+  @return quote('null');
+}
+
+@function json-encode($value) {
+  $type: type-of($value);
+  
+  @if function_exists('json-encode-#{$type}') {
+    @return call('json-encode-#{$type}', $value);
+  }
+  
+  @error "Unknown type for #{$value} (#{$type}).";
+}
