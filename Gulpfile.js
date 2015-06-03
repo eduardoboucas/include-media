@@ -5,7 +5,6 @@
 // -----------------------------------------------------------------------------
 
 var sassInput = [
-  'src/banner.scss',
   'src/_config.scss',
   'src/helpers/*.scss',
   'src/_media.scss'
@@ -20,6 +19,7 @@ var sassOptions = {
 // Dependencies
 // -----------------------------------------------------------------------------
 
+var fs = require('fs');
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 
@@ -32,6 +32,7 @@ gulp.task('concat', function () {
   return gulp
     .src(sassInput)
     .pipe(plugins.concat('_include-media.scss'))
+    .pipe(plugins.header(fs.readFileSync('./banner.txt', 'utf-8')))
     .pipe(gulp.dest('./dist'));
 });
 
