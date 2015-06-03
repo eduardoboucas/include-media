@@ -22,6 +22,7 @@ var sassOptions = {
 var fs = require('fs');
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
+var packageInfo = require('./package.json');
 
 
 // -----------------------------------------------------------------------------
@@ -33,6 +34,7 @@ gulp.task('concat', function () {
     .src(sassInput)
     .pipe(plugins.concat('_include-media.scss'))
     .pipe(plugins.header(fs.readFileSync('./banner.txt', 'utf-8')))
+    .pipe(plugins.replace(/@version@/, packageInfo.version))
     .pipe(gulp.dest('./dist'));
 });
 
