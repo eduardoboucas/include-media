@@ -1,0 +1,24 @@
+///
+/// Internal recursive mixin for include-media; start with a list of queries,
+/// output the first, then call itself inside the freshly created `@media`
+/// block with the same list of queries but without the first (since it has been
+/// printed already); goes on until the list is empty, in which case it quits.
+/// 
+/// @access private
+///
+/// @link http://www.sitepoint.com/sass-mixin-media-merging/ Sass Mixin and Media Merging
+///
+/// @param {List} $queries - List of parsed queries
+/// 
+@mixin outputter($queries) {
+  @if length($queries) == 0 {
+    @content;
+  } @else {
+    @media #{inspect(nth($queries, 1))} {
+      // Recursive call
+      @include outputter(slice($queries, 2)) {
+        @content;
+      }
+    }
+  }
+}

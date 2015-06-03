@@ -1,18 +1,23 @@
 module.exports = function(grunt) {
-	grunt.initConfig({
-		pkg: grunt.file.readJSON('package.json'),
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
 
-		concat: {
-			options: {
-				separator: '\n',
-			},
-			dist: {
-	  			src: ['src/banner.scss', 'src/_config.scss', 'src/_media.scss', 'src/helpers/*.scss', 'src/vendor/*.scss'],
-	  			dest: 'dist/_include-media.scss',
-			},
-		}
-	});
+    concat: {
+      options: {
+        separator: '\n',
+      },
+      dist: {
+          src: [
+            'src/banner.scss',
+            'src/_config.scss',
+            'src/helpers/*.scss',
+            'src/_media.scss'
+          ],
+          dest: 'dist/_include-media.scss',
+      },
+    }
+  });
 
-	grunt.loadNpmTasks('grunt-contrib-concat');
-	grunt.registerTask('default', ['concat']);
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.registerTask('default', ['concat']);
 };

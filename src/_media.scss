@@ -3,7 +3,7 @@
 ///
 /// @author Eduardo Boucas
 ///
-/// @param {List}   $conditions  - Media query conditions
+/// @param {Arglist}   $conditions  - Media query conditions
 ///
 /// @example scss - With a single set breakpoint
 ///  @include media(">phone") { }
@@ -24,26 +24,7 @@
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
 @mixin media($conditions...) {
-  $list: ();
-  
-  @each $condition in $conditions {
-    // Cannot use `set-nth` on an arglist because of an issue:
-    // @see https://github.com/sass/libsass/issues/1255
-    $list: append($list, parse-expression($condition), 'comma');
-  }
-
-  $branches: get-query-branches($list);
-  $query: '';
-
-  @each $branch in $branches {
-    @if (str-length($query) != 0) {
-      $query: $query + ', ';
-    }
-
-    $query: $query + $branch;
-  }
-
-  @media #{$query} {
+  @include outputter(parse-expressions($conditions...)) {
     @content;
   }
 }
