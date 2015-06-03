@@ -96,5 +96,13 @@
 ///   ----------
 ///   Finished: 0 test(s) failing out of 4
 @mixin run($data) {
-  .__ { data: json-encode($data); }
+  $tests: map-get($data, 'tests');
+
+  @each $test in $tests {
+    @if not map-get($test, 'pass') {
+      @error '✘ Test #{index($tests, $test)} out of #{map-get($data, "length")} failed dramatically. Expected: #{map-get($test, "expected")}. Actual: #{map-get($test, "actual")}.';
+    }
+  }
+
+  @warn '✔ All #{map-get($data, "length")} tests from `#{map-get($data, "function")}` passed successfully.';
 }
