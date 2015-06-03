@@ -106,7 +106,7 @@
       + if(map-get($test, 'pass'), '✔', '✘\a   Expected : `#{map-get($test, "expected")}`\a   Actual   : `#{map-get($test, "actual")}`') + '\a ';
   }
   
-  @error 'Started tests for function `#{map-get($data, "function")}`\a '
+  @warn 'Started tests for function `#{map-get($data, "function")}`\a '
     + '----------\a '
     + $output + '\a '
     + '----------\a '
