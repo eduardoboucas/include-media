@@ -1,3 +1,10 @@
+////
+/// Cross-engine logging engine
+/// @author Hugo Giraudel
+/// @access private
+////
+
+
 ///
 /// Log a message either with `@error` if supported 
 /// else with `@warn`, using `function-exists('at-error')`
@@ -16,13 +23,12 @@
   @return $message;
 }
 
+
 /// 
 /// Wrapper mixin for the log function so it can be used with a more friendly
 /// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
 /// within functions because it is not possible to include a mixin in a function
 /// and use the mixin everywhere else because it's much more elegant.
-///
-/// @access private
 ///
 /// @param {String} $message - Message to log
 ///
@@ -34,7 +40,5 @@
 ///
 /// Function with no `@return` called next to `@warn` in Sass 3.3
 /// to trigger a compiling error and stop the process.
-/// 
-/// @access private
 ///
 @function noop() {}

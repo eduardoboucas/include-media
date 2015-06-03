@@ -1,7 +1,12 @@
+////
+/// Parsing engine
+/// @author Hugo Giraudel
+/// @access private
+////
+
+
 ///
 /// Get operator of an expression
-///
-/// @access private
 ///
 /// @param {String} $expression - Expression to extract operator from
 ///
@@ -26,8 +31,6 @@
 ///
 /// Get dimension of an expression, based on a found operator
 ///
-/// @access private
-///
 /// @param {String} $expression - Expression to extract dimension from
 /// @param {String} $operator - Operator from `$expression`
 ///
@@ -49,8 +52,6 @@
 ///
 /// Get dimension prefix based on an operator
 ///
-/// @access private
-///
 /// @param {String} $operator - Operator
 ///
 /// @return {String} - `min` or `max`
@@ -62,8 +63,6 @@
 
 ///
 /// Get value of an expression, based on a found operator
-///
-/// @access private
 ///
 /// @param {String} $expression - Expression to extract value from
 /// @param {String} $operator - Operator from `$expression`
@@ -103,8 +102,6 @@
 
 ///
 /// Parse an expression to return a valid media-query expression
-///
-/// @access private
 ///
 /// @param {String} $expression - Expression to parse
 ///
