@@ -1,0 +1,24 @@
+$tests-parse-expression: map-merge($media-expressions, (
+  '>phone': '(min-width: 321px)',
+  '<phone': '(max-width: 319px)',
+  '>=phone': '(min-width: 320px)',
+  '≥phone': '(min-width: 320px)',
+  '<=phone': '(max-width: 320px)',
+  '≤phone': '(max-width: 320px)',
+
+  '>tablet': '(min-width: 769px)',
+  '<tablet': '(max-width: 767px)',
+  '>=tablet': '(min-width: 768px)',
+  '≥tablet': '(min-width: 768px)',
+  '<=tablet': '(max-width: 768px)',
+  '≤tablet': '(max-width: 768px)',
+
+  '>desktop': '(min-width: 1025px)',
+  '<desktop': '(max-width: 1023px)',
+  '>=desktop': '(min-width: 1024px)',
+  '≥desktop': '(min-width: 1024px)',
+  '<=desktop': '(max-width: 1024px)',
+  '≤desktop': '(max-width: 1024px)'
+));
+
+@include run(test('parse-expression', $tests-parse-expression));
