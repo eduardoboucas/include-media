@@ -17,9 +17,10 @@
   },
   "homepage": "http://include-media.com",
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "lint": "scss-lint . --config ./.scss-lint.yml"
   },
-  "pre-commit": ["test"],
+  "pre-commit": ["test", "lint"],
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
