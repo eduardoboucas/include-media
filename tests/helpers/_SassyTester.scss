@@ -96,13 +96,48 @@
 ///   ----------
 ///   Finished: 0 test(s) failing out of 4
 @mixin run($data) {
+  $function: map-get($data, 'function');
   $tests: map-get($data, 'tests');
+  $length: length($tests);
+  $output: '';
 
   @each $test in $tests {
+    $index: index($tests, $test);
+    $expected: map-get($test, 'expected');
+    $actual: map-get($test, 'actual');
+    $input: map-get($test, 'input');
+    $indent: '      ';
+    $line-break: '
+';
+
     @if not map-get($test, 'pass') {
-      @error '✘ Test #{index($tests, $test)} out of #{map-get($data, "length")} failed dramatically. Expected: #{map-get($test, "expected")}. Actual: #{map-get($test, "actual")}.';
+      $output: $output
+        + $line-break 
+        + $line-break
+        + $indent
+        + '✘ Test with input `#{$input}` failed dramatically.'
+        + $line-break
+        + $indent
+        + $indent
+        + 'Expected : #{$expected}'
+        + $line-break
+        + $indent
+        + $indent
+        + 'Actual   : #{$actual}';
     }
   }
 
-  @warn '✔ All #{map-get($data, "length")} tests from `#{map-get($data, "function")}` passed successfully.';
+  @if str-length($output) > 0 {
+    $output: $output
+      + $line-break 
+      + $line-break 
+      + $indent
+      + '✘ Oops! #{map-get($data, "fail")} test(s) failed out of #{$length} regarding `#{$function}` function.'
+      + $line-break
+      + $line-break;
+
+    @error $output;
+  }
+
+  @warn '✔ All #{$length} tests from `#{$function}` passed successfully.';
 }
