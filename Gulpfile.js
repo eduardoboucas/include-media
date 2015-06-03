@@ -11,6 +11,10 @@ var sassInput = [
   'src/_media.scss'
 ];
 
+var sassOptions = {
+  errLogToConsole: true
+};
+
 
 // -----------------------------------------------------------------------------
 // Dependencies
@@ -33,7 +37,19 @@ gulp.task('concat', function () {
 
 
 // -----------------------------------------------------------------------------
+// Tests
+// -----------------------------------------------------------------------------
+
+gulp.task('test', function () {
+  return gulp
+    .src('./tests/tests.scss')
+    .pipe(plugins.sass(sassOptions).on('error', plugins.sass.logError))
+    .pipe(gulp.dest('./tests'));
+});
+
+
+// -----------------------------------------------------------------------------
 // Default task
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['concat']);
+gulp.task('default', ['test', 'concat']);
