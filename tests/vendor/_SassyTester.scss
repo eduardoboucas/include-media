@@ -52,7 +52,7 @@
   $tests: ();
 
   @each $test, $expected-result in $test-suite {
-    $result: call($function, $test...);
+    $result: call($function, $test);
     $tests: append($tests, (
       'input': $test,
       'expected': $expected-result,
