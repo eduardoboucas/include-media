@@ -24,7 +24,14 @@
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
 @mixin media($conditions...) {
-  @include outputter(parse-expressions($conditions...)) {
+  @if length($conditions) == 0 {
     @content;
+  } @else {
+    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+      // Recursive call
+      @include media(slice($conditions, 2)...) {
+        @content;
+      }
+    }
   }
 }
