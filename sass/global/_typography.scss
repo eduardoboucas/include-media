@@ -1,0 +1,20 @@
+/**
+*
+* Import fonts
+*
+**/
+
+@import url("http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900");
+@import url("http://fonts.googleapis.com/css?family=Raleway");
+
+$font-lato: "Lato", Helvetica, Verdana;
+$font-raleway: "Raleway", Helvetica, Verdana;
+
+$font-primary: $font-lato;
+$font-secondary: Helvetica;
+
+$font-weight-lighter: 100;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+$font-weight-bolder: 900;

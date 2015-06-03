@@ -1,0 +1,41 @@
+@mixin grid-columns($granularity: 2, $breakpoints: ()) {
+  [class*="col-"] {
+    float: left;
+  }
+
+  $widths: ();
+  
+  @each $i in $granularity {
+    @for $j from 1 through $i {
+      $newWidth: unquote('.col-#{$j}-#{$i}');
+      $width: $j/$i;
+      
+      @if (map-has-key($widths, $width)) {
+        $newWidth: append(map-get($widths, $width), $newWidth, comma);
+      } @else {
+        $newWidth: $newWidth;
+      }
+      $widths: map-merge($widths, ($width: $newWidth));
+    }
+  }
+  
+  @each $granularity in $widths {
+    $value: nth($granularity, 1);
+    $classes: nth($granularity, 2);
+    
+    #{$classes} {
+      width: $value * 100%;
+      
+      @each $breakpoint in $breakpoints {
+        $width: nth($breakpoint, 1);
+        $factor: nth($breakpoint, 2);
+        
+        @media (max-width: $width) {
+          $newWidth: $value * $factor * 100%;
+          
+          width: if($newWidth <= 100%, $newWidth, 100%);
+        }
+      }
+    }
+  }
+}

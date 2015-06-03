@@ -1,0 +1,18 @@
+/**
+*
+* REM mixin with pixel fallback
+* -- Eduardo Bouças (https://github.com/eduardoboucas/)
+*
+* NOTE: You must set the font-size to 62.5% on the html element!
+*
+**/
+
+@mixin font-size($sizeValue: 16) {
+  font-size: $sizeValue + px;
+  font-size: ($sizeValue / 10) + rem;
+}
+
+@mixin line-height($sizeValue: 16) {
+  line-height: $sizeValue + px;
+  line-height: ($sizeValue / 10) + rem;
+}

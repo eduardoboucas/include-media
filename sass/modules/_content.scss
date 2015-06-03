@@ -1,0 +1,45 @@
+.content {
+	@extend %constrain;
+}
+
+.brand {
+	font-weight: $font-weight-bold;
+}
+
+.headshot {
+	border-radius: 100%;
+	padding: 20px;
+}
+
+@include media("<tablet") {
+	.sublime {
+		width: 100% !important;
+	}
+
+	video {
+		display: none;
+	}
+
+	h2 {
+		@include font-size(35);
+	}
+
+	h3 {
+		@include font-size(25);
+	}
+}
+
+@include media("<650px") {
+	.author-image-col,
+	.author-copy-col {
+		width: 100%;
+	}
+
+	.headshot {
+		max-width: 300px;
+	}
+}
+
+video {
+	width: 100%;
+}

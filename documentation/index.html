@@ -1,0 +1,213 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>include-media - v1.1.2</title><link rel="stylesheet" href="./assets/css/main.css"><link href="http://fonts.googleapis.com/css?family=Open+Sans:400,500,700" rel="stylesheet" type="text/css"><meta name="viewport" content="width=device-width"><meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible"><!-- Thanks to Sass-lang.com for the icons --><link href="http://sass-lang.com/favicon.ico" rel="shortcut icon"></head><body><aside class="sidebar" role="nav"><div class="sidebar__header"><h1 class="sidebar__title"><a href="http://include-media.com">include-media - v1.1.2</a></h1></div><div class="sidebar__body"><button type="button" class="btn-toggle js-btn-toggle" data-alt="Open all">Close all</button><p class="sidebar__item sidebar__item--heading" data-slug="undefined"><a href="#undefined">General</a></p><div><p class="sidebar__item sidebar__item--sub-heading" data-slug="undefined-variable"><a href="#undefined-variable">variables</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-name="breakpoints" data-type="variable"><a href="#variable-breakpoints">breakpoints</a></li><li class="sidebar__item sassdoc__item" data-name="media-expressions" data-type="variable"><a href="#variable-media-expressions">media-expressions</a></li><li class="sidebar__item sassdoc__item" data-name="unit-intervals" data-type="variable"><a href="#variable-unit-intervals">unit-intervals</a></li></ul><p class="sidebar__item sidebar__item--sub-heading" data-slug="undefined-mixin"><a href="#undefined-mixin">mixins</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-name="media" data-type="mixin"><a href="#mixin-media">media</a></li></ul><p class="sidebar__item sidebar__item--sub-heading" data-slug="undefined-function"><a href="#undefined-function">functions</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-name="get-query-branches" data-type="function"><a href="#function-get-query-branches">get-query-branches</a></li><li class="sidebar__item sassdoc__item" data-name="parse-expression" data-type="function"><a href="#function-parse-expression">parse-expression</a></li><li class="sidebar__item sassdoc__item" data-name="str-replace-first" data-type="function"><a href="#function-str-replace-first">str-replace-first</a></li><li class="sidebar__item sassdoc__item" data-name="to-number" data-type="function"><a href="#function-to-number">to-number</a></li></ul></div></div></aside><article class="main" role="main"><header class="header" role="banner"><div class="container"><div class="header__description"><p>A Sass mixin for creating media queries</p></div><div class="sassdoc__searchbar searchbar"><label for="js-search-input" class="visually-hidden">Search</label><div class="searchbar__form" id="js-search"><input name="search" type="search" class="searchbar__field" autocomplete="off" autofocus id="js-search-input" placeholder="Search"><ul class="searchbar__suggestions" id="js-search-suggestions"></ul></div></div></div></header><section class="main__section"><h1 class="main__heading" id="undefined"><div class="container">General</div></h1><section class="main__sub-section" id="undefined-variable"><h2 class="main__heading--secondary"><div class="container">variables</div></h2><section class="main__item container item" id="variable-breakpoints"><h3 class="item__heading"><a class="item__name" href="#variable-breakpoints">breakpoints</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$breakpoints: (
+	&#39;phone&#39;: 320px, 
+	&#39;tablet&#39;: 768px, 
+	&#39;desktop&#39;: 1024px
+) !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L22-L26" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Creates a list of global breakpoints</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>Creates a single breakpoint with the label <code>phone</code></p></div><pre class="example__code language-scss"><code> $breakpoints: (&#39;phone&#39;: 320px);</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-parse-expression"><code>parse-expression</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-media-expressions"><h3 class="item__heading"><a class="item__name" href="#variable-media-expressions">media-expressions</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$media-expressions: (
+	&#39;screen&#39;: &#39;screen&#39;, 
+	&#39;print&#39;: &#39;print&#39;, 
+	&#39;handheld&#39;: &#39;handheld&#39;,
+	&#39;retina2x&#39;: (
+		&#39;(-webkit-min-device-pixel-ratio: 2)&#39;, 
+		&#39;(min-resolution: 192dpi)&#39;
+	), 
+	&#39;retina3x&#39;: (
+		&#39;(-webkit-min-device-pixel-ratio: 3)&#39;, 
+		&#39;(min-resolution: 350dpi)&#39;
+	)
+) !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L44-L56" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Creates a list of static expressions or media types</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>Creates a single media type (screen)</p></div><pre class="example__code language-scss"><code> $media-expressions: (&#39;screen&#39;: &#39;screen&#39;);</code></pre></div><div class="item__example example"><div class="example__description"><p>Creates a static expression with logical disjunction (OR operator)</p></div><pre class="example__code language-scss"><code> $media-expressions: (
+	&#39;retina2x&#39;: (
+		&#39;(-webkit-min-device-pixel-ratio: 2)&#39;, 
+		&#39;(min-resolution: 192dpi)&#39;
+	)
+);</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-parse-expression"><code>parse-expression</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-unit-intervals"><h3 class="item__heading"><a class="item__name" href="#variable-unit-intervals">unit-intervals</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$unit-intervals: (
+	&#39;px&#39;: 1, 
+	&#39;em&#39;: 0.01, 
+	&#39;rem&#39;: 0.1
+) !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L81-L85" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Defines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>Interval for pixels is defined as <code>1</code> by default</p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;128px&quot;) {}
+
+ /* Generates: */
+ @media (min-width: 129px) {}</code></pre></div><div class="item__example example"><div class="example__description"><p>Interval for ems is defined as <code>0.01</code> by default</p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;20em&quot;) {}
+
+ /* Generates: */
+ @media (min-width: 20.01em) {}</code></pre></div><div class="item__example example"><div class="example__description"><p>Interval for rems is defined as <code>0.1</code> by default, to be used with <code>font-size: 62.5%;</code></p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;2.0rem&quot;) {}
+
+ /* Generates: */
+ @media (min-width: 2.1rem) {}</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-parse-expression"><code>parse-expression</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section></section><section class="main__sub-section" id="undefined-mixin"><h2 class="main__heading--secondary"><div class="container">mixins</div></h2><section class="main__item container item" id="mixin-media"><h3 class="item__heading"><a class="item__name" href="#mixin-media">media</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@mixin media($conditions) { 
+  @for $i from 1 through length($conditions) {
+    $conditions: set-nth($conditions, $i, parse-expression(nth($conditions, $i)));
+  }
+
+  $branches: get-query-branches($conditions);
+  $query: &#39;&#39;;
+
+  @each $branch in $branches {
+    @if (str-length($query) != 0) {
+      $query: $query + &#39;, &#39;;
+    }
+
+    $query: $query + $branch;
+  }
+
+  @media #{$query} {
+    @content;
+  }
+ }" data-collapsed="@mixin media($conditions) { ... }"><code>@mixin media($conditions) { ... }</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L111-L130" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Generates a media query based on a list of conditions</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$conditions</code></th><td data-label="desc"><p>Media query conditions</p></td><td data-label="type"><code>List</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>With a single set breakpoint</p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;phone&quot;) { }</code></pre></div><div class="item__example example"><div class="example__description"><p>With two set breakpoints</p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;phone&quot;, &quot;&lt;=tablet&quot;) { } </code></pre></div><div class="item__example example"><div class="example__description"><p>With custom values</p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;=358px&quot;, &quot;&lt;850px&quot;) { } </code></pre></div><div class="item__example example"><div class="example__description"><p>With set breakpoints with custom values</p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;desktop&quot;, &quot;&lt;=1350px&quot;) { } </code></pre></div><div class="item__example example"><div class="example__description"><p>With a static expression</p></div><pre class="example__code language-scss"><code> @include media(&quot;retina2x&quot;) { } </code></pre></div><div class="item__example example"><div class="example__description"><p>Mixing everything</p></div><pre class="example__code language-scss"><code> @include media(&quot;&gt;=350px&quot;, &quot;&lt;tablet&quot;, &quot;retina3x&quot;) { }</code></pre></div><h3 class="item__sub-heading">Requires</h3><ul class="list-unstyled"><li class="item__description item__description--inline"><span class="item__cross-type">[function]</span> <a href="#function-parse-expression"><code>parse-expression</code></a></li><li class="item__description item__description--inline"><span class="item__cross-type">[function]</span> <a href="#function-get-query-branches"><code>get-query-branches</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section></section><section class="main__sub-section" id="undefined-function"><h2 class="main__heading--secondary"><div class="container">functions</div></h2><section class="main__item container item" id="function-get-query-branches"><h3 class="item__heading"><a class="item__name" href="#function-get-query-branches">get-query-branches</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function get-query-branches($expressions) { 
+  $result: &#39;&#39;;
+  $has-groups: false;
+
+  // Getting initial snapshot and looking for groups
+  @each $expression in $expressions {
+    @if (str-length($result) != 0) {
+      $result: $result + &#39; and &#39;;
+    }
+
+    @if (type-of($expression) == &#39;string&#39;) {
+      $result: $result + $expression;
+    } @else if (type-of($expression) == &#39;list&#39;) {
+      $result: $result + nth($expression, 1);
+      $has-groups: true;
+    } @else {
+      @warn &#39;#{$expression} is not a valid expression.&#39;;
+    }
+  }
+
+  // If we have groups, we have to create all possible combinations
+  @if $has-groups {
+    @each $expression in $expressions {
+      @if (type-of($expression) == &#39;list&#39;) {
+        $first: nth($expression, 1);
+
+        @each $member in $expression {
+          @if ($member != $first) {
+            @each $partial in $result {
+              $result: join($result, str-replace-first($first, $member, $partial));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @return $result;
+ }" data-collapsed="@function get-query-branches($expressions) { ... }"><code>@function get-query-branches($expressions) { ... }</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L143-L181" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Reads a list of media query expressions and separates logical disjunctions into different branches</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$expressions</code></th><td data-label="desc"><p>list of expressions</p></td><td data-label="type"><code>List</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>List</code> or <code>Null</code></div><h3 class="item__sub-heading">Throws</h3><ul class="list-unstyled"><li><p><code>$expression</code> is not a valid expression</p></li></ul><h3 class="item__sub-heading">Requires</h3><ul class="list-unstyled"><li class="item__description item__description--inline"><span class="item__cross-type">[function]</span> <a href="#function-str-replace-first"><code>str-replace-first</code></a></li></ul><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[mixin]</span> <a href="#mixin-media"><code>media</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="function-parse-expression"><h3 class="item__heading"><a class="item__name" href="#function-parse-expression">parse-expression</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function parse-expression($expression) { 
+  $operator: &#39;&#39;;
+  $value: &#39;&#39;;
+  $element: &#39;&#39;;
+  $result: &#39;&#39;;
+  $is-width: true;
+
+  @if (type-of($expression) != &#39;string&#39;) {
+    @warn &#39;Expression with type `#{type-of($expression)}` detected, string expected.&#39;;
+  }
+
+  // Separating the operator from the rest of the expression
+  @if (str-slice($expression, 2, 2) == &#39;=&#39;) {
+    $operator: str-slice($expression, 1, 2);
+    $value: str-slice($expression, 3);
+  } @else {
+    $operator: str-slice($expression, 1, 1);
+    $value: str-slice($expression, 2);
+  }
+
+  // Checking what type of expression we&#39;re dealing with
+  @if map-has-key($breakpoints, $value) {
+    $result: map-get($breakpoints, $value);
+  } @else if map-has-key($media-expressions, $expression) {
+    $result: map-get($media-expressions, $expression);
+    $is-width: false;
+  } @else {
+    $result: to-number($value);
+  }
+
+  @if ($is-width) {
+    $unit: unit($result);
+    $interval: 0;
+    
+    @if (map-has-key($unit-intervals, $unit)) {
+      $interval: map-get($unit-intervals, $unit);
+    } @else {
+      @warn &#39;Unknown unit: #{$unit}&#39;;
+    } 
+       
+    @if ($operator == &#39;&gt;&#39;) {
+      $element: &#39;(min-width: #{$result + $interval})&#39;;
+    } @else if ($operator == &#39;&lt;&#39;) {
+      $element: &#39;(max-width: #{$result - $interval})&#39;;
+    } @else if ($operator == &#39;&gt;=&#39;) {
+      $element: &#39;(min-width: #{$result})&#39;;
+    } @else if ($operator == &#39;&lt;=&#39;) {
+      $element: &#39;(max-width: #{$result})&#39;;
+    } @else {
+      @warn &#39;#{$expression} is missing an operator.&#39;;
+    }
+  } @else {
+    $element: $result;
+  }
+
+  @return $element;
+ }" data-collapsed="@function parse-expression($expression) { ... }"><code>@function parse-expression($expression) { ... }</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L196-L252" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Parses a string to form a media query expression</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$expression</code></th><td data-label="desc"><p>expression (in string)</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>String</code> or <code>Null</code></div><h3 class="item__sub-heading">Throws</h3><ul class="list-unstyled"><li><p>Expression with type <code>type-of($expression)</code> detected, string expected</p></li><li><p><code>$expression</code> is missing an operator</p></li><li><p>Unknown unit: <code>$unit</code></p></li></ul><h3 class="item__sub-heading">Requires</h3><ul class="list-unstyled"><li class="item__description item__description--inline"><span class="item__cross-type">[function]</span> <a href="#function-to-number"><code>to-number</code></a></li><li class="item__description item__description--inline"><span class="item__cross-type">[variable]</span> <a href="#variable-breakpoints"><code>breakpoints</code></a></li><li class="item__description item__description--inline"><span class="item__cross-type">[variable]</span> <a href="#variable-media-expressions"><code>media-expressions</code></a></li><li class="item__description item__description--inline"><span class="item__cross-type">[variable]</span> <a href="#variable-unit-intervals"><code>unit-intervals</code></a></li></ul><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[mixin]</span> <a href="#mixin-media"><code>media</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="function-str-replace-first"><h3 class="item__heading"><a class="item__name" href="#function-str-replace-first">str-replace-first</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function str-replace-first($search, $replace, $subject) { 
+  $search-start: str-index($subject, $search);
+
+  @if $search-start == null {
+    @return $subject;
+  }
+
+  $result: str-slice($subject, 0, $search-start - 1);
+  $result: $result + $replace;
+  $result: $result + str-slice($subject, $search-start + str-length($search));
+
+  @return $result;
+ }" data-collapsed="@function str-replace-first($search, $replace, $subject) { ... }"><code>@function str-replace-first($search, $replace, $subject) { ... }</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L265-L277" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Replaces the first occurence of the string with the replacement string</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$search</code></th><td data-label="desc"><p>The value being searched for</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$replace</code></th><td data-label="desc"><p>The replacement string</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$subject</code></th><td data-label="desc"><p>The string being replaced on</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>String</code> or <code>Null</code></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-get-query-branches"><code>get-query-branches</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="function-to-number"><h3 class="item__heading"><a class="item__name" href="#function-to-number">to-number</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function to-number($string) { 
+  // Matrices
+  $strings: &#39;0&#39; &#39;1&#39; &#39;2&#39; &#39;3&#39; &#39;4&#39; &#39;5&#39; &#39;6&#39; &#39;7&#39; &#39;8&#39; &#39;9&#39;;
+  $numbers:  0   1   2   3   4   5   6   7   8   9;
+  
+  // Result
+  $result: 0;
+  $divider: 0;
+  $minus: false;
+
+  // Looping through all characters
+  @for $i from 1 through str-length($string) {
+    $character: str-slice($string, $i, $i);
+    $index: index($strings, $character);
+    
+  
+    @if $character == &#39;-&#39; {
+      $minus: true;
+    }
+    
+    @else if $character == &#39;.&#39; {
+      $divider: 1;
+    }
+    
+    @else {
+      @if type-of($index) != &#39;number&#39; {
+        $result: if($minus, $result * -1, $result);
+        @return _length($result, str-slice($string, $i));
+      }
+
+      $number: nth($numbers, $index);
+      
+      @if $divider == 0 {
+        $result: $result * 10;
+      }
+      
+      @else {
+        // Move the decimal dot to the left
+        $divider: $divider * 10;
+        $number: $number / $divider;
+      }
+      
+      $result: $result + $number;
+    }
+  }
+  
+  @return if($minus, $result * -1, $result);
+ }" data-collapsed="@function to-number($string) { ... }"><code>@function to-number($string) { ... }</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_include-media.scss#L288-L335" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Casts a number to a string</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter</span>Name</th><th scope="col"><span class="visually-hidden">parameter</span>Description</th><th scope="col"><span class="visually-hidden">parameter</span>Type</th><th scope="col"><span class="visually-hidden">parameter</span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$string</code></th><td data-label="desc"><p>Number to be parsed</p></td><td data-label="type"><code>String</code></td><td data-label="default">&mdash;<span class="visually-hidden">none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>List</code> or <code>Null</code></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-parse-expression"><code>parse-expression</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Hugo Giraudel</p></li></ul></section></section></section><footer class="footer" role="contentinfo"><div class="container"><div class="footer__project-info project-info"><!-- Name and URL --><a class="project-info__name" href="http://include-media.com">include-media</a><!-- Version --> <span class="project-info__version">- v1.1.2</span><!-- License --></div><a class="footer__watermark" href="http://sassdoc.com"><img src="./assets/images/logo_light_inline.svg" alt="SassDoc Logo"></a></div></footer></article><script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script><script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script><script>var _gaq = [['_setAccount', 'UA-54012006-4'], ['_trackPageview']];
+  (function(d) {
+    var g = d.createElement('script'),
+        s = d.scripts[0];
+    g.src = '//ssl.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g, s);
+  }(document));</script><script src="./assets/js/main.min.js"></script></body></html>

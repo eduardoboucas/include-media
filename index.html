@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>include-media: Simple, elegant and maintainable media queries in Sass</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	    <meta name="description" content="include-media: Simple, elegant and maintainable media queries in Sass">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta property="og:title" content="include-media: Simple, elegant and maintainable media queries in Sass" />
+		<meta property="og:description" content="include-media is a Sass library for writing CSS media queries in an easy and maintainable way, using a natural and simplistic syntax." />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="http://include-media.com/" />
+		<meta property="og:image" content="http://include-media.com/assets/images/logo.png" />		
+		<link rel="stylesheet" href="css/main.css">
+		<link rel="icon" href="assets/images/favicon.png" />
+	</head>
+	<body>
+		<header>
+			<h1><span>@</span>include-media</h1>
+			<p>Simple, elegant and maintainable media queries in Sass</p>
+			<div class="burger-wrapper">
+				<button class="burger"></button>
+			</div>
+			<nav>
+				<ul>
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#features">Features</a></li>
+					<li><a href="#download">Download</a></li>
+					<li><a href="#documentation">Documentation</a></li>
+					<li><a href="#author">Author</a></li>
+				</ul>
+			</nav>
+			<a class="github-ribbon" href="https://github.com/eduardoboucas/include-media"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>					
+		</header>
+
+		<div class="content">
+			<section id="overview">
+				<h2 class="what-is-it">What is it?</h2>
+				<p><span class="brand">include-media</span> is a Sass library for writing CSS media queries in an easy and maintainable way, using a natural and simplistic syntax.</p>
+				
+				<video autoplay loop>
+				  <source src="assets/video/include-media.mov" type="video/mp4">
+				  <source src="assets/video/include-media.webm" type="video/webm">
+				</video>
+
+				<h2>Why another library?</h2>
+				<p>I spent quite some time experimenting with different libraries and mixins available out there, but eventually all of them failed to do everything I needed in an elegant way. Some of them wouldn't let me mix set breakpoints with case-specific values, others wouldn't properly handle the CSS OR operator and most of them had a syntax that I found complicated and unnatural.</p>
+				<p><span class="brand">include-media</span> was the result of that experience and it includes all the features I wish I had found before, whilst maintaining a simplistic and natural syntax.</p>
+				<p>I wrote an <a href="http://css-tricks.com/approaches-media-queries-sass/">article on CSS-Tricks</a> about this experience, where I explain in detail the problems I found with each of the solutions I experimented with. I also wrote on <a href="http://davidwalsh.name/sass-media-query">David Walsh's blog</a> about the implementation details of <span class="brand">include-media</span>.</p>
+			</section>
+
+			<section id="features">
+				<h2>Features</h2>
+				<h3>Flexible declaration of breakpoints</h3>
+				<p>The library comes with a list of default breakpoints: phone, tablet and desktop. If you want to change them or add more, you can simply re-declare <code>$breakpoints</code> using the Sass map syntax.</p>
+				<ul class="sublime">
+				  <li class="buttons"></li>
+				  <li><span class="orange">$breakpoints</span>: (phone: <span class="blue">320px</span>, tablet: <span class="blue">768px</span>, desktop: <span class="blue">1024px</span>);</li>
+				  <li></li>
+				  <li><span class="gray">/* Inclusive and exclusive operators for a finer control over the intervals */</span></li>
+				  <li><span class="red">@include media</span>(<span class="yellow">"&gt;phone"</span>,<span class="yellow"> "&lt;=tablet"</span>) {</li>
+				  <ul class="tab">
+					  <li><span class="blue">width:</span> <span class="purple">50%</span>;<span class="cursor"></span></li>
+				  </ul>
+				  <li>}</li>
+				</ul>
+
+				<p>Because they're completely dynamic, you can adopt whatever naming convention you want for the breakpoints. Not a fan of using device names? Not a problem.</p>
+				<ul class="sublime">
+				  <li class="buttons"></li>
+				  <li><span class="orange">$breakpoints</span>: (small: <span class="blue">320px</span>, medium: <span class="blue">768px</span>, large: <span class="blue">1024px</span>);</li>
+				  <li></li>
+				  <li><span class="gray">/* Inclusive and exclusive operators for a finer control over the intervals */</span></li>
+				  <li><span class="red">@include media</span>(<span class="yellow">"&gt;medium"</span>,<span class="yellow"> "&lt;=large"</span>) {</li>
+				  <ul class="tab">
+					  <li><span class="blue">width:</span> <span class="purple">100%</span>;<span class="cursor"></span></li>
+				  </ul>
+				  <li>}</li>
+				</ul>				
+
+				<h3>On-the-fly breakpoints</h3>
+				<p>Some elements require additional rules on intermediate breakpoints, so you can create media queries that use both global breakpoints and case-specific values, specified in the units of your preference.</p>
+				<ul class="sublime">
+					<li class="buttons"></li>
+					<li><span class="red">@include media</span>(<span class="yellow">"&gt;desktop", "&lt;=1150px"</span>) {</li>
+					<ul class="tab">
+						<li><span class="blue">font-size: </span><span class="purple">4.0rem</span>;<span class="cursor"></span></li>
+					</ul>
+					<li>}</li>
+				</ul>
+
+				<h3>Smart support for media types</h3>
+				<p>Media types and static expressions are optional and automatically deferred. The list of media types can be modified by declaring <code>$media-expressions</code>.</p>
+				<p>Expressions containing logical disjunctions, such as <a href="http://css-tricks.com/snippets/css/retina-display-media-query/">Chris Coyier's retina declaration</a>, are correctly handled, even when combined with other media types or breakpoints.</p>
+				<ul class="sublime">
+					<li class="buttons"></li>
+					<li><span class="red">@include media</span>(<span class="yellow">"retina2x", "&gt;desktop"</span>) {</li>
+					<ul class="tab">
+						<li><span class="blue">width: </span><span class="purple">100%</span>;<span class="cursor"></span></li>
+					</ul>
+					<li>}</li>
+				</ul>
+
+				<h3>Support for different units</h3>
+				<p>Life isn't just about pixels. Fancy writing your media queries using em or rem units? We've got you covered.</p>
+				<ul class="sublime">
+				  <li class="buttons"></li>
+				  <li><span class="orange">$breakpoints</span>: (phone: <span class="blue">20em</span>, tablet: <span class="blue">48em</span>, desktop: <span class="blue">64em</span>);</li>
+				  <li></li>
+				  <li><span class="red">@include media</span>(<span class="yellow">"&gt;tablet"</span>,<span class="yellow"> "&lt;=52em"</span>) {</li>
+				  <ul class="tab">
+					  <li><span class="blue">background-color:</span> <span class="purple">#bad</span>;<span class="cursor"></span></li>
+				  </ul>
+				  <li>}</li>
+				</ul>
+
+				<h3>Expression aliases</h3>
+				<p>You can create aliases for expressions that you find yourself reusing a lot, no matter how complex they are</p>
+				<ul class="sublime">
+				  <li class="buttons"></li>
+				  <li><span class="orange">$my-weird-bp</span>: <span class="yellow">"&gt;=tablet"</span>, <span class="yellow">"&lt;815px"</span>, <span class="yellow">"landscape"</span>, <span class="yellow">"retina3x"</span>;</li>
+				  <li></li>
+				  <li><span class="red">@include media</span>(<span class="orange">$my-weird-bp</span>...) {</li>
+				  <ul class="tab">
+					  <li><span class="blue">display:</span> <span class="blue">inline-block</span>;<span class="cursor"></span></li>
+				  </ul>
+				  <li>}</li>
+				</ul>
+
+				<h3>Height-based media queries</h3>
+				<p>All expressions result in a <code>min-width</code> expression by default, but you can explicitly use any breakpoint with <code>min-height</code> instead</p>
+				<ul class="sublime">
+				  <li class="buttons"></li>
+				  <li><span class="orange">$breakpoints</span>: (small: <span class="blue">320px</span>, medium: <span class="blue">768px</span>, large: <span class="blue">1024px</span>);</li>
+				  <li></li>
+				  <li><span class="red">@include media</span>(<span class="yellow">"height&gt;small"</span>,<span class="yellow"> "height&lt;=medium"</span>) {</li>
+				  <ul class="tab">
+					  <li><span class="blue">height:</span> <span class="purple">50%</span>;<span class="cursor"></span></li>
+				  </ul>
+				  <li>}</li>
+				</ul>
+			</section>
+
+			<section id="download">
+				<h2>Download</h2>
+				<p><span class="brand">include-media</span> is just one SCSS file that you can import into your project and start using right away.</p>
+				<p>You can either download the file manually <a href="https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss">here</a>, or if you use Bower you can simply run <code>bower install include-media</code>.</p>
+				<p>Finally, import the file <code>dist/_include-media.scss</code> into your project.</p>
+			</section>
+
+			<section id="documentation">
+				<h2>Documentation</h2>
+				<p>Documentation generated with <a href="http://sassdoc.com/">SassDoc</a> is available <a href="/documentation">here</a>.</p>
+			</section>
+
+			<section class="cf" id="author">
+				<h2>The author</h2>
+				<div class="col-1-3 author-image-col">
+					<a href="http://eduardoboucas.com"><img class="headshot" src="assets/images/headshot.jpg"/></a>
+				</div>
+				<div class="col-2-3 author-copy-col">
+					<h3>Eduardo Bouças</h3>
+					<p>Eduardo is a passionate web developer and a terrible dancer. Born in Portugal and based in England. Thinks it's silly to talk about himself in the third person, but still does it.</p>
+					<p>He walks barefoot in <a href="http://eduardoboucas.com">his website</a>, where he occasionally <a href="http://eduardoboucas.com/blog">blogs</a>. He also <a href="https://twitter.com/eduardoboucas">tweets</a>.</p>
+				</div>
+			</section>
+
+			<footer>
+				<!-- From https://ghbtns.com -->
+				<iframe src="https://ghbtns.com/github-btn.html?user=eduardoboucas&repo=include-media&type=star&count=true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+				<p>Proudly hosted by <a href="https://github.com">GitHub</a>.</p>
+			</footer>
+		</div>
+
+		<!-- Google Analytics -->
+		<script>
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			ga('create', 'UA-54012006-4', 'auto');
+			ga('send', 'pageview');
+		</script>
+	</body>
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src="js/main.js"></script>
+</html>
