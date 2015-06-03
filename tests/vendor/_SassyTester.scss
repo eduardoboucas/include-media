@@ -100,18 +100,14 @@
   $length: map-get($data, 'length');
   $tests: map-get($data, 'tests');
   
-  @each $test in $tests {
-    $output: $output 
-      + '
-      Test #{index($tests, $test)} out of #{$length}... '
-      + if(map-get($test, 'pass'), '✔', '✘
-         Expected : `#{map-get($test, "expected")}`
-         Actual   : `#{map-get($test, "actual")}`');
+  @test __#{map-get($data, 'function')} {
+    @each $test in $tests {
+      .test-#{index($tests, $test)} {
+        input: map-get($test, 'input');
+        output: map-get($test, 'actual');
+        expected: map-get($test, 'expected');
+        status: if(map-get($test, 'pass'), '✔', '✘');
+      }
+    }
   }
-  
-  @warn 'Started tests for function `#{map-get($data, "function")}`
-    ----------
-    ' + $output + '
-    ----------
-    Finished: #{map-get($data, "fail")} test(s) failing out of #{$length}';
 }
