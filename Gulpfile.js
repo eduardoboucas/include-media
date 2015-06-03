@@ -10,6 +10,12 @@ var sassInput = [
   'src/_media.scss'
 ];
 
+var sassdocOptions = {
+  config: './.sassdocrc',
+  verbose: true,
+  dest: './sassdoc'
+};
+
 
 // -----------------------------------------------------------------------------
 // Dependencies
@@ -19,6 +25,8 @@ var fs = require('fs');
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var packageInfo = require('./package.json');
+var sassdoc = require('sassdoc');
+
 
 // -----------------------------------------------------------------------------
 // Dist
@@ -60,6 +68,18 @@ gulp.task('test_rubysass', function () {
 
 
 gulp.task('test', ['test_libsass', 'test_rubysass']);
+
+
+// -----------------------------------------------------------------------------
+// Sass API documentation
+// -----------------------------------------------------------------------------
+
+gulp.task('sassdoc', function () {
+  return gulp
+    .src(sassInput)
+    .pipe(sassdoc(sassdocOptions))
+    .resume();
+});
 
 
 // -----------------------------------------------------------------------------
