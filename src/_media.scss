@@ -40,31 +40,3 @@
     }
   }
 }
-
-
-///
-/// Redefines the media context based on a tweakpoints map
-/// The tweakpoints map actually gets merged to the global
-/// breakpoints map for the scope of `media-context` call.
-///
-/// @author Hugo Giraudel
-///
-/// @param {Map}   $tweakpoints  - Map of tweakpoints
-///
-/// @example scss - With a single set breakpoint
-///  @include media-context(('custom': 678px)) {
-///    .foo {
-///      @include media('>phone', '<=custom') {
-///       // ...
-///      }
-///    }
-///  }
-///
-@media media-context($tweakpoints) {
-  $global-breakpoints: $breakpoints;
-  $breakpoints: map-merge($breakpoints, $tweakpoints) !global;
-
-  @content;
-
-  $breakpoints: $global-breakpoints !global;
-}

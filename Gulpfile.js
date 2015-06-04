@@ -7,6 +7,7 @@
 var sassInput = [
   'src/_config.scss',
   'src/helpers/*.scss',
+  'src/plugins/*.scss',
   'src/_media.scss'
 ];
 

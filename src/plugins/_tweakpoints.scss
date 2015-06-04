@@ -1,0 +1,53 @@
+///
+/// This mixin aims at redefining the configuration just for the scope of 
+/// the call. It is helpful when having a component needing an extended 
+/// configuration such as custom breakpoints (referred to as tweakpoints) 
+/// for instance.
+///
+/// @author Hugo Giraudel
+///
+/// @param {Map} $tweakpoints [()] - Map of tweakpoints to be merged with `$breakpoints`
+/// @param {Map} $tweak-media-expressions [()] - Map of tweaked media expressions to be merged with `$media-expression`
+///
+/// @example scss - Extend the global breakpoints with a tweakpoint
+///  @include media-context(('custom': 678px)) {
+///    .foo {
+///      @include media('>phone', '<=custom') {
+///       // ...
+///      }
+///    }
+///  }
+///
+/// @example scss - Extend the global media expressions with a custom one
+///  @include media-context($tweak-media-expressions: ('all': 'all')) {
+///    .foo {
+///      @include media('all', '>phone') {
+///       // ...
+///      }
+///    }
+///  }
+///
+/// @example scss - Extend both configuration maps
+///  @include media-context(('custom': 678px), ('all': 'all')) {
+///    .foo {
+///      @include media('all', '>phone', '<=custom') {
+///       // ...
+///      }
+///    }
+///  }
+///
+@mixin media-context($tweakpoints: (), $tweak-media-expressions: ()) {
+  // Save global configuration
+  $global-breakpoints: $breakpoints;
+  $global-media-expressions: $media-expressions;
+
+  // Update global configuration
+  $breakpoints: map-merge($breakpoints, $tweakpoints) !global;
+  $media-expressions: map-merge($media-expressions, $tweak-media-expressions) !global;
+
+  @content;
+
+  // Restore global configuration
+  $breakpoints: $global-breakpoints !global;
+  $media-expressions: $tweak-media-expressions !global;
+}
