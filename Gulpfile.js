@@ -47,7 +47,7 @@ gulp.task('build', function () {
 // Tests
 // -----------------------------------------------------------------------------
 
-gulp.task('test_libsass', function () {
+gulp.task('test:libsass', function () {
   return gulp
     .src(['./tests/*.scss'])
     .pipe(plugins.sass({ errLogToConsole: true })
@@ -58,7 +58,7 @@ gulp.task('test_libsass', function () {
     );
 });
 
-gulp.task('test_rubysass', function () {
+gulp.task('test:rubysass', function () {
   return plugins
     .rubySass('./tests')
     .on('error', function (err) {
@@ -68,7 +68,7 @@ gulp.task('test_rubysass', function () {
 });
 
 
-gulp.task('test', ['test_libsass', 'test_rubysass']);
+gulp.task('test', ['test:libsass', 'test:rubysass']);
 
 
 // -----------------------------------------------------------------------------
