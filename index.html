@@ -63,6 +63,13 @@
 					  <li><span class="blue">width:</span> <span class="purple">50%</span>;<span class="cursor"></span></li>
 				  </ul>
 				  <li>}</li>
+				  <li></li>
+				  <li><span class="gray">/* Use ligatured operators if you fancy a slicker declaration */</span></li>
+				  <li><span class="red">@include media</span>(<span class="yellow">"&geq;phone"</span>,<span class="yellow"> "&leq;tablet"</span>) {</li>
+				  <ul class="tab">
+					  <li><span class="blue">line-height:</span> <span class="purple">1.5</span>;</li>
+				  </ul>
+				  <li>}</li>				  
 				</ul>
 
 				<p>Because they're completely dynamic, you can adopt whatever naming convention you want for the breakpoints. Not a fan of using device names? Not a problem.</p>
@@ -139,6 +146,25 @@
 				  </ul>
 				  <li>}</li>
 				</ul>
+
+				<h3>Context-specific breakpoints and expressions</h3>
+				<p>If a component has a set of breakpoints or media expressions that aren't shared with the rest of the application, you can set them to exist only within the scope of your component</p>
+				<ul class="sublime">
+				  <li class="buttons"></li>
+                  <li><span class="red">@include media-context</span>(('custom': <span class="purple">678px</span>)) {</li>
+                  <ul class="tab">
+	                  <li><span class="green">.my-component</span> {</li>
+	                  <ul class="tab">
+						<li><span class="red">@include media</span>(<span class="yellow">"&gt;phone"</span>,<span class="yellow"> "&lt;=custom"</span>) {</li>
+							<ul class="tab">
+							  <li><span class="blue">border-radius:</span> <span class="purple">100%</span>;<span class="cursor"></span></li>
+							</ul>
+						<li>}</li>
+	                  </ul>	                  
+	                  <li>}</li>
+                  </ul>
+                  <li>}</li>
+				</ul>				
 			</section>
 
 			<section id="download">
