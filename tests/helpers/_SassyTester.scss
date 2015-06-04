@@ -100,15 +100,15 @@
   $tests: map-get($data, 'tests');
   $length: length($tests);
   $output: '';
+  $indent: '      ';
+  $line-break: '
+';
 
   @each $test in $tests {
     $index: index($tests, $test);
     $expected: map-get($test, 'expected');
     $actual: map-get($test, 'actual');
     $input: map-get($test, 'input');
-    $indent: '      ';
-    $line-break: '
-';
 
     @if not map-get($test, 'pass') {
       $output: $output
@@ -128,11 +128,13 @@
   }
 
   @if str-length($output) > 0 {
+    $fails: map-get($data, 'fail');
+
     $output: $output
       + $line-break 
       + $line-break 
       + $indent
-      + '✘ Oops! #{map-get($data, "fail")} test(s) failed out of #{$length} regarding `#{$function}` function.'
+      + '✘ Oops! #{$fails} test(s) failed out of #{$length} regarding `#{$function}` function.'
       + $line-break
       + $line-break;
 
