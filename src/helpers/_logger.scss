@@ -7,13 +7,13 @@
 
 ///
 /// Log a message either with `@error` if supported 
-/// else with `@warn`, using `function-exists('at-error')`
+/// else with `@warn`, using `feature-exists('at-error')`
 /// to detect support.
 /// 
 /// @param {String} $message - Message to log
 ///
 @function log($message) {
-  @if function-exists('at-error') {
+  @if feature-exists('at-error') {
     @error $message;
   } @else {
     @warn $message;
