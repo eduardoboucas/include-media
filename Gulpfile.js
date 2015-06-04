@@ -50,19 +50,13 @@ gulp.task('build', function () {
 gulp.task('test:libsass', function () {
   return gulp
     .src(['./tests/*.scss'])
-    .pipe(plugins.sass({ errLogToConsole: true })
-      .on('error', function (err) {
-        plugins.sass.logError(err);
-        process.exit(1);
-      })
-    );
+    .pipe(plugins.sass());
 });
 
 gulp.task('test:rubysass', function () {
   return plugins
-    .rubySass('./tests')
+    .rubySass('./tests', { stopOnError: true })
     .on('error', function (err) {
-      console.error('Error!', err.message);
       process.exit(1);
     });
 });
