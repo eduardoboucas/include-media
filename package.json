@@ -25,6 +25,7 @@
     "lint"
   ],
   "devDependencies": {
+    "gh-pages": "^0.3.0",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.5.2",
     "gulp-header": "^1.2.2",

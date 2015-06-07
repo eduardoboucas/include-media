@@ -14,7 +14,7 @@ var sassInput = [
 var sassdocOptions = {
   config: './.sassdocrc',
   verbose: true,
-  dest: './sassdoc'
+  dest: './sassdoc/documentation'
 };
 
 
@@ -27,6 +27,8 @@ var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
 var packageInfo = require('./package.json');
 var sassdoc = require('sassdoc');
+var path = require('path');
+var gh = require('gh-pages');
 
 
 // -----------------------------------------------------------------------------
@@ -78,7 +80,28 @@ gulp.task('sassdoc', function () {
 
 
 // -----------------------------------------------------------------------------
+// GH-pages task
+// -----------------------------------------------------------------------------
+
+gulp.task('gh-pages', ['build', 'sassdoc'], function () {
+  gh.publish(path.join(__dirname, 'sassdoc'), {
+    add: true,
+    message: 'Updated SassDoc'
+  }, function(err) {
+    if (err) console.log(err);
+  });
+});
+
+
+// -----------------------------------------------------------------------------
 // Default task
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['test', 'build']);
+gulp.task('default', ['build', 'test']);
+
+
+// -----------------------------------------------------------------------------
+// Deploy documentation task
+// -----------------------------------------------------------------------------
+
+gulp.task('deploy', ['gh-pages']);
