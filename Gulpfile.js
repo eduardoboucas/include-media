@@ -52,7 +52,10 @@ gulp.task('test:rubysass', function () {
 });
 
 
-gulp.task('test', ['test:libsass', 'test:rubysass']);
+gulp.task('test', ['build'], function () {
+  gulp.start('test:libsass');
+  gulp.start('test:rubysass');
+});
 
 
 // -----------------------------------------------------------------------------
