@@ -1,24 +1,6 @@
 'use strict';
 
 // -----------------------------------------------------------------------------
-// Configuration
-// -----------------------------------------------------------------------------
-
-var sassInput = [
-  'src/_config.scss',
-  'src/helpers/*.scss',
-  'src/plugins/*.scss',
-  'src/_media.scss'
-];
-
-var sassdocOptions = {
-  config: './.sassdocrc',
-  verbose: true,
-  dest: './sassdoc/documentation'
-};
-
-
-// -----------------------------------------------------------------------------
 // Dependencies
 // -----------------------------------------------------------------------------
 
@@ -29,6 +11,7 @@ var packageInfo = require('./package.json');
 var sassdoc = require('sassdoc');
 var path = require('path');
 var gh = require('gh-pages');
+var yaml = require('js-yaml');
 
 
 // -----------------------------------------------------------------------------
@@ -37,7 +20,12 @@ var gh = require('gh-pages');
 
 gulp.task('build', function () {
   return gulp
-    .src(sassInput)
+    .src([
+      'src/_config.scss',
+      'src/helpers/*.scss',
+      'src/plugins/*.scss',
+      'src/_media.scss'
+    ])
     .pipe(plugins.concat('_include-media.scss'))
     .pipe(plugins.header(fs.readFileSync('./banner.txt', 'utf-8')))
     .pipe(plugins.replace(/@version@/, packageInfo.version))
@@ -72,9 +60,13 @@ gulp.task('test', ['test:libsass', 'test:rubysass']);
 // -----------------------------------------------------------------------------
 
 gulp.task('sassdoc', function () {
+  var options = yaml.safeLoad(fs.readFileSync('.sassdocrc', 'utf-8'));
+  options.dest = './sassdoc/documentation';
+  options.verbose = true;
+
   return gulp
-    .src(sassInput)
-    .pipe(sassdoc(sassdocOptions))
+    .src('src/**/*.scss')
+    .pipe(sassdoc(options))
     .resume();
 });
 
@@ -86,7 +78,10 @@ gulp.task('sassdoc', function () {
 gulp.task('gh-pages', ['build', 'sassdoc'], function () {
   gh.publish(path.join(__dirname, 'sassdoc'), {
     add: true,
-    message: 'Updated SassDoc'
+    message: 'Automatic SassDoc update from Gulp',
+    logger: function(message) {
+      console.log(message);
+    }
   }, function(err) {
     if (err) console.log(err);
   });

@@ -33,6 +33,7 @@
     "gulp-replace": "^0.5.3",
     "gulp-ruby-sass": "^1.0.5",
     "gulp-sass": "^2.0.1",
+    "js-yaml": "^3.3.1",
     "pre-commit": "^1.0.7",
     "sassdoc": "^2.1.13"
   }
