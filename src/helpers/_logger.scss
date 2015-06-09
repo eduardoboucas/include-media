@@ -17,7 +17,7 @@
     @error $message;
   } @else {
     @warn $message;
-    $_: noop();
+    @if noop() {}
   }
 
   @return $message;
