@@ -66,6 +66,7 @@ gulp.task('sassdoc', function () {
   var options = yaml.safeLoad(fs.readFileSync('.sassdocrc', 'utf-8'));
   options.dest = './sassdoc/documentation';
   options.verbose = true;
+  options.package = require('./package.json');
 
   return gulp
     .src('src/**/*.scss')
