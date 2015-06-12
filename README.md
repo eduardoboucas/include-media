@@ -113,4 +113,4 @@ We are [Eduardo Bouças](https://twitter.com/eduardoboucas) and [Hugo Giraudel](
 ## We want to hear from you
 We'll be on the lookout for your [issues](https://github.com/eduardoboucas/include-media/issues) and [pull requests](https://github.com/eduardoboucas/include-media/pulls) — but make sure you read [this](https://github.com/eduardoboucas/include-media/blob/master/CONTRIBUTING.md) before submitting any code!
 
-Made with ♥
+Made with :heart:
