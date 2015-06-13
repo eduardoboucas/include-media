@@ -43,4 +43,4 @@ We'll be on the lookout for your [issues](https://github.com/eduardoboucas/inclu
 
 ## License
 
-This project is licensed under [the terms of the MIT license](https://github.com/eduardoboucas/include-media/blob/master/LICENSE.md)
+This project is licensed under [the terms of the MIT license](https://github.com/eduardoboucas/include-media/blob/master/LICENSE.md).
