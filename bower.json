@@ -5,7 +5,7 @@
   "authors": [
     "Eduardo Boucas <mail@eduardoboucas.com>"
   ],
-  "description": "Write simple, elegant and maintainable media queries with Sass",
+  "description": "Simple, elegant and maintainable media queries in Sass",
   "main": "dist/_include-media.scss",
   "keywords": [
     "breakpoint",
