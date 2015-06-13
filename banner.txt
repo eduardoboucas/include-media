@@ -13,5 +13,6 @@
 //         Authors: Eduardo Boucas (@eduardoboucas)
 //                  Hugo Giraudel (@hugogiraudel)
 //
+//      This project is licensed under the terms of the MIT license
 
 
