@@ -438,7 +438,7 @@ $unit-intervals: (
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
 @mixin media($conditions...) {
-  @if length($conditions) == 0 {
+  @if length($conditions) == 0 or (variable-exists(media-fallback) and $media-fallback) {
     @content;
   } @else {
     @media #{unquote(parse-expression(nth($conditions, 1)))} {
