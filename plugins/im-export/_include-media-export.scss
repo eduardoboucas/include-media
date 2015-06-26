@@ -3,7 +3,7 @@
   $target-value: map-get($breakpoints, $target-name);
 
   @each $name, $value in $breakpoints {
-    $json: append($json, '"#{$name}":["#{$value}",#{$target-value >= $value}]', 'comma');
+    $json: append($json, '"#{$name}":#{$target-value >= $value}', 'comma');
   }
 
   @return '{#{$json}}' ;
