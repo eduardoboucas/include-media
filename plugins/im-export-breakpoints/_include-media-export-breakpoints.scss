@@ -1,0 +1,40 @@
+@function im-breakpoints-to-json($target-name) {
+  $json: '';
+  $target-value: map-get($breakpoints, $target-name);
+
+  @each $name, $value in $breakpoints {
+    $json: if($json == '', '{', $json + ',');
+    $state: $target-value >= $value;
+    $json: $json + '"#{$name}":#{$state}';
+  }
+
+  $json: $json + '}';
+
+  @return $json;
+}
+
+@mixin im-export-breakpoints($element: body) {
+  @each $name, $value in $breakpoints {
+    @include media('>=#{$name}') {
+      #{$element} {
+        content: im-breakpoints-to-json($name);
+      }
+    }
+  }
+}
+
+
+
+/*
+    function isBreakpointActive(breakpoint) {
+        var breakpoints = readBreakpoints();
+
+        return breakpoints[breakpoint];
+    }
+
+    function readBreakpoints() {
+        var breakpoints = window.getComputedStyle(document.body).content.replace(/'/g, '');
+
+        return JSON.parse(breakpoints);
+    }
+*/
