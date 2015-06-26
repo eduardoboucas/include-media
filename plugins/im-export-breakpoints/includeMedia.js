@@ -6,7 +6,7 @@ var includeMedia = (function () {
   }
 
   function readBreakpoints() {
-    if (window.getComputedStyle && (window.getComputedStyle(element).content != "")) {
+    if (window.getComputedStyle && (window.getComputedStyle(element).content != '')) {
       var breakpoints = window.getComputedStyle(element).content.replace(/'/g, '');
 
       return JSON.parse(breakpoints);
