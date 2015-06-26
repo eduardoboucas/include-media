@@ -1,24 +1,23 @@
 @function im-breakpoints-to-json($target-name) {
-  $json: '';
+  $json: ('"_": "#{$target-name}"');
   $target-value: map-get($breakpoints, $target-name);
 
   @each $name, $value in $breakpoints {
-    $json: if($json == '', '{', $json + ',');
-    $state: $target-value >= $value;
-    $json: $json + '"#{$name}":#{$state}';
+    $json: append($json, '"#{$name}":["#{$value}",#{$target-value >= $value}]', 'comma');
   }
 
-  $json: $json + '}';
-
-  @return $json;
+  @return '{#{$json}}' ;
 }
 
-@mixin im-export-breakpoints($element: body) {
+@mixin im-export($element) {
   @each $name, $value in $breakpoints {
     @include media('>=#{$name}') {
       #{$element} {
         content: im-breakpoints-to-json($name);
+        display: none;
       }
     }
   }
 }
+
+@include im-export(if(variable-exists('im-export-element'), $im-export-element + '::after', 'body::after'));
