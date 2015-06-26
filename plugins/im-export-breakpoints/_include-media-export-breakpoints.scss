@@ -22,19 +22,3 @@
     }
   }
 }
-
-
-
-/*
-    function isBreakpointActive(breakpoint) {
-        var breakpoints = readBreakpoints();
-
-        return breakpoints[breakpoint];
-    }
-
-    function readBreakpoints() {
-        var breakpoints = window.getComputedStyle(document.body).content.replace(/'/g, '');
-
-        return JSON.parse(breakpoints);
-    }
-*/
