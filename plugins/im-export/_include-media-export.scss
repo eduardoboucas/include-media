@@ -7,14 +7,21 @@
 /// @return {String} - Resulting JSON string
 ///
 /// @example json
-///  '{"active": "tablet", "breakpoints": {"phone": true, "tablet": true, "desktop": false}}'
+///  '{"current": "phone", "breakpoints": {"phone":{"value": "320px", "active": true}, "tablet":{"value": "768px"}, "desktop":{"value": "1024px"}}}'
 ///
 @function im-breakpoints-to-json($target-name) {
   $breakpoints-json: ();
   $target-value: map-get($breakpoints, $target-name);
 
   @each $name, $value in $breakpoints {
-    $breakpoints-json: append($breakpoints-json, '"#{$name}":["#{$value}", #{$target-value >= $value}]', 'comma');
+    $breakpoint: '"#{$name}":{"value": "#{$value}"';
+    
+    @if $name == $target-name {
+      $breakpoint: $breakpoint + ', "active": true'
+    }
+    
+    $breakpoint: $breakpoint + '}';
+    $breakpoints-json: append($breakpoints-json, $breakpoint, 'comma');
   }
   
   @return '{"current": "#{$target-name}", "breakpoints": {#{$breakpoints-json}}}';
@@ -30,7 +37,10 @@
     @include media('>=#{$name}') {
       #{$element} {
         content: im-breakpoints-to-json($name);
-        display: none;
+        display: block;
+        height: 0;
+        overflow: hidden;
+        width: 0;
       }
     }
   }
