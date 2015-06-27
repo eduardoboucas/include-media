@@ -17,9 +17,7 @@
     $breakpoints-json: append($breakpoints-json, '"#{$name}":["#{$value}", #{$target-value >= $value}]', 'comma');
   }
   
-  $final-json: '{"active": "#{$target-name}", "breakpoints": {#{$breakpoints-json}}}';
-
-  @return $final-json ;
+  @return '{"current": "#{$target-name}", "breakpoints": {#{$breakpoints-json}}}';
 }
 
 ///
