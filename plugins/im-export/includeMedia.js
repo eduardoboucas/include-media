@@ -43,7 +43,7 @@ var im = (function () {
       }
     }
 
-    return imData['active'];
+    return imData.active;
   }
 
   function getBreakpointValue(breakpoint, asNumber) {
@@ -55,7 +55,6 @@ var im = (function () {
     }
 
     var result = imData.breakpoints[breakpoint].value;
-    asNumber = asNumber || false;
     
     if (asNumber) {
       result = parseFloat(result);
