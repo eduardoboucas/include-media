@@ -27,7 +27,7 @@ var im = (function () {
       return false;
     }
 
-    return imData['breakpoints'][breakpoint].hasOwnProperty('active') && imData['breakpoints'][breakpoint].active;
+    return imData.breakpoints[breakpoint].hasOwnProperty('active') && imData.breakpoints[breakpoint].active;
   }
 
   function getActiveBreakpoint() {
@@ -38,10 +38,8 @@ var im = (function () {
     }
 
     for (var breakpoint in imData.breakpoints) {
-      if (imData.breakpoints.hasOwnProperty(breakpoint)) {
-        if (imData.breakpoints[breakpoint].active) {
-          return breakpoint;
-        }
+      if (imData.breakpoints.hasOwnProperty(breakpoint) && imData.breakpoints[breakpoint].active) {
+        return breakpoint;
       }
     }
 
@@ -56,7 +54,7 @@ var im = (function () {
       return false;
     }
 
-    var result = imData['breakpoints'][breakpoint].value;
+    var result = imData.breakpoints[breakpoint].value;
     asNumber = asNumber || false;
     
     if (asNumber) {

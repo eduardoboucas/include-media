@@ -14,7 +14,7 @@
   $target-value: map-get($breakpoints, $target-name);
 
   @each $name, $value in $breakpoints {
-    $breakpoint: '"#{$name}":{"value": "#{$value}"';
+    $breakpoint: '"#{$name}": {"value": "#{$value}"';
     
     @if $name == $target-name {
       $breakpoint: $breakpoint + ', "active": true'
