@@ -9,11 +9,11 @@ var im = (function () {
     var result = false;
 
     if (window.getComputedStyle && (window.getComputedStyle(element, '::after').content != '')) {
-      var imData = window.getComputedStyle(element, '::after').content.replace(/'/g, '');
+      var data = window.getComputedStyle(element, '::after').content.replace(/'/g, '');
       var result = false;
 
       try {
-        result = JSON.parse(imData);
+        result = JSON.parse(data);
       } catch(err) {}
     }
 
@@ -21,52 +21,59 @@ var im = (function () {
   }
 
   function isBreakpointActive(breakpoint) {
-    var imData = readBreakpoints();
+    var data = readBreakpoints();
 
-    if (!imData) {
+    if (!data) {
       return false;
     }
 
-    return imData.breakpoints[breakpoint].hasOwnProperty('active') && imData.breakpoints[breakpoint].active;
+    return data.hasOwnProperty(breakpoint) &&
+           data[breakpoint].hasOwnProperty('active') && 
+           data[breakpoint].active;
   }
 
-  function getActiveBreakpoint() {
-    var imData = readBreakpoints();
+  function isBreakpointNotActive(breakpoint) {
+    return !isBreakpointActive(breakpoint);
+  }
+
+  function getLargestActiveBreakpoint() {
+    var data = readBreakpoints();
     
-    if (!imData) {
+    if (!data) {
       return false;
     }
 
-    for (var breakpoint in imData.breakpoints) {
-      if (imData.breakpoints.hasOwnProperty(breakpoint) && imData.breakpoints[breakpoint].active) {
-        return breakpoint;
+    var largest = {name: false, value: 0};
+
+    for (var breakpoint in data) {
+      if (data.hasOwnProperty(breakpoint) && data[breakpoint].hasOwnProperty('active')) {
+        var breakpointValue = parseFloat(data[breakpoint].value);
+
+        if (data[breakpoint].active && (breakpointValue > largest.value)) {
+          largest = {name: breakpoint, value: breakpointValue};
+        }
       }
     }
 
-    return imData.active;
+    return largest.name;
   }
 
   function getBreakpointValue(breakpoint, asNumber) {
-    var imData = readBreakpoints();
+    var data = readBreakpoints();
     var result = false;
 
-    if (!imData) {
+    if (!data || !data.hasOwnProperty(breakpoint)) {
       return false;
     }
 
-    var result = imData.breakpoints[breakpoint].value;
-    
-    if (asNumber) {
-      result = parseFloat(result);
-    }
-
-    return result;
+    return asNumber ? parseFloat(data[breakpoint].value) : data[breakpoint].value;
   }
 
   return {
     setElement: setElement,
-    isActive: isBreakpointActive,
-    getActive: getActiveBreakpoint,
+    greaterThan: isBreakpointActive,
+    lessThan: isBreakpointNotActive,
+    getLargestActive: getLargestActiveBreakpoint,
     getValue: getBreakpointValue
   }
 })();

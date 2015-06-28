@@ -1,22 +1,22 @@
 ///
-/// Generates a JSON string with information about whether each of the
-/// declared breakpoints is active (i.e. viewport width >= breakpoint)
+/// Generates a JSON string with each breakpoint's value and information about
+/// which of the breakpoints are currently active (i.e. viewport width >= breakpoint)
 ///
 /// @param {String} $target-name - Name of breakpoint to evaluate
 ///
 /// @return {String} - Resulting JSON string
 ///
-/// @example json
-///  '{"current": "phone", "breakpoints": {"phone":{"value": "320px", "active": true}, "tablet":{"value": "768px"}, "desktop":{"value": "1024px"}}}'
+/// @example json - For a width of 900px
+///  '{"phone":{"value": "320px", "active": true}, "tablet":{"value": "768px", "active": true}, "desktop":{"value": "1024px"}}'
 ///
 @function im-breakpoints-to-json($target-name) {
   $breakpoints-json: ();
   $target-value: map-get($breakpoints, $target-name);
 
   @each $name, $value in $breakpoints {
-    $breakpoint: '"#{$name}": {"value": "#{$value}"';
+    $breakpoint: '"#{$name}":{"value": "#{$value}"';
     
-    @if $name == $target-name {
+    @if $target-value >= $value {
       $breakpoint: $breakpoint + ', "active": true'
     }
     
@@ -24,7 +24,7 @@
     $breakpoints-json: append($breakpoints-json, $breakpoint, 'comma');
   }
   
-  @return '{"current": "#{$target-name}", "breakpoints": {#{$breakpoints-json}}}';
+  @return '{#{$breakpoints-json}}';
 }
 
 ///
