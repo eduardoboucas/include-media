@@ -1,35 +1,37 @@
 var im = (function () {
   var element = document.body;
+  var autoUpdate = true;
+  var breakpoints = false;
 
   function setElement(newElement) {
     element = newElement;
   }
 
-  function readBreakpoints() {
-    var result = false;
+  function setUpdateMode(updateMode) {
+    if (updateMode == 'manual') {
+      autoUpdate = false;
+      readBreakpoints();
+    }
+  }
 
+  function readBreakpoints() {
     if (window.getComputedStyle && (window.getComputedStyle(element, '::after').content != '')) {
       var data = window.getComputedStyle(element, '::after').content.replace(/'/g, '');
-      var result = false;
 
       try {
-        result = JSON.parse(data);
+        breakpoints = JSON.parse(data);
       } catch(err) {}
     }
-
-    return result;
   }
 
   function isBreakpointActive(breakpoint) {
-    var data = readBreakpoints();
-
-    if (!data) {
-      return false;
+    if (autoUpdate) {
+      readBreakpoints();
     }
 
-    return data.hasOwnProperty(breakpoint) &&
-           data[breakpoint].hasOwnProperty('active') && 
-           data[breakpoint].active;
+    return breakpoints.hasOwnProperty(breakpoint) &&
+           breakpoints[breakpoint].hasOwnProperty('active') && 
+           breakpoints[breakpoint].active;
   }
 
   function isBreakpointNotActive(breakpoint) {
@@ -37,19 +39,17 @@ var im = (function () {
   }
 
   function getLargestActiveBreakpoint() {
-    var data = readBreakpoints();
-    
-    if (!data) {
-      return false;
+    if (autoUpdate) {
+      readBreakpoints();
     }
 
     var largest = {name: false, value: 0};
 
-    for (var breakpoint in data) {
-      if (data.hasOwnProperty(breakpoint) && data[breakpoint].hasOwnProperty('active')) {
-        var breakpointValue = parseFloat(data[breakpoint].value);
+    for (var breakpoint in breakpoints) {
+      if (breakpoints.hasOwnProperty(breakpoint) && breakpoints[breakpoint].hasOwnProperty('active')) {
+        var breakpointValue = parseFloat(breakpoints[breakpoint].value);
 
-        if (data[breakpoint].active && (breakpointValue > largest.value)) {
+        if (breakpoints[breakpoint].active && (breakpointValue > largest.value)) {
           largest = {name: breakpoint, value: breakpointValue};
         }
       }
@@ -59,21 +59,24 @@ var im = (function () {
   }
 
   function getBreakpointValue(breakpoint, asNumber) {
-    var data = readBreakpoints();
-    var result = false;
+    if (autoUpdate) {
+      readBreakpoints();
+    }
 
-    if (!data || !data.hasOwnProperty(breakpoint)) {
+    if (!breakpoints || !breakpoints.hasOwnProperty(breakpoint)) {
       return false;
     }
 
-    return asNumber ? parseFloat(data[breakpoint].value) : data[breakpoint].value;
+    return asNumber ? parseFloat(breakpoints[breakpoint].value) : breakpoints[breakpoint].value;
   }
 
   return {
     setElement: setElement,
+    setUpdateMode: setUpdateMode,
     greaterThan: isBreakpointActive,
     lessThan: isBreakpointNotActive,
     getLargestActive: getLargestActiveBreakpoint,
-    getValue: getBreakpointValue
+    getValue: getBreakpointValue,
+    update: readBreakpoints
   }
 })();
