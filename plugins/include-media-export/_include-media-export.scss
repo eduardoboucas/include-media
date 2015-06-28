@@ -7,20 +7,14 @@
 /// @return {String} - Resulting JSON string
 ///
 /// @example json - For a width of 900px
-///  '{"phone":{"value": "320px", "active": true}, "tablet":{"value": "768px", "active": true}, "desktop":{"value": "1024px"}}'
+///  '{"phone":{"value": "320px", "active": true}, "tablet":{"value": "768px", "active": true}, "desktop":{"value": "1024px", "active": false}}'
 ///
 @function im-breakpoints-to-json($target-name) {
   $breakpoints-json: ();
   $target-value: map-get($breakpoints, $target-name);
 
   @each $name, $value in $breakpoints {
-    $breakpoint: '"#{$name}":{"value": "#{$value}"';
-    
-    @if $target-value >= $value {
-      $breakpoint: $breakpoint + ', "active": true'
-    }
-    
-    $breakpoint: $breakpoint + '}';
+    $breakpoint: '"#{$name}":{"value": "#{$value}", "active": #{$target-value >= $value}}';
     $breakpoints-json: append($breakpoints-json, $breakpoint, 'comma');
   }
   
