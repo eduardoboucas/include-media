@@ -38,7 +38,7 @@ var im = (function () {
     return !isBreakpointActive(breakpoint);
   }
 
-  function getLargestActiveBreakpoint() {
+  function getActiveBreakpoint() {
     if (autoUpdate) {
       readBreakpoints();
     }
@@ -75,7 +75,7 @@ var im = (function () {
     setUpdateMode: setUpdateMode,
     greaterThan: isBreakpointActive,
     lessThan: isBreakpointNotActive,
-    getLargestActive: getLargestActiveBreakpoint,
+    getActive: getActiveBreakpoint,
     getValue: getBreakpointValue,
     update: readBreakpoints
   }

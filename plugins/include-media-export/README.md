@@ -54,14 +54,14 @@ if (im.lessThan('tablet')) {
 }
 ```
 ---
-###`im.getLargestActive()`
+###`im.getActive()`
 Returns the name of the largest breakpoint active
 
 - **Accepts:** N/A
 - **Returns:** `String`
 - **Example:**
 ```javascript
-if (im.getLargestActive() == 'phone') {
+if (im.getActive() == 'phone') {
     console.log('This looks like a phone');
 }
 ```
