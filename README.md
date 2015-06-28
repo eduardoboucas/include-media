@@ -24,6 +24,14 @@ Finally, include the file in your project using an `@import` statement.
 
 Examples can be found [here](http://include-media.com/#features).
 
+## Plugins
+
+The library can be extended with plugins.
+
+- **[Export breakpoints plugin](plugins/include-media-export)**: Exports the state of the breakpoints in a JSON format, including a JavaScript library to access them.
+
+If you wrote a plugin for **include-media** and want to get it listed, let us know!
+
 ## Learn more
 
 - [include-media.com](http://include-media.com)
