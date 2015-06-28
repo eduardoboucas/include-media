@@ -40,7 +40,7 @@ if (im.greaterThan('desktop')) {
     console.log('This is a really big screen');
 }
 ```
-
+---
 ###`im.lessThan(breakpoint)`
 Determines whether the current viewport is less than a set breakpoint
 
@@ -53,7 +53,7 @@ if (im.lessThan('tablet')) {
     console.log('This looks like a phone or a small tablet');
 }
 ```
-
+---
 ###`im.getLargestActive()`
 Returns the name of the largest breakpoint active
 
@@ -65,7 +65,7 @@ if (im.getLargestActive() == 'phone') {
     console.log('This looks like a phone');
 }
 ```
-
+---
 ###`im.getValue(breakpoint, asNumber)`
 Returns a breakpoint's value
 
@@ -77,7 +77,7 @@ Returns a breakpoint's value
 ```javascript
 console.log('For me, a desktop has a width of ' + im.getValue('desktop'));
 ```
-
+---
 ###`im.setElement(element)`
 Defines the element where the JSON data is contained (default is `body::after`)
 
@@ -88,7 +88,7 @@ Defines the element where the JSON data is contained (default is `body::after`)
 ```javascript
 im.setElement(document.getElementById('my-element'));
 ```
-
+---
 ###`im.setUpdateMode(mode)`
 Defines how the library polls the DOM element for updates. By default, it happens automatically when any query function is executed. The user can decide to take control of when the updates actually happen, by setting the update mode to `'manual'` and calling `im.update()` to update.
 
@@ -101,7 +101,7 @@ Note that when this function is called for the first time it automatically runs 
 ```javascript
 im.setUpdateMode('manual');
 ```
-
+---
 ###`im.update()`
 Updates the information about the state of the breakpoints by querying the DOM and parsing the JSON object. You **don't** need to use this function unless you set the update mode to `manual` (see above).
 
