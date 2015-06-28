@@ -21,10 +21,9 @@ var yaml = require('js-yaml');
 gulp.task('build', function () {
   return gulp
     .src([
-      'src/_config.scss',
-      'src/helpers/*.scss',
-      'src/plugins/*.scss',
-      'src/_media.scss'
+      'src/core/_configuration.scss',
+      'src/core/helpers/*.scss',
+      'src/core/_media.scss'
     ])
     .pipe(plugins.concat('_include-media.scss'))
     .pipe(plugins.header(fs.readFileSync('./banner.txt', 'utf-8')))
