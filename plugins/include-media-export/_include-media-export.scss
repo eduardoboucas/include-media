@@ -1,0 +1,43 @@
+///
+/// Generates a JSON string with each breakpoint's value and information about
+/// which of the breakpoints are currently active (i.e. viewport width >= breakpoint)
+///
+/// @param {String} $target-name - Name of breakpoint to evaluate
+///
+/// @return {String} - Resulting JSON string
+///
+/// @example json - For a width of 900px
+///  '{"phone":{"value": "320px", "active": true}, "tablet":{"value": "768px", "active": true}, "desktop":{"value": "1024px", "active": false}}'
+///
+@function im-breakpoints-to-json($target-name) {
+  $breakpoints-json: ();
+  $target-value: map-get($breakpoints, $target-name);
+
+  @each $name, $value in $breakpoints {
+    $breakpoint: '"#{$name}":{"value": "#{$value}", "active": #{$target-value >= $value}}';
+    $breakpoints-json: append($breakpoints-json, $breakpoint, 'comma');
+  }
+  
+  @return '{#{$breakpoints-json}}';
+}
+
+///
+/// Generates the media queries necessary to export breakpoints
+///
+/// @param {String} $element - Element to append JSON data to
+///
+@mixin im-export($element) {
+  @each $name, $value in $breakpoints {
+    @include media('>=#{$name}') {
+      #{$element} {
+        content: im-breakpoints-to-json($name);
+        display: block;
+        height: 0;
+        overflow: hidden;
+        width: 0;
+      }
+    }
+  }
+}
+
+@include im-export(if(variable-exists('im-export-element'), $im-export-element + '::after', 'body::after'));
