@@ -75,3 +75,86 @@ $unit-intervals: (
   'em': 0.01,
   'rem': 0.1
 ) !default;
+
+///
+/// Defines whether support for media queries is available, useful for creating separate stylesheets
+/// for browsers that don't support media queries
+///
+/// @example scss - Disables support for media queries
+///  $im-media-support: false;
+///   @include media(">=tablet") {
+///     .foo {
+///       color: tomato;
+///     }
+///   }
+///
+///   /* Generates: */
+///   .foo {
+///     color: tomato;
+///   }
+///
+$im-media-support: true !default;
+
+///
+/// Selects which breakpoint to emulate when support for media queries is disabled. Media queries that start at or
+/// intercept the breakpoint will be displayed, any others will be ignored.
+///
+/// @example scss - This media query will show because it intercepts the static breakpoint
+///  $im-media-support: false;
+///   $im-no-media-breakpoint: 'desktop';
+///   @include media(">=tablet") {
+///     .foo {
+///       color: tomato;
+///     }
+///   }
+///
+///   /* Generates: */
+///   .foo {
+///     color: tomato;
+///   }
+///
+/// @example scss - This media query will NOT show because it does not intercept the desktop breakpoint
+///  $im-media-support: false;
+///   $im-no-media-breakpoint: 'tablet';
+///   @include media(">=desktop") {
+///     .foo {
+///       color: tomato;
+///     }
+///   }
+///
+///   /* No output */
+///
+$im-no-media-breakpoint: 'desktop' !default;
+
+///
+/// Selects which media expressions are allowed in an expression for it to be used when media queries
+/// are not supported.
+///
+/// @example scss - This media query will show because it intercepts the static breakpoint and contains only accepted media expressions
+///  $im-media-support: false;
+///   $im-no-media-breakpoint: 'desktop';
+///   $im-no-media-expressions: ('screen');
+///   @include media(">=tablet", "screen") {
+///     .foo {
+///       color: tomato;
+///     }
+///   }
+///
+///   /* Generates: */
+///   .foo {
+///     color: tomato;
+///   }
+///
+/// @example scss - This media query will NOT show because it intercepts the static breakpoint but contains a media expression that is not accepted
+///  $im-media-support: false;
+///   $im-no-media-breakpoint: 'desktop';
+///   $im-no-media-expressions: ('screen');
+///   @include media(">=tablet", "retina2x") {
+///     .foo {
+///       color: tomato;
+///     }
+///   }
+///
+///   /* No output */
+///
+$im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
