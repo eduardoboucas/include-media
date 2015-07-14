@@ -177,35 +177,6 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
-@function im-media-show($conditions...) {
-  @if $im-media-support {
-    @return true;
-  }
-  
-  $show: true;
-  $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
-  
-  @each $condition in $conditions {
-    @if $show {
-      @if not map-has-key($media-expressions, $condition) {
-        $operator: get-expression-operator($condition);
-        $prefix: get-expression-prefix($operator);
-        $value: get-expression-value($condition, $operator);
-        
-        @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
-            ($prefix == 'min' and $value > $no-media-breakpoint-value) {
-          $show: false;
-        }    
-      } @else {
-        @if not index($im-no-media-expressions, $condition) {
-          $show: false;
-        }
-      }       
-    }
-  }
-  
-  @return $show;
-}
 ////
 /// Cross-engine logging engine
 /// @author Hugo Giraudel
@@ -565,22 +536,22 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 /// @param {Arglist}   $conditions  - Media query conditions
 ///
 /// @example scss - With a single set breakpoint
-///  @include media(">phone") { }
+///  @include media('>phone') { }
 ///
 /// @example scss - With two set breakpoints
-///  @include media(">phone", "<=tablet") { } 
+///  @include media('>phone', '<=tablet') { } 
 ///
 /// @example scss - With custom values
-///  @include media(">=358px", "<850px") { } 
+///  @include media('>=358px', '<850px') { } 
 ///
 /// @example scss - With set breakpoints with custom values
-///  @include media(">desktop", "<=1350px") { } 
+///  @include media('>desktop', '<=1350px') { } 
 ///
 /// @example scss - With a static expression
-///  @include media("retina2x") { } 
+///  @include media('retina2x') { } 
 ///
 /// @example scss - Mixing everything
-///  @include media(">=350px", "<tablet", "retina3x") { } 
+///  @include media('>=350px', '<tablet', 'retina3x') { } 
 ///
 @mixin media($conditions...) {
   @if ($im-media-support and length($conditions) == 0) or 
