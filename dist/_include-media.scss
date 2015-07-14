@@ -71,19 +71,19 @@ $media-expressions: (
 /// Defines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals
 ///
 /// @example scss - Interval for pixels is defined as `1` by default
-///  @include media(">128px") {}
+///  @include media('>128px') {}
 ///
 ///   /* Generates: */
 ///   @media (min-width: 129px) {}
 ///
 /// @example scss - Interval for ems is defined as `0.01` by default
-///  @include media(">20em") {}
+///  @include media('>20em') {}
 ///
 ///   /* Generates: */
 ///   @media (min-width: 20.01em) {}
 ///
 /// @example scss - Interval for rems is defined as `0.1` by default, to be used with `font-size: 62.5%;`
-///  @include media(">2.0rem") {}
+///  @include media('>2.0rem') {}
 ///
 ///   /* Generates: */
 ///   @media (min-width: 2.1rem) {}
@@ -96,11 +96,11 @@ $unit-intervals: (
 
 ///
 /// Defines whether support for media queries is available, useful for creating separate stylesheets
-/// for browsers that don't support media queries
+/// for browsers that don't support media queries.
 ///
 /// @example scss - Disables support for media queries
 ///  $im-media-support: false;
-///   @include media(">=tablet") {
+///   @include media('>=tablet') {
 ///     .foo {
 ///       color: tomato;
 ///     }
@@ -120,7 +120,7 @@ $im-media-support: true !default;
 /// @example scss - This media query will show because it intercepts the static breakpoint
 ///  $im-media-support: false;
 ///   $im-no-media-breakpoint: 'desktop';
-///   @include media(">=tablet") {
+///   @include media('>=tablet') {
 ///     .foo {
 ///       color: tomato;
 ///     }
@@ -134,7 +134,7 @@ $im-media-support: true !default;
 /// @example scss - This media query will NOT show because it does not intercept the desktop breakpoint
 ///  $im-media-support: false;
 ///   $im-no-media-breakpoint: 'tablet';
-///   @include media(">=desktop") {
+///   @include media('>=desktop') {
 ///     .foo {
 ///       color: tomato;
 ///     }
@@ -152,7 +152,7 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///  $im-media-support: false;
 ///   $im-no-media-breakpoint: 'desktop';
 ///   $im-no-media-expressions: ('screen');
-///   @include media(">=tablet", "screen") {
+///   @include media('>=tablet', 'screen') {
 ///     .foo {
 ///       color: tomato;
 ///     }
@@ -167,7 +167,7 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///  $im-media-support: false;
 ///   $im-no-media-breakpoint: 'desktop';
 ///   $im-no-media-expressions: ('screen');
-///   @include media(">=tablet", "retina2x") {
+///   @include media('>=tablet', 'retina2x') {
 ///     .foo {
 ///       color: tomato;
 ///     }
@@ -177,6 +177,35 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
+@function im-media-show($conditions...) {
+  @if $im-media-support {
+    @return true;
+  }
+  
+  $show: true;
+  $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
+  
+  @each $condition in $conditions {
+    @if $show {
+      @if not map-has-key($media-expressions, $condition) {
+        $operator: get-expression-operator($condition);
+        $prefix: get-expression-prefix($operator);
+        $value: get-expression-value($condition, $operator);
+        
+        @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
+            ($prefix == 'min' and $value > $no-media-breakpoint-value) {
+          $show: false;
+        }    
+      } @else {
+        @if not index($im-no-media-expressions, $condition) {
+          $show: false;
+        }
+      }       
+    }
+  }
+  
+  @return $show;
+}
 ////
 /// Cross-engine logging engine
 /// @author Hugo Giraudel
@@ -222,30 +251,37 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///
 @function noop() {}
 
+///
+/// Determines whether a list of conditions is intercepted by the static breakpoint.
+///
+/// @param {Arglist}   $conditions  - Media query conditions
+///
+/// @return {Boolean} - Returns true if the conditions are intercepted by the static breakpoint
+///
 @function im-intercepts-static-breakpoint($conditions...) {
-  $show: true;
   $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
 
-  @each $condition in $conditions {
-    @if $show {
-      @if not map-has-key($media-expressions, $condition) {
-        $operator: get-expression-operator($condition);
-        $prefix: get-expression-prefix($operator);
-        $value: get-expression-value($condition, $operator);
+  @if not $no-media-breakpoint-value {
+    $_: log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.');
+    @return false;
+  }  
 
-        @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
-            ($prefix == 'min' and $value > $no-media-breakpoint-value) {
-          $show: false;
-        }
-      } @else {
-        @if not index($im-no-media-expressions, $condition) {
-          $show: false;
-        }
+  @each $condition in $conditions {
+    @if not map-has-key($media-expressions, $condition) {
+      $operator: get-expression-operator($condition);
+      $prefix: get-expression-prefix($operator);
+      $value: get-expression-value($condition, $operator);
+
+      @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
+          ($prefix == 'min' and $value > $no-media-breakpoint-value) {
+        @return false;
       }
+    } @else if not index($im-no-media-expressions, $condition) {
+      @return false;
     }
   }
 
-  @return $show;
+  @return true;
 }
 
 ////
@@ -547,20 +583,15 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///  @include media(">=350px", "<tablet", "retina3x") { } 
 ///
 @mixin media($conditions...) {
-  @if $im-media-support {
-    @if length($conditions) == 0 {
-      @content;
-    } @else {
-      @media #{unquote(parse-expression(nth($conditions, 1)))} {
-        // Recursive call
-        @include media(slice($conditions, 2)...) {
-          @content;
-        }
+  @if ($im-media-support and length($conditions) == 0) or 
+      (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
+    @content;
+  } @else if ($im-media-support and length($conditions) > 0) {
+    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+      // Recursive call
+      @include media(slice($conditions, 2)...) {
+        @content;
       }
-    }
-  } @else {
-    @if im-intercepts-static-breakpoint($conditions...) {
-      @content;
-    }
+    }    
   }
 }
