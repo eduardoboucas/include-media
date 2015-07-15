@@ -233,8 +233,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
 
   @if not $no-media-breakpoint-value {
-    $_: log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.');
-    @return false;
+    @if log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
   }  
 
   @each $condition in $conditions {
