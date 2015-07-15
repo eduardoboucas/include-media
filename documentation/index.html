@@ -28,64 +28,64 @@
   &#39;rem&#39;: 0.1
 ) !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_config.scss#L73-L77" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Defines a number to be added or subtracted from each unit when declaring breakpoints with exclusive intervals</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>Interval for pixels is defined as <code>1</code> by default</p></div><pre class="example__code language-scss"><code>@include media(&#39;&gt;128px&#39;) {}
 
- /* Generates: */
- @media (min-width: 129px) {}</code></pre></div><div class="item__example example"><div class="example__description"><p>Interval for ems is defined as <code>0.01</code> by default</p></div><pre class="example__code language-scss"><code>@include media(&#39;&gt;20em&#39;) {}
+/* Generates: */
+@media (min-width: 129px) {}</code></pre></div><div class="item__example example"><div class="example__description"><p>Interval for ems is defined as <code>0.01</code> by default</p></div><pre class="example__code language-scss"><code>@include media(&#39;&gt;20em&#39;) {}
 
- /* Generates: */
- @media (min-width: 20.01em) {}</code></pre></div><div class="item__example example"><div class="example__description"><p>Interval for rems is defined as <code>0.1</code> by default, to be used with <code>font-size: 62.5%;</code></p></div><pre class="example__code language-scss"><code>@include media(&#39;&gt;2.0rem&#39;) {}
+/* Generates: */
+@media (min-width: 20.01em) {}</code></pre></div><div class="item__example example"><div class="example__description"><p>Interval for rems is defined as <code>0.1</code> by default, to be used with <code>font-size: 62.5%;</code></p></div><pre class="example__code language-scss"><code>@include media(&#39;&gt;2.0rem&#39;) {}
 
- /* Generates: */
- @media (min-width: 2.1rem) {}</code></pre></div><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-im-media-support"><h3 class="item__heading"><a class="item__name" href="#variable-im-media-support">im-media-support</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$im-media-support: true !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_config.scss#L96-L96" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Defines whether support for media queries is available, useful for creating separate stylesheets for browsers that don&#39;t support media queries.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>Disables support for media queries</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
- @include media(&#39;&gt;=tablet&#39;) {
-   .foo {
-     color: tomato;
-   }
- }
+/* Generates: */
+@media (min-width: 2.1rem) {}</code></pre></div><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-im-media-support"><h3 class="item__heading"><a class="item__name" href="#variable-im-media-support">im-media-support</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$im-media-support: true !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_config.scss#L96-L96" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Defines whether support for media queries is available, useful for creating separate stylesheets for browsers that don&#39;t support media queries.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>Disables support for media queries</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
+@include media(&#39;&gt;=tablet&#39;) {
+  .foo {
+    color: tomato;
+  }
+}
 
- /* Generates: */
- .foo {
-   color: tomato;
- }</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[mixin]</span> <a href="#mixin-media"><code>media</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-im-no-media-breakpoint"><h3 class="item__heading"><a class="item__name" href="#variable-im-no-media-breakpoint">im-no-media-breakpoint</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$im-no-media-breakpoint: &#39;desktop&#39; !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_config.scss#L127-L127" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Selects which breakpoint to emulate when support for media queries is disabled. Media queries that start at or intercept the breakpoint will be displayed, any others will be ignored.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>This media query will show because it intercepts the static breakpoint</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
- $im-no-media-breakpoint: &#39;desktop&#39;;
- @include media(&#39;&gt;=tablet&#39;) {
-   .foo {
-     color: tomato;
-   }
- }
+/* Generates: */
+.foo {
+  color: tomato;
+}</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[mixin]</span> <a href="#mixin-media"><code>media</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-im-no-media-breakpoint"><h3 class="item__heading"><a class="item__name" href="#variable-im-no-media-breakpoint">im-no-media-breakpoint</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$im-no-media-breakpoint: &#39;desktop&#39; !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_config.scss#L127-L127" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Selects which breakpoint to emulate when support for media queries is disabled. Media queries that start at or intercept the breakpoint will be displayed, any others will be ignored.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>This media query will show because it intercepts the static breakpoint</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
+$im-no-media-breakpoint: &#39;desktop&#39;;
+@include media(&#39;&gt;=tablet&#39;) {
+  .foo {
+    color: tomato;
+  }
+}
 
- /* Generates: */
- .foo {
-   color: tomato;
- }</code></pre></div><div class="item__example example"><div class="example__description"><p>This media query will NOT show because it does not intercept the desktop breakpoint</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
- $im-no-media-breakpoint: &#39;tablet&#39;;
- @include media(&#39;&gt;=desktop&#39;) {
-   .foo {
-     color: tomato;
-   }
- }
+/* Generates: */
+.foo {
+  color: tomato;
+}</code></pre></div><div class="item__example example"><div class="example__description"><p>This media query will NOT show because it does not intercept the desktop breakpoint</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
+$im-no-media-breakpoint: &#39;tablet&#39;;
+@include media(&#39;&gt;=desktop&#39;) {
+  .foo {
+    color: tomato;
+  }
+}
 
- /* No output */</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-im-intercepts-static-breakpoint"><code>im-intercepts-static-breakpoint</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-im-no-media-expressions"><h3 class="item__heading"><a class="item__name" href="#variable-im-no-media-expressions">im-no-media-expressions</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$im-no-media-expressions: (&#39;screen&#39;, &#39;portrait&#39;, &#39;landscape&#39;) !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_config.scss#L160-L160" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Selects which media expressions are allowed in an expression for it to be used when media queries are not supported.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>This media query will show because it intercepts the static breakpoint and contains only accepted media expressions</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
- $im-no-media-breakpoint: &#39;desktop&#39;;
- $im-no-media-expressions: (&#39;screen&#39;);
- @include media(&#39;&gt;=tablet&#39;, &#39;screen&#39;) {
-   .foo {
-     color: tomato;
-   }
- }
+/* No output */</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-im-intercepts-static-breakpoint"><code>im-intercepts-static-breakpoint</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section><section class="main__item container item" id="variable-im-no-media-expressions"><h3 class="item__heading"><a class="item__name" href="#variable-im-no-media-expressions">im-no-media-expressions</a></h3><div class="item__code-wrapper"><pre class="item__code language-scss"><code>$im-no-media-expressions: (&#39;screen&#39;, &#39;portrait&#39;, &#39;landscape&#39;) !default;</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/_config.scss#L160-L160" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Selects which media expressions are allowed in an expression for it to be used when media queries are not supported.</p></div><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>This media query will show because it intercepts the static breakpoint and contains only accepted media expressions</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
+$im-no-media-breakpoint: &#39;desktop&#39;;
+$im-no-media-expressions: (&#39;screen&#39;);
+@include media(&#39;&gt;=tablet&#39;, &#39;screen&#39;) {
+  .foo {
+    color: tomato;
+  }
+}
 
  /* Generates: */
  .foo {
    color: tomato;
  }</code></pre></div><div class="item__example example"><div class="example__description"><p>This media query will NOT show because it intercepts the static breakpoint but contains a media expression that is not accepted</p></div><pre class="example__code language-scss"><code>$im-media-support: false;
- $im-no-media-breakpoint: &#39;desktop&#39;;
- $im-no-media-expressions: (&#39;screen&#39;);
- @include media(&#39;&gt;=tablet&#39;, &#39;retina2x&#39;) {
-   .foo {
-     color: tomato;
-   }
- }
+$im-no-media-breakpoint: &#39;desktop&#39;;
+$im-no-media-expressions: (&#39;screen&#39;);
+@include media(&#39;&gt;=tablet&#39;, &#39;retina2x&#39;) {
+  .foo {
+    color: tomato;
+  }
+}
 
- /* No output */</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-im-intercepts-static-breakpoint"><code>im-intercepts-static-breakpoint</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section></section><section class="main__sub-section" id="undefined-mixin"><h2 class="main__heading--secondary"><div class="container">mixins</div></h2><section class="main__item container item" id="mixin-media"><h3 class="item__heading"><a class="item__name" href="#mixin-media">media</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@mixin media($conditions...) { 
+/* No output */</code></pre></div><h3 class="item__sub-heading">Used by</h3><ul class="list-unstyled"><li><span class="item__cross-type">[function]</span> <a href="#function-im-intercepts-static-breakpoint"><code>im-intercepts-static-breakpoint</code></a></li></ul><h3 class="item__sub-heading">Author</h3><ul class="list-unstyled"><li><p>Eduardo Boucas</p></li></ul></section></section><section class="main__sub-section" id="undefined-mixin"><h2 class="main__heading--secondary"><div class="container">mixins</div></h2><section class="main__item container item" id="mixin-media"><h3 class="item__heading"><a class="item__name" href="#mixin-media">media</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@mixin media($conditions...) { 
   @if ($im-media-support and length($conditions) == 0) or 
       (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;
