@@ -55,20 +55,20 @@ $media-expressions: (
 /// @example scss - Interval for pixels is defined as `1` by default
 ///  @include media('>128px') {}
 ///
-///   /* Generates: */
-///   @media (min-width: 129px) {}
+///  /* Generates: */
+///  @media (min-width: 129px) {}
 ///
 /// @example scss - Interval for ems is defined as `0.01` by default
 ///  @include media('>20em') {}
 ///
-///   /* Generates: */
-///   @media (min-width: 20.01em) {}
+///  /* Generates: */
+///  @media (min-width: 20.01em) {}
 ///
 /// @example scss - Interval for rems is defined as `0.1` by default, to be used with `font-size: 62.5%;`
 ///  @include media('>2.0rem') {}
 ///
-///   /* Generates: */
-///   @media (min-width: 2.1rem) {}
+///  /* Generates: */
+///  @media (min-width: 2.1rem) {}
 ///
 $unit-intervals: (
   'px': 1,
@@ -82,16 +82,16 @@ $unit-intervals: (
 ///
 /// @example scss - Disables support for media queries
 ///  $im-media-support: false;
-///   @include media('>=tablet') {
-///     .foo {
-///       color: tomato;
-///     }
-///   }
+///  @include media('>=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
 ///
-///   /* Generates: */
-///   .foo {
-///     color: tomato;
-///   }
+///  /* Generates: */
+///  .foo {
+///    color: tomato;
+///  }
 ///
 $im-media-support: true !default;
 
@@ -101,28 +101,28 @@ $im-media-support: true !default;
 ///
 /// @example scss - This media query will show because it intercepts the static breakpoint
 ///  $im-media-support: false;
-///   $im-no-media-breakpoint: 'desktop';
-///   @include media('>=tablet') {
-///     .foo {
-///       color: tomato;
-///     }
-///   }
+///  $im-no-media-breakpoint: 'desktop';
+///  @include media('>=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
 ///
-///   /* Generates: */
-///   .foo {
-///     color: tomato;
-///   }
+///  /* Generates: */
+///  .foo {
+///    color: tomato;
+///  }
 ///
 /// @example scss - This media query will NOT show because it does not intercept the desktop breakpoint
 ///  $im-media-support: false;
-///   $im-no-media-breakpoint: 'tablet';
-///   @include media('>=desktop') {
-///     .foo {
-///       color: tomato;
-///     }
-///   }
+///  $im-no-media-breakpoint: 'tablet';
+///  @include media('>=desktop') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
 ///
-///   /* No output */
+///  /* No output */
 ///
 $im-no-media-breakpoint: 'desktop' !default;
 
@@ -132,13 +132,13 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///
 /// @example scss - This media query will show because it intercepts the static breakpoint and contains only accepted media expressions
 ///  $im-media-support: false;
-///   $im-no-media-breakpoint: 'desktop';
-///   $im-no-media-expressions: ('screen');
-///   @include media('>=tablet', 'screen') {
-///     .foo {
-///       color: tomato;
-///     }
-///   }
+///  $im-no-media-breakpoint: 'desktop';
+///  $im-no-media-expressions: ('screen');
+///  @include media('>=tablet', 'screen') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
 ///
 ///   /* Generates: */
 ///   .foo {
@@ -147,14 +147,14 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///
 /// @example scss - This media query will NOT show because it intercepts the static breakpoint but contains a media expression that is not accepted
 ///  $im-media-support: false;
-///   $im-no-media-breakpoint: 'desktop';
-///   $im-no-media-expressions: ('screen');
-///   @include media('>=tablet', 'retina2x') {
-///     .foo {
-///       color: tomato;
-///     }
-///   }
+///  $im-no-media-breakpoint: 'desktop';
+///  $im-no-media-expressions: ('screen');
+///  @include media('>=tablet', 'retina2x') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
 ///
-///   /* No output */
+///  /* No output */
 ///
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
