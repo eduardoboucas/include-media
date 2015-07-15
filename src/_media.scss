@@ -11,32 +11,33 @@
 /// @param {Arglist}   $conditions  - Media query conditions
 ///
 /// @example scss - With a single set breakpoint
-///  @include media(">phone") { }
+///  @include media('>phone') { }
 ///
 /// @example scss - With two set breakpoints
-///  @include media(">phone", "<=tablet") { } 
+///  @include media('>phone', '<=tablet') { } 
 ///
 /// @example scss - With custom values
-///  @include media(">=358px", "<850px") { } 
+///  @include media('>=358px', '<850px') { } 
 ///
 /// @example scss - With set breakpoints with custom values
-///  @include media(">desktop", "<=1350px") { } 
+///  @include media('>desktop', '<=1350px') { } 
 ///
 /// @example scss - With a static expression
-///  @include media("retina2x") { } 
+///  @include media('retina2x') { } 
 ///
 /// @example scss - Mixing everything
-///  @include media(">=350px", "<tablet", "retina3x") { } 
+///  @include media('>=350px', '<tablet', 'retina3x') { } 
 ///
 @mixin media($conditions...) {
-  @if length($conditions) == 0 {
+  @if ($im-media-support and length($conditions) == 0) or 
+      (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;
-  } @else {
+  } @else if ($im-media-support and length($conditions) > 0) {
     @media #{unquote(parse-expression(nth($conditions, 1)))} {
       // Recursive call
       @include media(slice($conditions, 2)...) {
         @content;
       }
-    }
+    }    
   }
 }
