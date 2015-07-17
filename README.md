@@ -3,6 +3,8 @@
 # include-media
 > Simple, elegant and maintainable media queries in Sass
 
+[![NPM badge](https://nodei.co/npm/include-media.png)](https://www.npmjs.com/package/include-media)
+
 ## What?
 
 **include-media** is a Sass library for writing CSS media queries in an easy and maintainable way, using a natural and simplistic syntax.
