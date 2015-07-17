@@ -24,6 +24,10 @@ Finally, include the file in your project using an `@import` statement.
 
 Examples can be found [here](http://include-media.com/#features).
 
+## Plugins
+
+- [include-media-export](https://github.com/eduardoboucas/include-media-export) - Reference **include-media** breakpoints in JavaScript.
+
 ## Learn more
 
 - [include-media.com](http://include-media.com)
