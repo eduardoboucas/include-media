@@ -26,10 +26,7 @@ $breakpoints: (
 ///
 /// @example scss - Creates a static expression with logical disjunction (OR operator)
 ///  $media-expressions: (
-///    'retina2x': (
-///      '(-webkit-min-device-pixel-ratio: 2)',
-///      '(min-resolution: 192dpi)'
-///    )
+///    'retina2x': '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)'
 ///  );
 ///
 $media-expressions: (
@@ -38,14 +35,8 @@ $media-expressions: (
   'handheld': 'handheld',
   'landscape': '(orientation: landscape)',
   'portrait': '(orientation: portrait)',
-  'retina2x': (
-    '(-webkit-min-device-pixel-ratio: 2)',
-    '(min-resolution: 192dpi)'
-  ), 
-  'retina3x': (
-    '(-webkit-min-device-pixel-ratio: 3)',
-    '(min-resolution: 350dpi)'
-  )
+  'retina2x': '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)',
+  'retina3x': '(-webkit-min-device-pixel-ratio: 3), (min-resolution: 350dpi)'
 ) !default;
 
 
