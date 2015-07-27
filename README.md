@@ -36,6 +36,7 @@ Examples can be found [here](http://include-media.com/#features).
 - [Documentation](http://include-media.com/documentation/)
 - [Approaches to Media Queries in Sass](https://css-tricks.com/approaches-media-queries-sass/) (CSS-Tricks)
 - [Write Simple, Elegant and Maintainable Media Queries with Sass](http://davidwalsh.name/sass-media-query) (David Walsh blog)
+- [Generating Alternative Stylesheets for Browsers Without @media](http://davidwalsh.name/generating-alternative-stylesheets-browsers-media) (David Walsh blog)
 - [Create Simple Inline Media Queries with include-media](http://webdevstudios.com/2015/05/18/create-simple-inline-media-queries-include-media/) (WebDevStudios)
 - [Breakpoints and Tweakpoints in Sass](http://www.sitepoint.com/breakpoints-tweakpoints-sass/) (SitePoint)
 
