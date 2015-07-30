@@ -12,7 +12,7 @@
 ///
 /// @return {String} - Any of `>=`, `>`, `<=`, `<`, `≥`, `≤`
 ///
-@function get-expression-operator($expression) {
+@function im-get-expression-operator($expression) {
   @each $operator in ('>=', '>', '<=', '<', '≥', '≤') {
     @if str-index($expression, $operator) {
       @return $operator;
@@ -20,10 +20,10 @@
   }
 
   // It is not possible to include a mixin inside a function, so we have to
-  // rely on the `log(..)` function rather than the `log(..)` mixin. Because
-  // functions cannot be called anywhere in Sass, we need to hack the call in
-  // a dummy condition.
-  @if log('No operator found in `#{$expression}`.') {}
+  // rely on the `im-logger(..)` function rather than the `im-logger(..)` mixin.
+  // Because functions cannot be called anywhere in Sass, we need to hack the
+  // call in a dummy condition.
+  @if im-logger('No operator found in `#{$expression}`.') {}
 }
 
 
@@ -35,7 +35,7 @@
 ///
 /// @return {String} - `width` or `height` (or potentially anything else)
 ///
-@function get-expression-dimension($expression, $operator) {
+@function im-get-expression-dimension($expression, $operator) {
   $operator-index: str-index($expression, $operator);
   $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
   $dimension: 'width';
@@ -55,7 +55,7 @@
 ///
 /// @return {String} - `min` or `max`
 ///
-@function get-expression-prefix($operator) {
+@function im-get-expression-prefix($operator) {
   @return if(index(('<', '<=', '≤'), $operator), 'max', 'min');
 }
 
@@ -68,24 +68,24 @@
 ///
 /// @return {Number} - A numeric value 
 ///
-@function get-expression-value($expression, $operator) {
+@function im-get-expression-value($expression, $operator) {
   $operator-index: str-index($expression, $operator);
   $value: str-slice($expression, $operator-index + str-length($operator));
 
   @if map-has-key($breakpoints, $value) {
     $value: map-get($breakpoints, $value);
   } @else {
-    $value: to-number($value);
+    $value: im-to-number($value);
   }
 
   $interval: map-get($unit-intervals, unit($value));
 
   @if not $interval {
     // It is not possible to include a mixin inside a function, so we have to
-    // rely on the `log(..)` function rather than the `log(..)` mixin. Because
-    // functions cannot be called anywhere in Sass, we need to hack the call in
-    // a dummy condition.
-    @if log('Unknown unit `#{unit($value)}`.') {}
+    // rely on the `im-logger(..)` function rather than the `im-logger(..)`
+    // mixin. Because functions cannot be called anywhere in Sass, we need to
+    // hack the call in a dummy condition.
+    @if im-logger('Unknown unit `#{unit($value)}`.') {}
   }
 
   @if $operator == '>' {
@@ -105,17 +105,17 @@
 ///
 /// @return {String} - Valid media query
 ///
-@function parse-expression($expression) {
+@function im-parse-expression($expression) {
   // If it is part of $media-expressions, it has no operator
   // then there is no need to go any further, just return the value
   @if map-has-key($media-expressions, $expression) {
     @return map-get($media-expressions, $expression);
   }
 
-  $operator: get-expression-operator($expression);
-  $dimension: get-expression-dimension($expression, $operator);
-  $prefix: get-expression-prefix($operator);
-  $value: get-expression-value($expression, $operator);
+  $operator: im-get-expression-operator($expression);
+  $dimension: im-get-expression-dimension($expression, $operator);
+  $prefix: im-get-expression-prefix($operator);
+  $value: im-get-expression-value($expression, $operator);
 
   @return '(#{$prefix}-#{$dimension}: #{$value})';
 }

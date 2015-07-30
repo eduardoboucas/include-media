@@ -12,12 +12,12 @@
 /// 
 /// @param {String} $message - Message to log
 ///
-@function log($message) {
+@function im-logger($message) {
   @if feature-exists('at-error') {
     @error $message;
   } @else {
     @warn $message;
-    @if noop() {}
+    @if im-noop() {}
   }
 
   @return $message;
@@ -26,14 +26,15 @@
 
 /// 
 /// Wrapper mixin for the log function so it can be used with a more friendly
-/// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
-/// within functions because it is not possible to include a mixin in a function
-/// and use the mixin everywhere else because it's much more elegant.
+/// API than `@if im-logger('..') {}` or `$_: im-logger('..')`. Basically, use
+/// the function within functions because it is not possible to include a mixin
+/// in a function and use the mixin everywhere else because it's much more
+/// elegant.
 ///
 /// @param {String} $message - Message to log
 ///
-@mixin log($message) {
-  @if log($message) {}
+@mixin im-logger($message) {
+  @if im-logger($message) {}
 }
 
 
@@ -41,4 +42,4 @@
 /// Function with no `@return` called next to `@warn` in Sass 3.3
 /// to trigger a compiling error and stop the process.
 ///
-@function noop() {}
+@function im-noop() {}

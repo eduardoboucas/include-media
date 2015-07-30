@@ -32,9 +32,9 @@
   @if length($conditions) == 0 {
     @content;
   } @else {
-    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+    @media #{unquote(im-parse-expression(nth($conditions, 1)))} {
       // Recursive call
-      @include media(slice($conditions, 2)...) {
+      @include media(im-slice($conditions, 2)...) {
         @content;
       }
     }
