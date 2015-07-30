@@ -33,6 +33,16 @@ gulp.task('build', function () {
     .pipe(gulp.dest('./dist'));
 });
 
+gulp.task('prefix', function () {
+  return gulp
+    .src(['dist/_include-media.scss'])
+    .pipe(plugins.replace(/@mixin media\(/g, '@mixin im-media('))
+    .pipe(plugins.replace(/@include media\(/g, '@include im-media('))
+    .pipe(plugins.replace(/@mixin media-context\(/g, '@mixin im-media-context('))
+    .pipe(plugins.replace(/@include media-context\(/g, '@include im-media-context('))
+    .pipe(gulp.dest('./dist-prefixed'));
+});
+
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -97,7 +107,7 @@ gulp.task('gh-pages', ['build', 'sassdoc'], function () {
 // Default task
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['build', 'test']);
+gulp.task('default', ['build', 'prefix', 'test']);
 
 
 // -----------------------------------------------------------------------------
