@@ -1,4 +1,4 @@
-basePath: https://github.com/eduardoboucas/include-media/blob/master
+basePath: https://github.com/eduardoboucas/include-media/blob/master/src
 display:
     access:
         - public
