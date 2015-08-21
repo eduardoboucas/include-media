@@ -178,10 +178,10 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
 
 ///
-/// Log a message either with `@error` if supported 
+/// Log a message either with `@error` if supported
 /// else with `@warn`, using `feature-exists('at-error')`
 /// to detect support.
-/// 
+///
 /// @param {String} $message - Message to log
 ///
 @function log($message) {
@@ -196,7 +196,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 }
 
 
-/// 
+///
 /// Wrapper mixin for the log function so it can be used with a more friendly
 /// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
 /// within functions because it is not possible to include a mixin in a function
@@ -227,7 +227,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
   @if not $no-media-breakpoint-value {
     @if log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
-  }  
+  }
 
   @each $condition in $conditions {
     @if not map-has-key($media-expressions, $condition) {
@@ -316,7 +316,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 /// @param {String} $expression - Expression to extract value from
 /// @param {String} $operator - Operator from `$expression`
 ///
-/// @return {Number} - A numeric value 
+/// @return {Number} - A numeric value
 ///
 @function get-expression-value($expression, $operator) {
   $operator-index: str-index($expression, $operator);
@@ -416,29 +416,29 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   } @else if type-of($value) != 'string' {
     $_: log('Value for `to-number` should be a number or a string.');
   }
-  
+
   $result: 0;
   $digits: 0;
   $minus: str-slice($value, 1, 1) == '-';
   $numbers: ('0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9);
-  
+
   @for $i from if($minus, 2, 1) through str-length($value) {
     $character: str-slice($value, $i, $i);
-    
+
     @if not (index(map-keys($numbers), $character) or $character == '.') {
       @return to-length(if($minus, -$result, $result), str-slice($value, $i))
     }
-    
+
     @if $character == '.' {
-      $digits: 1; 
+      $digits: 1;
     } @else if $digits == 0 {
-      $result: $result * 10 + map-get($numbers, $character);  
+      $result: $result * 10 + map-get($numbers, $character);
     } @else {
       $digits: $digits * 10;
       $result: $result + map-get($numbers, $character) / $digits;
     }
   }
-  
+
   @return if($minus, -$result, $result);;
 }
 
@@ -453,18 +453,18 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///
 @function to-length($value, $unit) {
   $units: ('px': 1px, 'cm': 1cm, 'mm': 1mm, '%': 1%, 'ch': 1ch, 'pc': 1pc, 'in': 1in, 'em': 1em, 'rem': 1rem, 'pt': 1pt, 'ex': 1ex, 'vw': 1vw, 'vh': 1vh, 'vmin': 1vmin, 'vmax': 1vmax);
-  
+
   @if not index(map-keys($units), $unit) {
     $_: log('Invalid unit `#{$unit}`.');
   }
-  
+
   @return $value * map-get($units, $unit);
 }
 
 ///
-/// This mixin aims at redefining the configuration just for the scope of 
-/// the call. It is helpful when having a component needing an extended 
-/// configuration such as custom breakpoints (referred to as tweakpoints) 
+/// This mixin aims at redefining the configuration just for the scope of
+/// the call. It is helpful when having a component needing an extended
+/// configuration such as custom breakpoints (referred to as tweakpoints)
 /// for instance.
 ///
 /// @author Hugo Giraudel
@@ -531,22 +531,22 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///  @include media('>phone') { }
 ///
 /// @example scss - With two set breakpoints
-///  @include media('>phone', '<=tablet') { } 
+///  @include media('>phone', '<=tablet') { }
 ///
 /// @example scss - With custom values
-///  @include media('>=358px', '<850px') { } 
+///  @include media('>=358px', '<850px') { }
 ///
 /// @example scss - With set breakpoints with custom values
-///  @include media('>desktop', '<=1350px') { } 
+///  @include media('>desktop', '<=1350px') { }
 ///
 /// @example scss - With a static expression
-///  @include media('retina2x') { } 
+///  @include media('retina2x') { }
 ///
 /// @example scss - Mixing everything
-///  @include media('>=350px', '<tablet', 'retina3x') { } 
+///  @include media('>=350px', '<tablet', 'retina3x') { }
 ///
 @mixin media($conditions...) {
-  @if ($im-media-support and length($conditions) == 0) or 
+  @if ($im-media-support and length($conditions) == 0) or
       (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;
   } @else if ($im-media-support and length($conditions) > 0) {
@@ -555,6 +555,6 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
       @include media(slice($conditions, 2)...) {
         @content;
       }
-    }    
+    }
   }
 }
