@@ -67,7 +67,7 @@
 /// @param {String} $expression - Expression to extract value from
 /// @param {String} $operator - Operator from `$expression`
 ///
-/// @return {Number} - A numeric value 
+/// @return {Number} - A numeric value
 ///
 @function get-expression-value($expression, $operator) {
   $operator-index: str-index($expression, $operator);

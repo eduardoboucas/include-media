@@ -6,10 +6,10 @@
 
 
 ///
-/// Log a message either with `@error` if supported 
+/// Log a message either with `@error` if supported
 /// else with `@warn`, using `feature-exists('at-error')`
 /// to detect support.
-/// 
+///
 /// @param {String} $message - Message to log
 ///
 @function log($message) {
@@ -24,7 +24,7 @@
 }
 
 
-/// 
+///
 /// Wrapper mixin for the log function so it can be used with a more friendly
 /// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
 /// within functions because it is not possible to include a mixin in a function

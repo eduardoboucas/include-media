@@ -10,7 +10,7 @@
 
   @if not $no-media-breakpoint-value {
     @if log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
-  }  
+  }
 
   @each $condition in $conditions {
     @if not map-has-key($media-expressions, $condition) {
