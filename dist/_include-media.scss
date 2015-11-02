@@ -8,7 +8,7 @@
 //    |_|_| |_|\___|_|\__,_|\__,_|\___| |_| |_| |_|\___|\__,_|_|\__,_|
 //
 //      Simple, elegant and maintainable media queries in Sass
-//                        v1.4.1
+//                        v1.4.2
 //
 //                http://include-media.com
 //
@@ -235,6 +235,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
       $prefix: get-expression-prefix($operator);
       $value: get-expression-value($condition, $operator);
 
+      // scss-lint:disable SpaceAroundOperator
       @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
           ($prefix == 'min' and $value > $no-media-breakpoint-value) {
         @return false;
@@ -512,7 +513,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
   // Restore global configuration
   $breakpoints: $global-breakpoints !global;
-  $media-expressions: $tweak-media-expressions !global;
+  $media-expressions: $global-media-expressions !global;
 }
 
 ////
@@ -546,6 +547,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///  @include media('>=350px', '<tablet', 'retina3x') { }
 ///
 @mixin media($conditions...) {
+  // scss-lint:disable SpaceAroundOperator
   @if ($im-media-support and length($conditions) == 0) or
       (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;

@@ -49,5 +49,5 @@
 
   // Restore global configuration
   $breakpoints: $global-breakpoints !global;
-  $media-expressions: $tweak-media-expressions !global;
+  $media-expressions: $global-media-expressions !global;
 }
