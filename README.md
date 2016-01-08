@@ -18,6 +18,7 @@ I spent quite some time experimenting with different libraries and mixins availa
 ## How to install
 
 - With Bower: `bower install include-media`
+- With npm : `npm install include-media`
 - Manually: get [this file](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
 
 Finally, include the file in your project using an `@import` statement.
