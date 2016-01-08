@@ -22,8 +22,7 @@
   },
   "license": "MIT",
   "pre-commit": [
-    "test",
-    "lint"
+    "test"
   ],
   "devDependencies": {
     "gh-pages": "^0.3.0",
