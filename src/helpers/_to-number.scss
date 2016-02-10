@@ -41,7 +41,7 @@
     }
   }
 
-  @return if($minus, -$result, $result);;
+  @return if($minus, -$result, $result);
 }
 
 
