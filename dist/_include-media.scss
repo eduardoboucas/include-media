@@ -440,7 +440,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
     }
   }
 
-  @return if($minus, -$result, $result);;
+  @return if($minus, -$result, $result);
 }
 
 
