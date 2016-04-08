@@ -33,6 +33,7 @@ Examples can be found [here](http://include-media.com/#features).
 - [include-media-columns](https://github.com/eduardoboucas/include-media-columns) - Generate column classes using the [BEMIT naming convention](http://csswizardry.com/2015/08/bemit-taking-the-bem-naming-convention-a-step-further/), automatically referencing **include-media** breakpoints.
 - [include-media-spread](https://github.com/jackmcpickle/include-media-spread) - Calculates the difference between property values and distributes them through your **include-media** breakpoints.
 - [flex_e_ble](https://github.com/jackmcpickle/flex_e_ble) - Uses your **include-media** breakpoints to create your own flexible class naming structure on top of a `flex` based grid with `inline-block` fallback for >= ie8 compatibility
+- [include-media-grid](https://github.com/tszarzynski/include-media-grid) - An **include-media** plugin for generating grid classes based on the flex display
 
 ## Learn more
 
