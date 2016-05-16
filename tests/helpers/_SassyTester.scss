@@ -1,9 +1,9 @@
-/// Test `$function` with `$test-suite` test suite
+/// Test `$function` with `$spec` test suite
 ///
 /// @author Hugo Giraudel
 ///
 /// @param {String} $function - Name of function to test
-/// @param {Map} $test-suite - Test suite to run `$function` against
+/// @param {Map} $spec - Test suite to run `$function` against
 ///
 /// @return {Map}
 ///   * `function`: `$function`
@@ -47,21 +47,23 @@
 ///     ),
 ///     // ...
 ///   )
-@function test($function, $test-suite) {
+@function test($function, $spec) {
   $passing-tests: 0;
   $tests: ();
 
-  @each $test, $expected-result in $test-suite {
-    $result: call($function, $test);
+  @each $arguments, $expected-result in $spec {
+    $actual-result: call($function, $arguments...);
+    $passed: $actual-result == $expected-result;
+
     $tests: append($tests, (
-      'input': $test,
+      'input': $arguments,
       'expected': $expected-result,
-      'actual': $result,
-      'pass': $result == $expected-result,
-      'fail': $result == $expected-result
+      'actual': $actual-result,
+      'pass': $passed,
+      'fail': not $passed,
     ), 'comma');
 
-    @if $result == $expected-result {
+    @if $passed {
       $passing-tests: $passing-tests + 1;
     }
   }
@@ -71,11 +73,9 @@
     'length': length($tests),
     'tests': $tests,
     'pass': $passing-tests,
-    'fail': length($tests) - $passing-tests
+    'fail': length($tests) - $passing-tests,
   );
 }
-
-
 
 /// Mixin decorating the result of `test(..)` function to throw it as an error
 ///
@@ -96,51 +96,19 @@
 ///   ----------
 ///   Finished: 0 test(s) failing out of 4
 @mixin run($data) {
-  $function: map-get($data, 'function');
-  $tests: map-get($data, 'tests');
-  $length: length($tests);
   $output: '';
-  $indent: '      ';
-  $line-break: '
-';
+  $length: map-get($data, 'length');
+  $tests: map-get($data, 'tests');
 
   @each $test in $tests {
-    $index: index($tests, $test);
-    $expected: map-get($test, 'expected');
-    $actual: map-get($test, 'actual');
-    $input: map-get($test, 'input');
-
-    @if not map-get($test, 'pass') {
-      // scss-lint:disable SpaceAfterVariableName SpaceAroundOperator
-      $output: $output
-        + $line-break
-        + $line-break
-        + $indent
-        + '✘ Test with input `#{$input}` failed dramatically.'
-        + $line-break
-        + $indent
-        + $indent
-        + 'Expected : #{$expected}'
-        + $line-break
-        + $indent
-        + $indent
-        + 'Actual   : #{$actual}';
-    }
-  }
-
-  @if str-length($output) > 0 {
-    $fails: map-get($data, 'fail');
-    // scss-lint:disable SpaceAroundOperator
     $output: $output
-      + $line-break
-      + $line-break
-      + $indent
-      + '✘ Oops! #{$fails} test(s) failed out of #{$length} regarding `#{$function}` function.'
-      + $line-break
-      + $line-break;
-
-    @error $output;
+      + 'Test #{index($tests, $test)} out of #{$length}... '
+      + if(map-get($test, 'pass'), '✔', '✘\a   Expected : `#{map-get($test, "expected")}`\a   Actual   : `#{map-get($test, "actual")}`') + '\a ';
   }
 
-  @warn '✔ All #{$length} tests from `#{$function}` passed successfully.';
+  @warn 'Started tests for function `#{map-get($data, "function")}`\a '
+    + '----------\a '
+    + $output + '\a '
+    + '----------\a '
+    + 'Finished: #{map-get($data, "fail")} test(s) failing out of #{$length}';
 }
