@@ -20,7 +20,7 @@
   "eyeglass": {
     "sassDir": "dist",
     "exports": false,
-    "needs": "^0.6.0"
+    "needs": "^0.8.3"
   },
   "scripts": {
     "test": "gulp test",
