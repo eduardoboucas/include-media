@@ -18,9 +18,8 @@
   "homepage": "http://include-media.com",
   "keywords": ["sass", "eyeglass-module"],
   "eyeglass": {
-    "sassDir": "dist",
-    "exports": false,
-    "needs": "^0.8.3"
+    "exports": "eyeglass-exports.js",
+    "needs": "*"
   },
   "scripts": {
     "test": "gulp test",
