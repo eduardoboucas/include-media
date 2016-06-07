@@ -16,6 +16,11 @@
     "url": "https://github.com/eduardoboucas/include-media/issues"
   },
   "homepage": "http://include-media.com",
+  "keywords": ["sass", "eyeglass-module"],
+  "eyeglass": {
+    "exports": "eyeglass-exports.js",
+    "needs": "*"
+  },
   "scripts": {
     "test": "gulp test",
     "lint": "scss-lint . --config ./.scss-lint.yml"
