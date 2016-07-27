@@ -1,0 +1,19 @@
+///
+/// Find first char which is not a space
+///
+/// @param {String} $string - String to search
+/// @param {String} $direction ['left'] - Either 'left' or 'right' to indicate search direction
+///
+/// @return {Number} - Index of first non-space character
+///
+@function first-index($string, $direction: 'left') {
+  @for $i from 1 through str-length($string) {
+    $index: if($direction == 'left', $i, -$i);
+
+    @if str-slice($string, $index, $index) != ' ' {
+      @return $index;
+    }
+  }
+
+  @return 0;
+}

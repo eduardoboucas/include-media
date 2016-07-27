@@ -1,0 +1,14 @@
+///
+/// Trim's a string by removing leading and trailing spaces
+///
+/// @param {String} $string - String to trim
+///
+/// @return {String} - String without spaces
+///
+@function trim($string) {
+  @return str-slice(
+    $string,
+    first-index($string, 'left'),
+    first-index($string, 'right')
+  );
+}
