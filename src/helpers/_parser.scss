@@ -71,7 +71,7 @@
 ///
 @function get-expression-value($expression, $operator) {
   $operator-index: str-index($expression, $operator);
-  $value: trim(str-slice($expression, $operator-index + str-length($operator)));
+  $value: str-slice($expression, $operator-index + str-length($operator));
 
   @if map-has-key($breakpoints, $value) {
     $value: map-get($breakpoints, $value);

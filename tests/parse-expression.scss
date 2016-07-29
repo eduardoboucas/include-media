@@ -21,12 +21,7 @@ $tests-parse-expression: map-merge($media-expressions, (
   '>=desktop': '(min-width: 1024px)',
   '≥desktop': '(min-width: 1024px)',
   '<=desktop': '(max-width: 1024px)',
-  '≤desktop': '(max-width: 1024px)',
-
-
-  '> phone': '(min-width: 321px)',
-  '>= tablet': '(min-width: 768px)',
-  '≥ desktop': '(min-width: 1024px)'
+  '≤desktop': '(max-width: 1024px)'
 ));
 
 @include run(test('parse-expression', $tests-parse-expression));
