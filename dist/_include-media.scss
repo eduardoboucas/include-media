@@ -171,26 +171,6 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
-///
-/// Find first char which is not a space
-///
-/// @param {String} $string - String to search
-/// @param {String} $direction ['left'] - Either 'left' or 'right' to indicate search direction
-///
-/// @return {Number} - Index of first non-space character
-///
-@function first-index($string, $direction: 'left') {
-  @for $i from 1 through str-length($string) {
-    $index: if($direction == 'left', $i, -$i);
-
-    @if str-slice($string, $index, $index) != ' ' {
-      @return $index;
-    }
-  }
-
-  @return 0;
-}
-
 ////
 /// Cross-engine logging engine
 /// @author Hugo Giraudel
@@ -342,7 +322,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///
 @function get-expression-value($expression, $operator) {
   $operator-index: str-index($expression, $operator);
-  $value: trim(str-slice($expression, $operator-index + str-length($operator)));
+  $value: str-slice($expression, $operator-index + str-length($operator));
 
   @if map-has-key($breakpoints, $value) {
     $value: map-get($breakpoints, $value);
@@ -487,21 +467,6 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   }
 
   @return $value * map-get($units, $unit);
-}
-
-///
-/// Trim's a string by removing leading and trailing spaces
-///
-/// @param {String} $string - String to trim
-///
-/// @return {String} - String without spaces
-///
-@function trim($string) {
-  @return str-slice(
-    $string,
-    first-index($string, 'left'),
-    first-index($string, 'right')
-  );
 }
 
 ///
