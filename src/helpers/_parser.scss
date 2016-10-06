@@ -19,12 +19,7 @@
     }
   }
 
-  // It is not possible to include a mixin inside a function, so we have to
-  // rely on the `log(..)` function rather than the `log(..)` mixin. Because
-  // functions cannot be called anywhere in Sass, we need to hack the call in
-  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-  // Sass 3.3, change this line in `@if log(..) {}` instead.
-  $_: log('No operator found in `#{$expression}`.');
+  @return false;
 }
 
 
@@ -115,6 +110,13 @@
   }
 
   $operator: get-expression-operator($expression);
+  
+  // If the expression is not part of $media-expression and has no operator,
+  // assume it is already a regular media query string
+  @if ($operator == false) {
+    @return $expression;
+  }
+  
   $dimension: get-expression-dimension($expression, $operator);
   $prefix: get-expression-prefix($operator);
   $value: get-expression-value($expression, $operator);
