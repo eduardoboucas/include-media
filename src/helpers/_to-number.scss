@@ -19,12 +19,18 @@
     $_: log('Value for `to-number` should be a number or a string.');
   }
 
+  $first-character: str-slice($value, 1, 1);
   $result: 0;
   $digits: 0;
-  $minus: str-slice($value, 1, 1) == '-';
+  $minus: ($first-character == '-');
   $numbers: ('0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9);
 
-  @for $i from if($minus, 2, 1) through str-length($value) {
+  // Remove +/- sign if present at first character
+  @if ($first-character == '+' or $first-character == '-') {
+    $value: str-slice($value, 2);
+  }
+
+  @for $i from 1 through str-length($value) {
     $character: str-slice($value, $i, $i);
 
     @if not (index(map-keys($numbers), $character) or $character == '.') {

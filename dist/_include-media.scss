@@ -1,4 +1,4 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 
 //     _            _           _                           _ _
 //    (_)          | |         | |                         | (_)
@@ -8,7 +8,7 @@
 //    |_|_| |_|\___|_|\__,_|\__,_|\___| |_| |_| |_|\___|\__,_|_|\__,_|
 //
 //      Simple, elegant and maintainable media queries in Sass
-//                        v1.4.2
+//                        v1.4.8
 //
 //                http://include-media.com
 //
@@ -55,8 +55,8 @@ $media-expressions: (
   'handheld': 'handheld',
   'landscape': '(orientation: landscape)',
   'portrait': '(orientation: portrait)',
-  'retina2x': '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)',
-  'retina3x': '(-webkit-min-device-pixel-ratio: 3), (min-resolution: 350dpi)'
+  'retina2x': '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx)',
+  'retina3x': '(-webkit-min-device-pixel-ratio: 3), (min-resolution: 350dpi), (min-resolution: 3dppx)'
 ) !default;
 
 
@@ -84,7 +84,8 @@ $media-expressions: (
 $unit-intervals: (
   'px': 1,
   'em': 0.01,
-  'rem': 0.1
+  'rem': 0.1,
+  '': 0
 ) !default;
 
 ///
@@ -418,12 +419,18 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
     $_: log('Value for `to-number` should be a number or a string.');
   }
 
+  $first-character: str-slice($value, 1, 1);
   $result: 0;
   $digits: 0;
-  $minus: str-slice($value, 1, 1) == '-';
+  $minus: ($first-character == '-');
   $numbers: ('0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9);
 
-  @for $i from if($minus, 2, 1) through str-length($value) {
+  // Remove +/- sign if present at first character
+  @if ($first-character == '+' or $first-character == '-') {
+    $value: str-slice($value, 2);
+  }
+
+  @for $i from 1 through str-length($value) {
     $character: str-slice($value, $i, $i);
 
     @if not (index(map-keys($numbers), $character) or $character == '.') {

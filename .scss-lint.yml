@@ -1,7 +1,8 @@
 scss_files: './'
 exclude: [
   './node_modules/**/*',
-  './sassdoc/**/*'
+  './sassdoc/**/*',
+  './tests/helpers/*'
 ]
 
 linters:

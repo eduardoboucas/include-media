@@ -18,7 +18,8 @@ I spent quite some time experimenting with different libraries and mixins availa
 ## How to install
 
 - With Bower: `bower install include-media`
-- With npm : `npm install include-media`
+- With npm: `npm install include-media`
+- With Rails: `gem 'include_media_rails'` ([maintained by KaoruDev](https://github.com/KaoruDev/include_media_rails))
 - Manually: get [this file](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
 
 Finally, include the file in your project using an `@import` statement.
@@ -32,7 +33,9 @@ Examples can be found [here](http://include-media.com/#features).
 - [include-media-export](https://github.com/eduardoboucas/include-media-export) - Reference **include-media** breakpoints in JavaScript.
 - [include-media-columns](https://github.com/eduardoboucas/include-media-columns) - Generate column classes using the [BEMIT naming convention](http://csswizardry.com/2015/08/bemit-taking-the-bem-naming-convention-a-step-further/), automatically referencing **include-media** breakpoints.
 - [include-media-spread](https://github.com/jackmcpickle/include-media-spread) - Calculates the difference between property values and distributes them through your **include-media** breakpoints.
-- [flex_e_ble](https://github.com/jackmcpickle/flex_e_ble) - Uses your **include-media** breakpoints to create your own flexible class naming structure on top of a `flex` based grid with `inline-block` fallback for >= ie8 compatibility
+- [flex_e_ble](https://github.com/jackmcpickle/flex_e_ble) - Uses your **include-media** breakpoints to create your own flexible class naming structure on top of a `flex` based grid with `inline-block` fallback for IE8+ compatibility.
+- [include-media-grid](https://github.com/tszarzynski/include-media-grid) - An **include-media** plugin for generating grid classes based on the flex display.
+- [im-to-em](https://gist.github.com/eduardoboucas/84144cd85cbd2ad4db1ca8b902585ca0) - A tiny function to convert **include-media** breakpoints from `px` to `em`.
 
 ## Learn more
 
