@@ -47,16 +47,16 @@
 @function append-feature-query($base-queries, $append-queries, $separator) {
   $result: if($separator == 'space', (), $base-queries);
 
-  @each $child-query in $append-queries {
+  @each $append-query in $append-queries {
     @if ($separator == 'space') {
       // Logical AND
-      @each $parent-query in $base-queries {
-        $updated-query: join($parent-query, $child-query, $separator);
+      @each $base-query in $base-queries {
+        $updated-query: join($base-query, $append-query, $separator);
         $result: append($result, $updated-query, 'comma');
       }
     } @else {
       // Logical OR
-      $result: append($result, $child-query, 'comma');
+      $result: append($result, $append-query, 'comma');
     }
   }
 
