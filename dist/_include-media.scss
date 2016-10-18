@@ -368,6 +368,10 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   $separator: list-separator($queries);
   $conjunction: if($separator == 'space', ' and ', ', ');
 
+  @if (type-of($queries) == 'string') {
+    @return $queries;
+  }
+
   @each $query in $queries {
     @if (type-of($query) == 'list') {
       $flat-queries: append($flat-queries, parse-media-query($query));
@@ -657,7 +661,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
   } @else if ($im-media-support and length($conditions) > 0) {
     // Legacy mode
-    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+    @media #{unquote(parse-media-query(parse-expression(nth($conditions, 1))))} {
       // Recursive call
       @include media(slice($conditions, 2)...) {
         @content;

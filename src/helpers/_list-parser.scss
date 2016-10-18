@@ -76,6 +76,10 @@
   $separator: list-separator($queries);
   $conjunction: if($separator == 'space', ' and ', ', ');
 
+  @if (type-of($queries) == 'string') {
+    @return $queries;
+  }
+
   @each $query in $queries {
     @if (type-of($query) == 'list') {
       $flat-queries: append($flat-queries, parse-media-query($query));

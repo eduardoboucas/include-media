@@ -43,7 +43,7 @@
 
   } @else if ($im-media-support and length($conditions) > 0) {
     // Legacy mode
-    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+    @media #{unquote(parse-media-query(parse-expression(nth($conditions, 1))))} {
       // Recursive call
       @include media(slice($conditions, 2)...) {
         @content;
