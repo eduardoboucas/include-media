@@ -134,33 +134,41 @@
       @if (type-of($parsed-current-query) == 'list') {
         // Parsed expression is a list
         $intermediary-queries: chain-feature-queries($parsed-current-query, false);
+        $new-parsed-feature-queries: append-feature-query($parsed-feature-queries, $intermediary-queries, $separator);
 
-        @if ($separator == 'space') {
-          @each $intermediary-query in $intermediary-queries {
-            @each $parsed-feature-query in $parsed-feature-queries {
-              $parsed-feature-query: append($parsed-feature-query, $intermediary-query, $separator);
-              $new-parsed-feature-queries: append($new-parsed-feature-queries, $parsed-feature-query, 'comma');
-            }
-          }
-        } @else {
-          $new-parsed-feature-queries: $parsed-feature-queries;
-
-          @each $intermediary-query in $intermediary-queries {
-            $new-parsed-feature-queries: append($new-parsed-feature-queries, $intermediary-query, 'comma');
-          }
-        }
+        //@if ($separator == 'space') {
+        //  @each $intermediary-query in $intermediary-queries {
+        //    @each $parsed-feature-query in $parsed-feature-queries {
+        //      $parsed-feature-query: append($parsed-feature-query, $intermediary-query, $separator);
+        //      $new-parsed-feature-queries: append($new-parsed-feature-queries, $parsed-feature-query, 'comma');
+        //    }
+        //  }
+        //} @else {
+        //  $new-parsed-feature-queries: $parsed-feature-queries;
+        //
+        //  @each $intermediary-query in $intermediary-queries {
+        //    $new-parsed-feature-queries: append($new-parsed-feature-queries, $intermediary-query, 'comma');
+        //  }
+        //}
       } @else {
         // Parsed expression is a string
-        @if ($separator == 'space') {
-          @each $parsed-feature-query in $parsed-feature-queries {
-            $parsed-feature-query: append($parsed-feature-query, $parsed-current-query, $separator);
-            $new-parsed-feature-queries: append($new-parsed-feature-queries, $parsed-feature-query, 'comma');
-          }
-        } @else {
-          $new-parsed-feature-queries: $parsed-feature-queries;
+        $intermediary-queries: ($parsed-current-query);
+        $new-parsed-feature-queries: append-feature-query($parsed-feature-queries, $intermediary-queries, $separator);
 
-          $new-parsed-feature-queries: append($new-parsed-feature-queries, ($parsed-current-query), 'comma');
-        }
+        //@if ($separator == 'space') {
+        //  @each $intermediary-query in $intermediary-queries {
+        //    @each $parsed-feature-query in $parsed-feature-queries {
+        //      $parsed-feature-query: append($parsed-feature-query, $intermediary-query, $separator);
+        //      $new-parsed-feature-queries: append($new-parsed-feature-queries, $parsed-feature-query, 'comma');
+        //    }
+        //  }
+        //} @else {
+        //  $new-parsed-feature-queries: $parsed-feature-queries;
+        //
+        //  @each $intermediary-query in $intermediary-queries {
+        //    $new-parsed-feature-queries: append($new-parsed-feature-queries, $intermediary-query, 'comma');
+        //  }
+        //}
       }
 
     }
@@ -169,6 +177,30 @@
   }
 
   @return $parsed-feature-queries;
+}
+
+///
+/// TODO: Documentation
+///
+@function append-feature-query($parent-queries, $child-queries, $separator) {
+  $result: if($separator == 'space', (), $parent-queries);
+
+  @if ($separator == 'space') {
+    // Logical AND
+    @each $child-query in $child-queries {
+      @each $parent-query in $parent-queries {
+        $q: append($parent-query, $child-query, $separator);
+        $result: append($result, $q, 'comma');
+      }
+    }
+  } @else {
+    // Logical OR
+    @each $child-query in $child-queries {
+      $result: append($result, $child-query, 'comma');
+    }
+  }
+
+  @return $result;
 }
 
 ///
