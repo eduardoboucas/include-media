@@ -4,7 +4,6 @@
 /// @access private
 ////
 
-
 ///
 /// Get operator of an expression
 ///
@@ -27,7 +26,6 @@
   $_: log('No operator found in `#{$expression}`.');
 }
 
-
 ///
 /// Get dimension of an expression, based on a found operator
 ///
@@ -48,7 +46,6 @@
   @return $dimension;
 }
 
-
 ///
 /// Get dimension prefix based on an operator
 ///
@@ -59,7 +56,6 @@
 @function get-expression-prefix($operator) {
   @return if(index(('<', '<=', '≤'), $operator), 'max', 'min');
 }
-
 
 ///
 /// Get value of an expression, based on a found operator
@@ -99,6 +95,81 @@
   @return $value;
 }
 
+///
+/// TODO: Documentation
+///
+/// @param {String} $feature-queries - (TODO: documentation)
+///
+/// @return {String} - (TODO: documentation)
+///
+@function chain-feature-queries($feature-queries, $do-parse: true) {
+  $separator: list-separator($feature-queries);
+  $parsed-feature-queries: if($separator == 'comma', (), ((),));
+
+  @each $query in $feature-queries {
+    $new-parsed-feature-queries: ();
+
+    @if (type-of($query) == 'list') {
+      // List item is a list itself
+      $intermediary-queries: chain-feature-queries($query); // Returns a nested list in the form: ((a b), (c))
+
+      @if ($separator == 'space') {
+        @each $intermediary-query in $intermediary-queries {
+          @each $parsed-feature-query in $parsed-feature-queries {
+            $parsed-feature-query: join($parsed-feature-query, $intermediary-query, $separator);
+            $new-parsed-feature-queries: append($new-parsed-feature-queries, $parsed-feature-query, 'comma');
+          }
+        }
+      } @else {
+        $new-parsed-feature-queries: $parsed-feature-queries;
+
+        @each $intermediary-query in $intermediary-queries {
+          $new-parsed-feature-queries: append($new-parsed-feature-queries, $intermediary-query, 'comma');
+        }
+      }
+    } @else {
+      // List item is a string
+      $parsed-current-query: if($do-parse, parse-expression($query), $query);
+
+      @if (type-of($parsed-current-query) == 'list') {
+        // Parsed expression is a list
+        $intermediary-queries: chain-feature-queries($parsed-current-query, false);
+
+        @if ($separator == 'space') {
+          @each $intermediary-query in $intermediary-queries {
+            @each $parsed-feature-query in $parsed-feature-queries {
+              $parsed-feature-query: append($parsed-feature-query, $intermediary-query, $separator);
+              $new-parsed-feature-queries: append($new-parsed-feature-queries, $parsed-feature-query, 'comma');
+            }
+          }
+        } @else {
+          $new-parsed-feature-queries: $parsed-feature-queries;
+
+          @each $intermediary-query in $intermediary-queries {
+            $new-parsed-feature-queries: append($new-parsed-feature-queries, $intermediary-query, 'comma');
+          }
+        }
+      } @else {
+        // Parsed expression is a string
+        @if ($separator == 'space') {
+          @each $parsed-feature-query in $parsed-feature-queries {
+            $parsed-feature-query: append($parsed-feature-query, $parsed-current-query, $separator);
+            $new-parsed-feature-queries: append($new-parsed-feature-queries, $parsed-feature-query, 'comma');
+          }
+        } @else {
+          $new-parsed-feature-queries: $parsed-feature-queries;
+
+          $new-parsed-feature-queries: append($new-parsed-feature-queries, ($parsed-current-query), 'comma');
+        }
+      }
+
+    }
+
+    $parsed-feature-queries: $new-parsed-feature-queries;
+  }
+
+  @return $parsed-feature-queries;
+}
 
 ///
 /// Parse an expression to return a valid media-query expression

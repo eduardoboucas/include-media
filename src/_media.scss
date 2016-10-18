@@ -33,7 +33,19 @@
   @if ($im-media-support and length($conditions) == 0) or
       (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;
+  } @else if ($im-media-support and length($conditions) == 1 and type-of(nth($conditions, 1)) == 'list') {
+    // List mode with AND / OR conditions
+    //@debug 'List mode:';
+    //@debug 'List: #{nth($conditions, 1)}';
+    //@debug 'length: #{length(nth($conditions, 1))}';
+    //@debug 'Separator: #{list-separator(nth($conditions, 1))}';
+
+    $test: chain-feature-queries(nth($conditions, 1));
+    @debug $test;
+
+
   } @else if ($im-media-support and length($conditions) > 0) {
+    // Legacy mode
     @media #{unquote(parse-expression(nth($conditions, 1)))} {
       // Recursive call
       @include media(slice($conditions, 2)...) {
