@@ -4,7 +4,6 @@
 /// @access private
 ////
 
-
 ///
 /// Get operator of an expression
 ///
@@ -27,7 +26,6 @@
   $_: log('No operator found in `#{$expression}`.');
 }
 
-
 ///
 /// Get dimension of an expression, based on a found operator
 ///
@@ -48,7 +46,6 @@
   @return $dimension;
 }
 
-
 ///
 /// Get dimension prefix based on an operator
 ///
@@ -59,7 +56,6 @@
 @function get-expression-prefix($operator) {
   @return if(index(('<', '<=', '≤'), $operator), 'max', 'min');
 }
-
 
 ///
 /// Get value of an expression, based on a found operator
@@ -98,7 +94,6 @@
 
   @return $value;
 }
-
 
 ///
 /// Parse an expression to return a valid media-query expression

@@ -1,0 +1,30 @@
+@import '../dist/include-media';
+@import 'helpers/SassyTester';
+
+$tests-resolve-feature-queries: (
+  (('screen' '>desktop'), ): (
+    ('screen' '(min-width: 1025px)'),
+  ),
+  (('screen', '>desktop'), ): (
+    ('screen'), ('(min-width: 1025px)'),
+  ),
+  (('screen' ('>phone', '<desktop')), ): (
+    ('screen' '(min-width: 321px)'), ('screen' '(max-width: 1023px)'),
+  ),
+  (('retina2x' '>phone'), ): (
+    ('(-webkit-min-device-pixel-ratio: 2)' '(min-width: 321px)'),
+    ('(min-resolution: 192dpi)' '(min-width: 321px)'),
+    ('(min-resolution: 2dppx)' '(min-width: 321px)'),
+  ),
+  (('screen' ('height>300px' 'landscape')), ): (
+    ('screen' '(min-height: 301px)' '(orientation: landscape)'),
+  ),
+  ((('screen', 'portrait') ('height>300px', 'landscape')), ): (
+    ('screen' '(min-height: 301px)'),
+    ('(orientation: portrait)' '(min-height: 301px)'),
+    ('screen' '(orientation: landscape)'),
+    ('(orientation: portrait)' '(orientation: landscape)'),
+  ),
+);
+
+@include run(test('resolve-feature-queries', $tests-resolve-feature-queries));

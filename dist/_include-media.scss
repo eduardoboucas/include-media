@@ -55,8 +55,8 @@ $media-expressions: (
   'handheld': 'handheld',
   'landscape': '(orientation: landscape)',
   'portrait': '(orientation: portrait)',
-  'retina2x': '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx)',
-  'retina3x': '(-webkit-min-device-pixel-ratio: 3), (min-resolution: 350dpi), (min-resolution: 3dppx)'
+  'retina2x': ('(-webkit-min-device-pixel-ratio: 2)', '(min-resolution: 192dpi)', '(min-resolution: 2dppx)'),
+  'retina3x': ('(-webkit-min-device-pixel-ratio: 3)', '(min-resolution: 350dpi)', '(min-resolution: 3dppx)')
 ) !default;
 
 
@@ -172,6 +172,223 @@ $im-no-media-breakpoint: 'desktop' !default;
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
 ////
+/// Parsing engine
+/// @author Hugo Giraudel
+/// @access private
+////
+
+///
+/// Get operator of an expression
+///
+/// @param {String} $expression - Expression to extract operator from
+///
+/// @return {String} - Any of `>=`, `>`, `<=`, `<`, `≥`, `≤`
+///
+@function get-expression-operator($expression) {
+  @each $operator in ('>=', '>', '<=', '<', '≥', '≤') {
+    @if str-index($expression, $operator) {
+      @return $operator;
+    }
+  }
+
+  // It is not possible to include a mixin inside a function, so we have to
+  // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+  // functions cannot be called anywhere in Sass, we need to hack the call in
+  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+  // Sass 3.3, change this line in `@if log(..) {}` instead.
+  $_: log('No operator found in `#{$expression}`.');
+}
+
+///
+/// Get dimension of an expression, based on a found operator
+///
+/// @param {String} $expression - Expression to extract dimension from
+/// @param {String} $operator - Operator from `$expression`
+///
+/// @return {String} - `width` or `height` (or potentially anything else)
+///
+@function get-expression-dimension($expression, $operator) {
+  $operator-index: str-index($expression, $operator);
+  $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
+  $dimension: 'width';
+
+  @if str-length($parsed-dimension) > 0 {
+    $dimension: $parsed-dimension;
+  }
+
+  @return $dimension;
+}
+
+///
+/// Get dimension prefix based on an operator
+///
+/// @param {String} $operator - Operator
+///
+/// @return {String} - `min` or `max`
+///
+@function get-expression-prefix($operator) {
+  @return if(index(('<', '<=', '≤'), $operator), 'max', 'min');
+}
+
+///
+/// Get value of an expression, based on a found operator
+///
+/// @param {String} $expression - Expression to extract value from
+/// @param {String} $operator - Operator from `$expression`
+///
+/// @return {Number} - A numeric value
+///
+@function get-expression-value($expression, $operator) {
+  $operator-index: str-index($expression, $operator);
+  $value: str-slice($expression, $operator-index + str-length($operator));
+
+  @if map-has-key($breakpoints, $value) {
+    $value: map-get($breakpoints, $value);
+  } @else {
+    $value: to-number($value);
+  }
+
+  $interval: map-get($unit-intervals, unit($value));
+
+  @if not $interval {
+    // It is not possible to include a mixin inside a function, so we have to
+    // rely on the `log(..)` function rather than the `log(..)` mixin. Because
+    // functions cannot be called anywhere in Sass, we need to hack the call in
+    // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
+    // Sass 3.3, change this line in `@if log(..) {}` instead.
+    $_: log('Unknown unit `#{unit($value)}`.');
+  }
+
+  @if $operator == '>' {
+    $value: $value + $interval;
+  } @else if $operator == '<' {
+    $value: $value - $interval;
+  }
+
+  @return $value;
+}
+
+///
+/// Parse an expression to return a valid media-query expression
+///
+/// @param {String} $expression - Expression to parse
+///
+/// @return {String} - Valid media query
+///
+@function parse-expression($expression) {
+  // If it is part of $media-expressions, it has no operator
+  // then there is no need to go any further, just return the value
+  @if map-has-key($media-expressions, $expression) {
+    @return map-get($media-expressions, $expression);
+  }
+
+  $operator: get-expression-operator($expression);
+  $dimension: get-expression-dimension($expression, $operator);
+  $prefix: get-expression-prefix($operator);
+  $value: get-expression-value($expression, $operator);
+
+  @return '(#{$prefix}-#{$dimension}: #{$value})';
+}
+
+///
+/// Get a shallow list of resolved feature queries
+///
+/// @param {String} $queries - A nested list structure
+/// @param {Boolean} $do-parse - Try to parse expressions
+///
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
+///
+@function resolve-feature-queries($queries, $do-parse: true) {
+  $separator: list-separator($queries);
+  $result: if($separator == 'space', ((), ), ());
+
+  @each $query in $queries {
+    $chainable-queries: ();
+
+    @if (type-of($query) == 'list') {
+      // List item is a list itself
+      $chainable-queries: resolve-feature-queries($query);
+    } @else {
+      // List item is a string
+      $parsed-query: if($do-parse, parse-expression($query), $query);
+
+      @if (type-of($parsed-query) == 'list') {
+        // Parsed expression is a list
+        $chainable-queries: resolve-feature-queries($parsed-query, false);
+      } @else {
+        // Parsed expression is a string
+        $chainable-queries: ($parsed-query);
+      }
+    }
+
+    $result: append-feature-query($result, $chainable-queries, $separator);
+  }
+
+  @return $result;
+}
+
+///
+/// Combine two query lists as a logical AND / OR operation
+///
+/// @param {List} $base-queries - The host list
+/// @param {List} $append-queries - The list that is being appended
+/// @param {String} $separator - Either `space` or `comma`
+///
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
+///
+@function append-feature-query($base-queries, $append-queries, $separator) {
+  $result: if($separator == 'space', (), $base-queries);
+
+  @each $append-query in $append-queries {
+    @if ($separator == 'space') {
+      // Logical AND
+      @each $base-query in $base-queries {
+        $updated-query: join($base-query, $append-query, $separator);
+        $result: append($result, $updated-query, 'comma');
+      }
+    } @else {
+      // Logical OR
+      $result: append($result, $append-query, 'comma');
+    }
+  }
+
+  @return $result;
+}
+
+///
+/// Parse a list of resolved expressions to return a valid media-query
+///
+/// @param {List} $queries - A one item deep nested list like `(a b, c d e)`
+///
+/// @return {String} - A valid media-query string
+///
+@function parse-media-query($queries) {
+  $result: null;
+  $flat-queries: ();
+  $separator: list-separator($queries);
+  $conjunction: if($separator == 'space', ' and ', ', ');
+
+  @if (type-of($queries) == 'string') {
+    @return $queries;
+  }
+
+  @each $query in $queries {
+    @if (type-of($query) == 'list') {
+      $flat-queries: append($flat-queries, parse-media-query($query));
+    } @else {
+      $flat-queries: append($flat-queries, $query);
+    }
+  }
+
+  @for $i from 1 through length($flat-queries) {
+    $e: nth($flat-queries, $i);
+    $result: unquote('#{$result}#{$e}#{if($i != length($flat-queries), $conjunction, '')}');
+  }
+
+  @return $result;
+}
+
+////
 /// Cross-engine logging engine
 /// @author Hugo Giraudel
 /// @access private
@@ -247,130 +464,6 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   }
 
   @return true;
-}
-
-////
-/// Parsing engine
-/// @author Hugo Giraudel
-/// @access private
-////
-
-
-///
-/// Get operator of an expression
-///
-/// @param {String} $expression - Expression to extract operator from
-///
-/// @return {String} - Any of `>=`, `>`, `<=`, `<`, `≥`, `≤`
-///
-@function get-expression-operator($expression) {
-  @each $operator in ('>=', '>', '<=', '<', '≥', '≤') {
-    @if str-index($expression, $operator) {
-      @return $operator;
-    }
-  }
-
-  // It is not possible to include a mixin inside a function, so we have to
-  // rely on the `log(..)` function rather than the `log(..)` mixin. Because
-  // functions cannot be called anywhere in Sass, we need to hack the call in
-  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-  // Sass 3.3, change this line in `@if log(..) {}` instead.
-  $_: log('No operator found in `#{$expression}`.');
-}
-
-
-///
-/// Get dimension of an expression, based on a found operator
-///
-/// @param {String} $expression - Expression to extract dimension from
-/// @param {String} $operator - Operator from `$expression`
-///
-/// @return {String} - `width` or `height` (or potentially anything else)
-///
-@function get-expression-dimension($expression, $operator) {
-  $operator-index: str-index($expression, $operator);
-  $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
-  $dimension: 'width';
-
-  @if str-length($parsed-dimension) > 0 {
-    $dimension: $parsed-dimension;
-  }
-
-  @return $dimension;
-}
-
-
-///
-/// Get dimension prefix based on an operator
-///
-/// @param {String} $operator - Operator
-///
-/// @return {String} - `min` or `max`
-///
-@function get-expression-prefix($operator) {
-  @return if(index(('<', '<=', '≤'), $operator), 'max', 'min');
-}
-
-
-///
-/// Get value of an expression, based on a found operator
-///
-/// @param {String} $expression - Expression to extract value from
-/// @param {String} $operator - Operator from `$expression`
-///
-/// @return {Number} - A numeric value
-///
-@function get-expression-value($expression, $operator) {
-  $operator-index: str-index($expression, $operator);
-  $value: str-slice($expression, $operator-index + str-length($operator));
-
-  @if map-has-key($breakpoints, $value) {
-    $value: map-get($breakpoints, $value);
-  } @else {
-    $value: to-number($value);
-  }
-
-  $interval: map-get($unit-intervals, unit($value));
-
-  @if not $interval {
-    // It is not possible to include a mixin inside a function, so we have to
-    // rely on the `log(..)` function rather than the `log(..)` mixin. Because
-    // functions cannot be called anywhere in Sass, we need to hack the call in
-    // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-    // Sass 3.3, change this line in `@if log(..) {}` instead.
-    $_: log('Unknown unit `#{unit($value)}`.');
-  }
-
-  @if $operator == '>' {
-    $value: $value + $interval;
-  } @else if $operator == '<' {
-    $value: $value - $interval;
-  }
-
-  @return $value;
-}
-
-
-///
-/// Parse an expression to return a valid media-query expression
-///
-/// @param {String} $expression - Expression to parse
-///
-/// @return {String} - Valid media query
-///
-@function parse-expression($expression) {
-  // If it is part of $media-expressions, it has no operator
-  // then there is no need to go any further, just return the value
-  @if map-has-key($media-expressions, $expression) {
-    @return map-get($media-expressions, $expression);
-  }
-
-  $operator: get-expression-operator($expression);
-  $dimension: get-expression-dimension($expression, $operator);
-  $prefix: get-expression-prefix($operator);
-  $value: get-expression-value($expression, $operator);
-
-  @return '(#{$prefix}-#{$dimension}: #{$value})';
 }
 
 ///
@@ -554,12 +647,21 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///  @include media('>=350px', '<tablet', 'retina3x') { }
 ///
 @mixin media($conditions...) {
+  $is-list-mode: (length($conditions) == 1 and type-of(nth($conditions, 1)) == 'list');
+
   // scss-lint:disable SpaceAroundOperator
   @if ($im-media-support and length($conditions) == 0) or
-      (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
+      (not $im-media-support and im-intercepts-static-breakpoint($conditions...) and not $is-list-mode) {
     @content;
+  } @else if ($im-media-support and $is-list-mode) {
+    // List mode with AND / OR conditions
+    @media #{unquote(parse-media-query(resolve-feature-queries(nth($conditions, 1))))} {
+      @content;
+    }
+
   } @else if ($im-media-support and length($conditions) > 0) {
-    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+    // Legacy mode
+    @media #{unquote(parse-media-query(parse-expression(nth($conditions, 1))))} {
       // Recursive call
       @include media(slice($conditions, 2)...) {
         @content;

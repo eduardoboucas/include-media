@@ -1,0 +1,97 @@
+///
+/// Get a shallow list of resolved feature queries
+///
+/// @param {String} $queries - A nested list structure
+/// @param {Boolean} $do-parse - Try to parse expressions
+///
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
+///
+@function resolve-feature-queries($queries, $do-parse: true) {
+  $separator: list-separator($queries);
+  $result: if($separator == 'space', ((), ), ());
+
+  @each $query in $queries {
+    $chainable-queries: ();
+
+    @if (type-of($query) == 'list') {
+      // List item is a list itself
+      $chainable-queries: resolve-feature-queries($query);
+    } @else {
+      // List item is a string
+      $parsed-query: if($do-parse, parse-expression($query), $query);
+
+      @if (type-of($parsed-query) == 'list') {
+        // Parsed expression is a list
+        $chainable-queries: resolve-feature-queries($parsed-query, false);
+      } @else {
+        // Parsed expression is a string
+        $chainable-queries: ($parsed-query);
+      }
+    }
+
+    $result: append-feature-query($result, $chainable-queries, $separator);
+  }
+
+  @return $result;
+}
+
+///
+/// Combine two query lists as a logical AND / OR operation
+///
+/// @param {List} $base-queries - The host list
+/// @param {List} $append-queries - The list that is being appended
+/// @param {String} $separator - Either `space` or `comma`
+///
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
+///
+@function append-feature-query($base-queries, $append-queries, $separator) {
+  $result: if($separator == 'space', (), $base-queries);
+
+  @each $append-query in $append-queries {
+    @if ($separator == 'space') {
+      // Logical AND
+      @each $base-query in $base-queries {
+        $updated-query: join($base-query, $append-query, $separator);
+        $result: append($result, $updated-query, 'comma');
+      }
+    } @else {
+      // Logical OR
+      $result: append($result, $append-query, 'comma');
+    }
+  }
+
+  @return $result;
+}
+
+///
+/// Parse a list of resolved expressions to return a valid media-query
+///
+/// @param {List} $queries - A one item deep nested list like `(a b, c d e)`
+///
+/// @return {String} - A valid media-query string
+///
+@function parse-media-query($queries) {
+  $result: null;
+  $flat-queries: ();
+  $separator: list-separator($queries);
+  $conjunction: if($separator == 'space', ' and ', ', ');
+
+  @if (type-of($queries) == 'string') {
+    @return $queries;
+  }
+
+  @each $query in $queries {
+    @if (type-of($query) == 'list') {
+      $flat-queries: append($flat-queries, parse-media-query($query));
+    } @else {
+      $flat-queries: append($flat-queries, $query);
+    }
+  }
+
+  @for $i from 1 through length($flat-queries) {
+    $e: nth($flat-queries, $i);
+    $result: unquote('#{$result}#{$e}#{if($i != length($flat-queries), $conjunction, '')}');
+  }
+
+  @return $result;
+}

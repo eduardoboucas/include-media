@@ -29,12 +29,21 @@
 ///  @include media('>=350px', '<tablet', 'retina3x') { }
 ///
 @mixin media($conditions...) {
+  $is-list-mode: (length($conditions) == 1 and type-of(nth($conditions, 1)) == 'list');
+
   // scss-lint:disable SpaceAroundOperator
   @if ($im-media-support and length($conditions) == 0) or
-      (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
+      (not $im-media-support and im-intercepts-static-breakpoint($conditions...) and not $is-list-mode) {
     @content;
+  } @else if ($im-media-support and $is-list-mode) {
+    // List mode with AND / OR conditions
+    @media #{unquote(parse-media-query(resolve-feature-queries(nth($conditions, 1))))} {
+      @content;
+    }
+
   } @else if ($im-media-support and length($conditions) > 0) {
-    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+    // Legacy mode
+    @media #{unquote(parse-media-query(parse-expression(nth($conditions, 1))))} {
       // Recursive call
       @include media(slice($conditions, 2)...) {
         @content;
