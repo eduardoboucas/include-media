@@ -1,10 +1,10 @@
 ///
-/// TODO: Documentation
+/// Get a shallow list of resolved feature queries
 ///
-/// @param {String} $queries - (TODO: documentation)
-/// @param {Boolean} $do-parse - (TODO: documentation)
+/// @param {String} $queries - A nested list structure
+/// @param {Boolean} $do-parse - Try to parse expressions
 ///
-/// @return {String} - (TODO: documentation)
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
 ///
 @function resolve-feature-queries($queries, $do-parse: true) {
   $separator: list-separator($queries);
@@ -36,15 +36,21 @@
 }
 
 ///
-/// TODO: Documentation
+/// Combine two query lists as a logical AND / OR operation
 ///
-@function append-feature-query($parent-queries, $child-queries, $separator) {
-  $result: if($separator == 'space', (), $parent-queries);
+/// @param {List} $base-queries - The host list
+/// @param {List} $append-queries - The list that is being appended
+/// @param {String} $separator - Either `space` or `comma`
+///
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
+///
+@function append-feature-query($base-queries, $append-queries, $separator) {
+  $result: if($separator == 'space', (), $base-queries);
 
-  @each $child-query in $child-queries {
+  @each $child-query in $append-queries {
     @if ($separator == 'space') {
       // Logical AND
-      @each $parent-query in $parent-queries {
+      @each $parent-query in $base-queries {
         $updated-query: join($parent-query, $child-query, $separator);
         $result: append($result, $updated-query, 'comma');
       }
@@ -58,7 +64,11 @@
 }
 
 ///
-/// TODO: Documentation
+/// Parse a list of resolved expressions to return a valid media-query
+///
+/// @param {List} $queries - A one item deep nested list like `(a b, c d e)`
+///
+/// @return {String} - A valid media-query string
 ///
 @function parse-media-query($queries) {
   $result: null;
