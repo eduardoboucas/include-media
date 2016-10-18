@@ -172,86 +172,6 @@ $im-no-media-breakpoint: 'desktop' !default;
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
 ////
-/// Cross-engine logging engine
-/// @author Hugo Giraudel
-/// @access private
-////
-
-
-///
-/// Log a message either with `@error` if supported
-/// else with `@warn`, using `feature-exists('at-error')`
-/// to detect support.
-///
-/// @param {String} $message - Message to log
-///
-@function log($message) {
-  @if feature-exists('at-error') {
-    @error $message;
-  } @else {
-    @warn $message;
-    $_: noop();
-  }
-
-  @return $message;
-}
-
-
-///
-/// Wrapper mixin for the log function so it can be used with a more friendly
-/// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
-/// within functions because it is not possible to include a mixin in a function
-/// and use the mixin everywhere else because it's much more elegant.
-///
-/// @param {String} $message - Message to log
-///
-@mixin log($message) {
-  @if log($message) {}
-}
-
-
-///
-/// Function with no `@return` called next to `@warn` in Sass 3.3
-/// to trigger a compiling error and stop the process.
-///
-@function noop() {}
-
-/// TODO: Check
-
-///
-/// Determines whether a list of conditions is intercepted by the static breakpoint.
-///
-/// @param {Arglist}   $conditions  - Media query conditions
-///
-/// @return {Boolean} - Returns true if the conditions are intercepted by the static breakpoint
-///
-@function im-intercepts-static-breakpoint($conditions...) {
-  $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
-
-  @if not $no-media-breakpoint-value {
-    @if log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
-  }
-
-  @each $condition in $conditions {
-    @if not map-has-key($media-expressions, $condition) {
-      $operator: get-expression-operator($condition);
-      $prefix: get-expression-prefix($operator);
-      $value: get-expression-value($condition, $operator);
-
-      // scss-lint:disable SpaceAroundOperator
-      @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
-          ($prefix == 'min' and $value > $no-media-breakpoint-value) {
-        @return false;
-      }
-    } @else if not index($im-no-media-expressions, $condition) {
-      @return false;
-    }
-  }
-
-  @return true;
-}
-
-////
 /// Parsing engine
 /// @author Hugo Giraudel
 /// @access private
@@ -349,16 +269,38 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 }
 
 ///
-/// TODO: Documentation
+/// Parse an expression to return a valid media-query expression
 ///
-/// @param {String} $queries - (TODO: documentation)
-/// @param {Boolean} $do-parse - (TODO: documentation)
+/// @param {String} $expression - Expression to parse
 ///
-/// @return {String} - (TODO: documentation)
+/// @return {String} - Valid media query
+///
+@function parse-expression($expression) {
+  // If it is part of $media-expressions, it has no operator
+  // then there is no need to go any further, just return the value
+  @if map-has-key($media-expressions, $expression) {
+    @return map-get($media-expressions, $expression);
+  }
+
+  $operator: get-expression-operator($expression);
+  $dimension: get-expression-dimension($expression, $operator);
+  $prefix: get-expression-prefix($operator);
+  $value: get-expression-value($expression, $operator);
+
+  @return '(#{$prefix}-#{$dimension}: #{$value})';
+}
+
+///
+/// Get a shallow list of resolved feature queries
+///
+/// @param {String} $queries - A nested list structure
+/// @param {Boolean} $do-parse - Try to parse expressions
+///
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
 ///
 @function resolve-feature-queries($queries, $do-parse: true) {
   $separator: list-separator($queries);
-  $result: if($separator == 'space', ((),), ());
+  $result: if($separator == 'space', ((), ), ());
 
   @each $query in $queries {
     $chainable-queries: ();
@@ -386,15 +328,21 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 }
 
 ///
-/// TODO: Documentation
+/// Combine two query lists as a logical AND / OR operation
 ///
-@function append-feature-query($parent-queries, $child-queries, $separator) {
-  $result: if($separator == 'space', (), $parent-queries);
+/// @param {List} $base-queries - The host list
+/// @param {List} $append-queries - The list that is being appended
+/// @param {String} $separator - Either `space` or `comma`
+///
+/// @return {List} - A one item deep nested list like `(a b, c d e)`
+///
+@function append-feature-query($base-queries, $append-queries, $separator) {
+  $result: if($separator == 'space', (), $base-queries);
 
-  @each $child-query in $child-queries {
+  @each $child-query in $append-queries {
     @if ($separator == 'space') {
       // Logical AND
-      @each $parent-query in $parent-queries {
+      @each $parent-query in $base-queries {
         $updated-query: join($parent-query, $child-query, $separator);
         $result: append($result, $updated-query, 'comma');
       }
@@ -408,7 +356,11 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 }
 
 ///
-/// TODO: Documentation
+/// Parse a list of resolved expressions to return a valid media-query
+///
+/// @param {List} $queries - A one item deep nested list like `(a b, c d e)`
+///
+/// @return {String} - A valid media-query string
 ///
 @function parse-media-query($queries) {
   $result: null;
@@ -426,32 +378,88 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
   @for $i from 1 through length($flat-queries) {
     $e: nth($flat-queries, $i);
-    $result: if($i != length($flat-queries), $result#{$e}#{$conjunction}, $result#{$e});
+    $result: unquote('#{$result}#{$e}#{if($i != length($flat-queries), $conjunction, '')}');
   }
 
   @return $result;
 }
 
+////
+/// Cross-engine logging engine
+/// @author Hugo Giraudel
+/// @access private
+////
+
+
 ///
-/// Parse an expression to return a valid media-query expression
+/// Log a message either with `@error` if supported
+/// else with `@warn`, using `feature-exists('at-error')`
+/// to detect support.
 ///
-/// @param {String} $expression - Expression to parse
+/// @param {String} $message - Message to log
 ///
-/// @return {String} - Valid media query
-///
-@function parse-expression($expression) {
-  // If it is part of $media-expressions, it has no operator
-  // then there is no need to go any further, just return the value
-  @if map-has-key($media-expressions, $expression) {
-    @return map-get($media-expressions, $expression);
+@function log($message) {
+  @if feature-exists('at-error') {
+    @error $message;
+  } @else {
+    @warn $message;
+    $_: noop();
   }
 
-  $operator: get-expression-operator($expression);
-  $dimension: get-expression-dimension($expression, $operator);
-  $prefix: get-expression-prefix($operator);
-  $value: get-expression-value($expression, $operator);
+  @return $message;
+}
 
-  @return '(#{$prefix}-#{$dimension}: #{$value})';
+
+///
+/// Wrapper mixin for the log function so it can be used with a more friendly
+/// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
+/// within functions because it is not possible to include a mixin in a function
+/// and use the mixin everywhere else because it's much more elegant.
+///
+/// @param {String} $message - Message to log
+///
+@mixin log($message) {
+  @if log($message) {}
+}
+
+
+///
+/// Function with no `@return` called next to `@warn` in Sass 3.3
+/// to trigger a compiling error and stop the process.
+///
+@function noop() {}
+
+///
+/// Determines whether a list of conditions is intercepted by the static breakpoint.
+///
+/// @param {Arglist}   $conditions  - Media query conditions
+///
+/// @return {Boolean} - Returns true if the conditions are intercepted by the static breakpoint
+///
+@function im-intercepts-static-breakpoint($conditions...) {
+  $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
+
+  @if not $no-media-breakpoint-value {
+    @if log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
+  }
+
+  @each $condition in $conditions {
+    @if not map-has-key($media-expressions, $condition) {
+      $operator: get-expression-operator($condition);
+      $prefix: get-expression-prefix($operator);
+      $value: get-expression-value($condition, $operator);
+
+      // scss-lint:disable SpaceAroundOperator
+      @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
+          ($prefix == 'min' and $value > $no-media-breakpoint-value) {
+        @return false;
+      }
+    } @else if not index($im-no-media-expressions, $condition) {
+      @return false;
+    }
+  }
+
+  @return true;
 }
 
 ///
@@ -643,9 +651,6 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
     @content;
   } @else if ($im-media-support and $is-list-mode) {
     // List mode with AND / OR conditions
-    @debug 'Parsed MQ:';
-    @debug #{unquote(parse-media-query(resolve-feature-queries(nth($conditions, 1))))};
-
     @media #{unquote(parse-media-query(resolve-feature-queries(nth($conditions, 1))))} {
       @content;
     }

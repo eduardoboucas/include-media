@@ -8,7 +8,7 @@
 ///
 @function resolve-feature-queries($queries, $do-parse: true) {
   $separator: list-separator($queries);
-  $result: if($separator == 'space', ((),), ());
+  $result: if($separator == 'space', ((), ), ());
 
   @each $query in $queries {
     $chainable-queries: ();
@@ -86,7 +86,7 @@
 
   @for $i from 1 through length($flat-queries) {
     $e: nth($flat-queries, $i);
-    $result: if($i != length($flat-queries), $result#{$e}#{$conjunction}, $result#{$e});
+    $result: unquote('#{$result}#{$e}#{if($i != length($flat-queries), $conjunction, '')}');
   }
 
   @return $result;

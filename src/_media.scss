@@ -37,9 +37,6 @@
     @content;
   } @else if ($im-media-support and $is-list-mode) {
     // List mode with AND / OR conditions
-    @debug 'Parsed MQ:';
-    @debug #{unquote(parse-media-query(resolve-feature-queries(nth($conditions, 1))))};
-
     @media #{unquote(parse-media-query(resolve-feature-queries(nth($conditions, 1))))} {
       @content;
     }
