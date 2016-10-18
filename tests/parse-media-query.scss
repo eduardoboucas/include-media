@@ -1,0 +1,11 @@
+@import '../dist/include-media';
+@import 'helpers/SassyTester';
+
+$tests-parse-media-query: (
+  (('a' 'b'),): 'a and b',
+  (('a', 'b'),): 'a, b',
+  (('a' 'b', 'c' 'd'),): 'a and b, c and d',
+  (('a', 'b', 'c' 'd'),): 'a, b, c and d',
+);
+
+@include run(test('parse-media-query', $tests-parse-media-query));
