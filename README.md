@@ -47,6 +47,10 @@ Examples can be found [here](http://include-media.com/#features).
 - [Create Simple Inline Media Queries with include-media](http://webdevstudios.com/2015/05/18/create-simple-inline-media-queries-include-media/) (WebDevStudios)
 - [Breakpoints and Tweakpoints in Sass](http://www.sitepoint.com/breakpoints-tweakpoints-sass/) (SitePoint)
 
+## Related projects
+
+- [include-media-or](https://github.com/Nirazul/include-media-or) - A fork of **include-media** with support for complex queries with logical disjunctions (maintained by [Nirazul](https://github.com/Nirazul)).
+
 ## The authors
 
 We are [Eduardo Bouças](https://twitter.com/eduardoboucas) and [Hugo Giraudel](https://twitter.com/hugogiraudel).
