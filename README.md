@@ -1,6 +1,6 @@
 <a href="http://include-media.com">!['At' sign](http://include-media.com/assets/images/logo.png)</a>
 
-# include-media
+# include-media [![Build Status](https://travis-ci.org/eduardoboucas/include-media.svg?branch=master)](https://travis-ci.org/eduardoboucas/include-media)
 > Simple, elegant and maintainable media queries in Sass
 
 [![NPM badge](https://nodei.co/npm/include-media.png)](https://www.npmjs.com/package/include-media)
