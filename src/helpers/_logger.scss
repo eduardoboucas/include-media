@@ -12,7 +12,7 @@
 ///
 /// @param {String} $message - Message to log
 ///
-@function log($message) {
+@function im-log($message) {
   @if feature-exists('at-error') {
     @error $message;
   } @else {
@@ -26,14 +26,14 @@
 
 ///
 /// Wrapper mixin for the log function so it can be used with a more friendly
-/// API than `@if log('..') {}` or `$_: log('..')`. Basically, use the function
+/// API than `@if im-log('..') {}` or `$_: im-log('..')`. Basically, use the function
 /// within functions because it is not possible to include a mixin in a function
 /// and use the mixin everywhere else because it's much more elegant.
 ///
 /// @param {String} $message - Message to log
 ///
 @mixin log($message) {
-  @if log($message) {}
+  @if im-log($message) {}
 }
 
 
