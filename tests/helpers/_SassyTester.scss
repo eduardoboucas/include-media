@@ -106,9 +106,15 @@
       + if(map-get($test, 'pass'), '✔', '✘\a   Expected : `#{map-get($test, "expected")}`\a   Actual   : `#{map-get($test, "actual")}`') + '\a ';
   }
 
-  @warn 'Started tests for function `#{map-get($data, "function")}`\a '
+  $message: 'Started tests for function `#{map-get($data, "function")}`\a '
     + '----------\a '
     + $output + '\a '
     + '----------\a '
     + 'Finished: #{map-get($data, "fail")} test(s) failing out of #{$length}';
+
+  @if map-get($data, "fail") > 0 {
+    @error $message;
+  } @else {
+    @warn $message;
+  }
 }
