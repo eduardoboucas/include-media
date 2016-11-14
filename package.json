@@ -1,7 +1,7 @@
 {
   "title": "include-media",
   "name": "include-media",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "Simple, elegant and maintainable media queries in Sass",
   "repository": {
     "type": "git",
