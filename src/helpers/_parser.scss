@@ -20,11 +20,11 @@
   }
 
   // It is not possible to include a mixin inside a function, so we have to
-  // rely on the `im_log(..)` function rather than the `log(..)` mixin. Because
+  // rely on the `im-log(..)` function rather than the `log(..)` mixin. Because
   // functions cannot be called anywhere in Sass, we need to hack the call in
   // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-  // Sass 3.3, change this line in `@if im_log(..) {}` instead.
-  $_: im_log('No operator found in `#{$expression}`.');
+  // Sass 3.3, change this line in `@if im-log(..) {}` instead.
+  $_: im-log('No operator found in `#{$expression}`.');
 }
 
 
