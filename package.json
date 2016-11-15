@@ -1,7 +1,7 @@
 {
   "title": "include-media",
   "name": "include-media",
-  "version": "1.4.8",
+  "version": "1.4.9",
   "description": "Simple, elegant and maintainable media queries in Sass",
   "repository": {
     "type": "git",
@@ -16,19 +16,19 @@
     "url": "https://github.com/eduardoboucas/include-media/issues"
   },
   "homepage": "http://include-media.com",
-  "keywords": ["sass", "eyeglass-module"],
+  "keywords": [
+    "sass",
+    "eyeglass-module"
+  ],
   "eyeglass": {
     "exports": "eyeglass-exports.js",
     "needs": "*"
   },
   "scripts": {
-    "test": "gulp test",
+    "test": "node tests/index.js",
     "lint": "scss-lint . --config ./.scss-lint.yml"
   },
   "license": "MIT",
-  "pre-commit": [
-    "test"
-  ],
   "devDependencies": {
     "gh-pages": "^0.3.0",
     "gulp": "^3.9.0",
@@ -39,6 +39,7 @@
     "gulp-ruby-sass": "^1.0.5",
     "gulp-sass": "^2.0.1",
     "js-yaml": "^3.3.1",
+    "node-sass": "^3.12.2",
     "pre-commit": "^1.0.7",
     "sassdoc": "^2.1.13"
   }

@@ -16,7 +16,7 @@
   @if type-of($value) == 'number' {
     @return $value;
   } @else if type-of($value) != 'string' {
-    $_: log('Value for `to-number` should be a number or a string.');
+    $_: im-log('Value for `to-number` should be a number or a string.');
   }
 
   $first-character: str-slice($value, 1, 1);
@@ -63,7 +63,7 @@
   $units: ('px': 1px, 'cm': 1cm, 'mm': 1mm, '%': 1%, 'ch': 1ch, 'pc': 1pc, 'in': 1in, 'em': 1em, 'rem': 1rem, 'pt': 1pt, 'ex': 1ex, 'vw': 1vw, 'vh': 1vh, 'vmin': 1vmin, 'vmax': 1vmax);
 
   @if not index(map-keys($units), $unit) {
-    $_: log('Invalid unit `#{$unit}`.');
+    $_: im-log('Invalid unit `#{$unit}`.');
   }
 
   @return $value * map-get($units, $unit);

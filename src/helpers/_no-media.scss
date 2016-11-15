@@ -9,7 +9,7 @@
   $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
 
   @if not $no-media-breakpoint-value {
-    @if log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
+    @if im-log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
   }
 
   @each $condition in $conditions {
