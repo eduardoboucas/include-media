@@ -237,6 +237,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
       $value: get-expression-value($condition, $operator);
 
       // scss-lint:disable SpaceAroundOperator
+      // Long if statement
       @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
           ($prefix == 'min' and $value > $no-media-breakpoint-value) {
         @return false;
@@ -555,6 +556,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///
 @mixin media($conditions...) {
   // scss-lint:disable SpaceAroundOperator
+  // long if statement
   @if ($im-media-support and length($conditions) == 0) or
       (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;

@@ -30,6 +30,7 @@
 ///
 @mixin media($conditions...) {
   // scss-lint:disable SpaceAroundOperator
+  // long if statement
   @if ($im-media-support and length($conditions) == 0) or
       (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;
