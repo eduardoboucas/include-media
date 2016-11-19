@@ -4,7 +4,6 @@ exclude: [
   './sassdoc/**/*',
   './tests/helpers/*'
 ]
-
 linters:
 
   BangFormat:
@@ -12,11 +11,19 @@ linters:
     space_before_bang: true
     space_after_bang: false
 
+  BemDepth:
+    enabled: true
+    max_elements: 1
+
   BorderZero:
     enabled: true
+    convention: zero
+
+  ChainedClasses:
+    enabled: false
 
   ColorKeyword:
-    enabled: false
+    enabled: true
 
   ColorVariable:
     enabled: false
@@ -30,6 +37,9 @@ linters:
   DeclarationOrder:
     enabled: true
 
+  DisableLinterReason:
+    enabled: true
+
   DuplicateProperty:
     enabled: false
 
@@ -39,10 +49,13 @@ linters:
 
   EmptyLineBetweenBlocks:
     enabled: true
-    ignore_single_line_blocks: false
+    ignore_single_line_blocks: true
 
   EmptyRule:
     enabled: true
+
+  ExtendDirective:
+    enabled: false
 
   FinalNewline:
     enabled: true
@@ -62,6 +75,9 @@ linters:
   IdSelector:
     enabled: true
 
+  ImportantRule:
+    enabled: false
+
   ImportPath:
     enabled: true
     leading_underscore: false
@@ -69,6 +85,7 @@ linters:
 
   Indentation:
     enabled: true
+    allow_non_nested_indentation: true
     character: space
     width: 2
 
@@ -87,22 +104,34 @@ linters:
 
   NestingDepth:
     enabled: true
-    max_depth: 3
+    max_depth: 1
 
   PlaceholderInExtend:
     enabled: true
 
+  PrivateNamingConvention:
+    enabled: true
+    prefix: _
+
+  PropertyCount:
+    enabled: false
+
   PropertySortOrder:
     enabled: false
-    ignore_unspecified: false
 
   PropertySpelling:
-    enabled: false
+    enabled: true
     extra_properties: []
+
+  PropertyUnits:
+    enabled: false
+
+  PseudoElement:
+    enabled: true
 
   QualifyingElement:
     enabled: true
-    allow_element_with_attribute: true
+    allow_element_with_attribute: false
     allow_element_with_class: false
     allow_element_with_id: false
 
@@ -112,7 +141,8 @@ linters:
 
   SelectorFormat:
     enabled: true
-    convention: hyphenated_BEM
+    convention: hyphenated_lowercase
+    class_convention: '^(?:u|is|has)\-[a-z][a-zA-Z0-9]*$|^(?!u|is|has)[a-zA-Z][a-zA-Z0-9]*(?:\-[a-z][a-zA-Z0-9]*)?(?:\-\-[a-z][a-zA-Z0-9]*)?$'
 
   Shorthand:
     enabled: true
@@ -122,7 +152,7 @@ linters:
     allow_single_line_rule_sets: false
 
   SingleLinePerSelector:
-    enabled: false
+    enabled: true
 
   SpaceAfterComma:
     enabled: true
@@ -133,6 +163,17 @@ linters:
 
   SpaceAfterPropertyName:
     enabled: true
+
+  SpaceAfterVariableColon:
+    enabled: true
+    style: at_least_one_space
+
+  SpaceAfterVariableName:
+    enabled: true
+
+  SpaceAroundOperator:
+    enabled: true
+    style: one_space
 
   SpaceBeforeBrace:
     enabled: true
@@ -153,6 +194,9 @@ linters:
   TrailingZero:
     enabled: true
 
+  TransitionAll:
+    enabled: false
+
   UnnecessaryMantissa:
     enabled: true
 
@@ -165,10 +209,14 @@ linters:
   UrlQuotes:
     enabled: true
 
+  VariableForProperty:
+    enabled: false
+
   VendorPrefixes:
     enabled: true
     identifier_list: base
-    excluded_identifiers: []
+    include: []
+    exclude: []
 
   ZeroUnit:
     enabled: true
