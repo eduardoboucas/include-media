@@ -17,8 +17,9 @@ I spent quite some time experimenting with different libraries and mixins availa
 
 ## How to install
 
-- With Bower: `bower install include-media`
 - With npm: `npm install include-media`
+- With yarn: `yarn add include-media`
+- With Bower: `bower install include-media`
 - With Rails: `gem 'include_media_rails'` ([maintained by KaoruDev](https://github.com/KaoruDev/include_media_rails))
 - Manually: get [this file](https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss)
 
