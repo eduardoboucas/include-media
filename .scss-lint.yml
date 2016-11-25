@@ -172,8 +172,7 @@ linters:
     enabled: true
 
   SpaceAroundOperator:
-    enabled: true
-    style: one_space
+    enabled: false
 
   SpaceBeforeBrace:
     enabled: true

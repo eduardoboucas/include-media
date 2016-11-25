@@ -18,8 +18,6 @@
       $prefix: get-expression-prefix($operator);
       $value: get-expression-value($condition, $operator);
 
-      // scss-lint:disable SpaceAroundOperator
-      // Long if statement
       @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
           ($prefix == 'min' and $value > $no-media-breakpoint-value) {
         @return false;
