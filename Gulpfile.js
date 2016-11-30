@@ -12,6 +12,8 @@ var sassdoc = require('sassdoc');
 var path = require('path');
 var gh = require('gh-pages');
 var yaml = require('js-yaml');
+var replace = require('gulp-replace');
+var rename = require('gulp-rename');
 
 
 // -----------------------------------------------------------------------------
@@ -30,6 +32,14 @@ gulp.task('build', function () {
     .pipe(plugins.header(fs.readFileSync('./banner.txt', 'utf8')))
     .pipe(plugins.header('@charset "UTF-8";\n\n'))
     .pipe(plugins.replace(/@version@/, packageInfo.version))
+    .pipe(gulp.dest('./dist'));
+});
+
+gulp.task('build-namespaced', ['build'], function(){
+  gulp.src(['./dist/_include-media.scss'])
+    .pipe(replace(/\@mixin media\(/g, '@mixin eb-media('))
+    .pipe(replace(/\@include media\(/g, '@include eb-media('))
+    .pipe(rename('_eb-include-media.scss'))
     .pipe(gulp.dest('./dist'));
 });
 
@@ -97,7 +107,7 @@ gulp.task('gh-pages', ['build', 'sassdoc'], function () {
 // Default task
 // -----------------------------------------------------------------------------
 
-gulp.task('default', ['build', 'test']);
+gulp.task('default', ['build', 'test', 'build-namespaced']);
 
 
 // -----------------------------------------------------------------------------

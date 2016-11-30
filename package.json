@@ -35,6 +35,7 @@
     "gulp-concat": "^2.5.2",
     "gulp-header": "^1.2.2",
     "gulp-load-plugins": "^0.10.0",
+    "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.5.3",
     "gulp-ruby-sass": "^1.0.5",
     "gulp-sass": "^2.0.1",
