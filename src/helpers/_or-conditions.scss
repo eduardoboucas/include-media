@@ -1,0 +1,14 @@
+
+@function get-first-conditions($conditions...) {
+  $or-index: has-or-index($conditions);
+  @return slice($conditions, 1, $or-index - 1);
+}
+
+@function get-second-conditions($conditions...) {
+  $or-index: has-or-index($conditions);
+  @return slice($conditions, $or-index + 1);
+}
+
+@function has-or-index($conditions) {
+  @return index($conditions, "OR")
+}

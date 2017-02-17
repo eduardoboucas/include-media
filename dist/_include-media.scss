@@ -248,6 +248,21 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   @return true;
 }
 
+
+@function get-first-conditions($conditions...) {
+  $or-index: has-or-index($conditions);
+  @return slice($conditions, 1, $or-index - 1);
+}
+
+@function get-second-conditions($conditions...) {
+  $or-index: has-or-index($conditions);
+  @return slice($conditions, $or-index + 1);
+}
+
+@function has-or-index($conditions) {
+  @return index($conditions, "OR")
+}
+
 ////
 /// Parsing engine
 /// @author Hugo Giraudel
@@ -552,15 +567,34 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 /// @example scss - Mixing everything
 ///  @include media('>=350px', '<tablet', 'retina3x') { }
 ///
+/// @example scss - With OR operator
+///  @include media('>=350px', OR, '<tablet') { }
+///
 @mixin media($conditions...) {
   @if ($im-media-support and length($conditions) == 0) or
       (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
     @content;
   } @else if ($im-media-support and length($conditions) > 0) {
-    @media #{unquote(parse-expression(nth($conditions, 1)))} {
-      // Recursive call
-      @include media(slice($conditions, 2)...) {
-        @content;
+
+    @if has-or-index($conditions) {
+
+      $first-conditions: get-first-conditions($conditions...);
+      $second-conditions: get-second-conditions($conditions...);
+      $remaining-conditions: join(slice($first-conditions, 2), slice($second-conditions, 2));
+
+      @media #{unquote(parse-expression(nth($first-conditions, 1)))}, #{unquote(parse-expression(nth($second-conditions, 1)))} {
+        // Recursive call
+        @include media($remaining-conditions...) {
+          @content;
+        }
+      }
+    } @else {
+
+      @media #{unquote(parse-expression(nth($conditions, 1)))} {
+        // Recursive call
+        @include media(slice($conditions, 2)...) {
+          @content;
+        }
       }
     }
   }
