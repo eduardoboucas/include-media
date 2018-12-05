@@ -52,7 +52,7 @@
   $tests: ();
 
   @each $arguments, $expected-result in $spec {
-    $actual-result: call($function, $arguments...);
+    $actual-result: call(get-function($function), $arguments...);
     $passed: $actual-result == $expected-result;
 
     $tests: append($tests, (
