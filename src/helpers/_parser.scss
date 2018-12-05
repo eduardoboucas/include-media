@@ -19,12 +19,7 @@
     }
   }
 
-  // It is not possible to include a mixin inside a function, so we have to
-  // rely on the `im-log(..)` function rather than the `log(..)` mixin. Because
-  // functions cannot be called anywhere in Sass, we need to hack the call in
-  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-  // Sass 3.3, change this line in `@if im-log(..) {}` instead.
-  $_: im-log('No operator found in `#{$expression}`.');
+  @return '';
 }
 
 
@@ -115,6 +110,12 @@
   }
 
   $operator: get-expression-operator($expression);
+
+  @if $operator == '' {
+    $operator: $im-default-operator;
+    $expression: $operator + $expression;
+  }
+
   $dimension: get-expression-dimension($expression, $operator);
   $prefix: get-expression-prefix($operator);
   $value: get-expression-value($expression, $operator);

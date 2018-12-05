@@ -2,6 +2,7 @@
 @import 'helpers/SassyTester';
 
 $tests-parse-expression: map-merge($media-expressions, (
+  'phone': '(max-width: 319px)',
   '>phone': '(min-width: 321px)',
   '<phone': '(max-width: 319px)',
   '>=phone': '(min-width: 320px)',
@@ -9,6 +10,7 @@ $tests-parse-expression: map-merge($media-expressions, (
   '<=phone': '(max-width: 320px)',
   '≤phone': '(max-width: 320px)',
 
+  'tablet': '(max-width: 767px)',
   '>tablet': '(min-width: 769px)',
   '<tablet': '(max-width: 767px)',
   '>=tablet': '(min-width: 768px)',
@@ -16,6 +18,7 @@ $tests-parse-expression: map-merge($media-expressions, (
   '<=tablet': '(max-width: 768px)',
   '≤tablet': '(max-width: 768px)',
 
+  'desktop': '(max-width: 1023px)',
   '>desktop': '(min-width: 1025px)',
   '<desktop': '(max-width: 1023px)',
   '>=desktop': '(min-width: 1024px)',

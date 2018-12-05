@@ -150,3 +150,23 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///  /* No output */
 ///
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
+
+///
+/// Defines a default operator if none is provided to media()
+///
+/// @example scss - Default operator will be added to expression
+///  $im-default-operator: '>';
+///  @include media('tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+///  /* Generates: */
+///  @media (min-width: 769px) {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+$im-default-operator: '<' !default;
