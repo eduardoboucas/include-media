@@ -605,8 +605,8 @@ expand-tilde@^1.2.1, expand-tilde@^1.2.2:
     os-homedir "^1.0.1"
 
 extend@2.*, extend@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/extend/-/extend-2.0.1.tgz#1ee8010689e7395ff9448241c98652bc759a8260"
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/extend/-/extend-2.0.2.tgz#1b74985400171b85554894459c978de6ef453ab7"
 
 extend@^3.0.0, extend@~3.0.0:
   version "3.0.0"
