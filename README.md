@@ -1,4 +1,4 @@
-<a href="http://include-media.com">!['At' sign](http://include-media.com/assets/images/logo.png)</a>
+<a href="https://eduardoboucas.github.io/include-media/">!['At' sign](https://eduardoboucas.github.io/include-media/assets/images/logo.png)</a>
 
 # include-media [![Build Status](https://travis-ci.org/eduardoboucas/include-media.svg?branch=master)](https://travis-ci.org/eduardoboucas/include-media)
 > Simple, elegant and maintainable media queries in Sass
@@ -27,12 +27,12 @@ Finally, include the file in your project using an `@import` statement.
 
 ## How to use
 
-Examples can be found [here](http://include-media.com/#features).
+Examples can be found [here](https://eduardoboucas.github.io/include-media/#features).
 
 ## Plugins
 
 - [include-media-export](https://github.com/eduardoboucas/include-media-export) - Reference **include-media** breakpoints in JavaScript.
-- [include-media-columns](https://github.com/eduardoboucas/include-media-columns) - Generate column classes using the [BEMIT naming convention](http://csswizardry.com/2015/08/bemit-taking-the-bem-naming-convention-a-step-further/), automatically referencing **include-media** breakpoints.
+- [include-media-columns](https://github.com/eduardoboucas/include-media-columns) - Generate column classes using the [BEMIT naming convention](https://csswizardry.com/2015/08/bemit-taking-the-bem-naming-convention-a-step-further/), automatically referencing **include-media** breakpoints.
 - [include-media-spread](https://github.com/jackmcpickle/include-media-spread) - Calculates the difference between property values and distributes them through your **include-media** breakpoints.
 - [flex_e_ble](https://github.com/jackmcpickle/flex_e_ble) - Uses your **include-media** breakpoints to create your own flexible class naming structure on top of a `flex` based grid with `inline-block` fallback for IE8+ compatibility.
 - [include-media-grid](https://github.com/tszarzynski/include-media-grid) - An **include-media** plugin for generating grid classes based on the flex display.
@@ -41,13 +41,13 @@ Examples can be found [here](http://include-media.com/#features).
 
 ## Learn more
 
-- [include-media.com](http://include-media.com)
-- [Documentation](http://include-media.com/documentation/)
+- [https://eduardoboucas.github.io/include-media/](https://eduardoboucas.github.io/include-media/)
+- [Documentation](https://eduardoboucas.github.io/include-media/documentation/)
 - [Approaches to Media Queries in Sass](https://css-tricks.com/approaches-media-queries-sass/) (CSS-Tricks)
-- [Write Simple, Elegant and Maintainable Media Queries with Sass](http://davidwalsh.name/sass-media-query) (David Walsh blog)
-- [Generating Alternative Stylesheets for Browsers Without @media](http://davidwalsh.name/generating-alternative-stylesheets-browsers-media) (David Walsh blog)
-- [Create Simple Inline Media Queries with include-media](http://webdevstudios.com/2015/05/18/create-simple-inline-media-queries-include-media/) (WebDevStudios)
-- [Breakpoints and Tweakpoints in Sass](http://www.sitepoint.com/breakpoints-tweakpoints-sass/) (SitePoint)
+- [Write Simple, Elegant and Maintainable Media Queries with Sass](https://davidwalsh.name/sass-media-query) (David Walsh blog)
+- [Generating Alternative Stylesheets for Browsers Without @media](https://davidwalsh.name/generating-alternative-stylesheets-browsers-media) (David Walsh blog)
+- [Create Simple Inline Media Queries with include-media](https://webdevstudios.com/2015/05/18/create-simple-inline-media-queries-include-media/) (WebDevStudios)
+- [Breakpoints and Tweakpoints in Sass](https://www.sitepoint.com/breakpoints-tweakpoints-sass/) (SitePoint)
 
 ## Related projects
 

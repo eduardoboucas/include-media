@@ -8,11 +8,9 @@
 //      Simple, elegant and maintainable media queries in Sass
 //                        v@version@
 //
-//                http://include-media.com
+//        https://eduardoboucas.github.io/include-media
 //
 //         Authors: Eduardo Boucas (@eduardoboucas)
 //                  Hugo Giraudel (@hugogiraudel)
 //
 //      This project is licensed under the terms of the MIT license
-
-

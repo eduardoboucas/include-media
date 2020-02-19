@@ -17,6 +17,6 @@ Open an issue before submitting any pull-request to the repository. It would be 
 
 ## Found a typo in the documentation?
 
-If you found a typo in the [project documentation](http://include-media.com), you can submit a pull-request on the `gh-pages` branch to fix it. Thanks for doing it!
+If you found a typo in the [project documentation](https://eduardoboucas.github.io/include-media), you can submit a pull-request on the `gh-pages` branch to fix it. Thanks for doing it!
 
-If you found a typo in the [Sass API documentation](http://include-media.com/documentation/), you can pull-request the code on `master` to update the block comment from the relevant item.
+If you found a typo in the [Sass API documentation](https://eduardoboucas.github.io/include-media/documentation/), you can pull-request the code on `master` to update the block comment from the relevant item.
