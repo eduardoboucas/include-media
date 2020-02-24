@@ -28,6 +28,7 @@
     "test": "npm run lint && node tests/index.js",
     "lint": "scss-lint . --config ./.scss-lint.yml"
   },
+  "sass": "dist/_include-media.scss",
   "license": "MIT",
   "devDependencies": {
     "gh-pages": "^0.12.0",
