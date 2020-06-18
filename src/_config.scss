@@ -49,11 +49,11 @@ $media-expressions: (
 ///  /* Generates: */
 ///  @media (min-width: 129px) {}
 ///
-/// @example scss - Interval for ems is defined as `0.01` by default
+/// @example scss - Interval for ems is defined as `0.0625` by default
 ///  @include media('>20em') {}
 ///
 ///  /* Generates: */
-///  @media (min-width: 20.01em) {}
+///  @media (min-width: 20.0625em) {}
 ///
 /// @example scss - Interval for rems is defined as `0.1` by default, to be used with `font-size: 62.5%;`
 ///  @include media('>2.0rem') {}
@@ -63,7 +63,7 @@ $media-expressions: (
 ///
 $unit-intervals: (
   'px': 1,
-  'em': 0.01,
+  'em': 0.0625,
   'rem': 0.1,
   '': 0
 ) !default;
