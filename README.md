@@ -38,6 +38,7 @@ Examples can be found [here](https://eduardoboucas.github.io/include-media/#feat
 - [include-media-grid](https://github.com/tszarzynski/include-media-grid) - An **include-media** plugin for generating grid classes based on the flex display.
 - [im-to-em](https://gist.github.com/eduardoboucas/84144cd85cbd2ad4db1ca8b902585ca0) - A tiny function to convert **include-media** breakpoints from `px` to `em`.
 - [include-media-hidden-classes](https://github.com/eduardoboucas/include-media-hidden-classes) - An **include-media** plugin to generate classes for hiding elements.
+- [Fluid-Size](https://github.com/black7375/Fluid-Size): Use **include-media** breakepoints to provide the `fit size` for the device.
 
 ## Learn more
 
