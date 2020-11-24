@@ -56,7 +56,7 @@ Examples can be found [here](https://eduardoboucas.github.io/include-media/#feat
 
 ## The authors
 
-We are [Eduardo Bouças](https://twitter.com/eduardoboucas) and [Hugo Giraudel](https://twitter.com/hugogiraudel).
+**include-media** was created by [Eduardo Bouças](https://twitter.com/eduardoboucas) and [Hugo Giraudel](https://twitter.com/hugogiraudel). The lead maintainer is [Jack McNicol](https://github.com/jackmcpickle).
 
 ## We want to hear from you
 
