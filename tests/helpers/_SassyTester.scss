@@ -1,6 +1,6 @@
 /// Test `$function` with `$spec` test suite
 ///
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 ///
 /// @param {String} $function - Name of function to test
 /// @param {Map} $spec - Test suite to run `$function` against
@@ -79,7 +79,7 @@
 
 /// Mixin decorating the result of `test(..)` function to throw it as an error
 ///
-/// @author Hugo Giraudel
+/// @author Kitty Giraudel
 ///
 /// @param {Map} $data - Return of `test(..)` function
 ///
