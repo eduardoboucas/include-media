@@ -1,222 +1,64 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>include-media: Simple, elegant and maintainable media queries in Sass</title>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	    <meta name="description" content="include-media: Simple, elegant and maintainable media queries in Sass">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta property="og:title" content="include-media: Simple, elegant and maintainable media queries in Sass" />
-		<meta property="og:description" content="include-media is a Sass library for writing CSS media queries in an easy and maintainable way, using a natural and simplistic syntax." />
-		<meta property="og:type" content="website" />
-		<meta property="og:url" content="http://include-media.com/" />
-		<meta property="og:image" content="http://include-media.com/assets/images/logo.png" />		
-		<link rel="stylesheet" href="css/main.css?v=3">
-		<link rel="icon" href="assets/images/favicon.png" />
-	</head>
-	<body>
-		<header>
-			<h1><span>@</span>include-media</h1>
-			<p>Simple, elegant and maintainable media queries in Sass</p>
-			<div class="burger-wrapper">
-				<button class="burger"></button>
-			</div>
-			
-			<iframe src="https://ghbtns.com/github-btn.html?user=eduardoboucas&repo=include-media&type=star&count=true&size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>include-media - v1.4.10</title><link rel="stylesheet" href="assets/css/main.css"><link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500,700" rel="stylesheet" type="text/css"><meta name="viewport" content="width=device-width"><meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible"><!-- Open Graph tags --><meta property="og:title" content="include-media - SassDoc"><meta property="og:type" content="website"><meta property="og:description" content="<p>Simple, elegant and maintainable media queries in Sass</p>
+"><!-- Thanks to Sass-lang.com for the icons --><link href="assets/images/favicon.png" rel="shortcut icon"></head><body><aside class="sidebar" role="nav"><div class="sidebar__header"><h1 class="sidebar__title"><a href="https://eduardoboucas.github.io/include-media">include-media - v1.4.10</a></h1></div><div class="sidebar__body"><button type="button" class="btn-toggle js-btn-toggle" data-alt="Open all">Close all</button><p class="sidebar__item sidebar__item--heading" data-slug="undefined"><a href="#undefined">General</a></p><div><p class="sidebar__item sidebar__item--sub-heading" data-slug="undefined-function"><a href="#undefined-function">functions</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-group="undefined" data-name="im-intercepts-static-breakpoint" data-type="function"><a href="#undefined-function-im-intercepts-static-breakpoint">im-intercepts-static-breakpoint</a></li></ul><p class="sidebar__item sidebar__item--sub-heading" data-slug="undefined-mixin"><a href="#undefined-mixin">mixins</a></p><ul class="list-unstyled"><li class="sidebar__item sassdoc__item" data-group="undefined" data-name="media-context" data-type="mixin"><a href="#undefined-mixin-media-context">media-context</a></li></ul></div></div></aside><article class="main" role="main"><header class="header" role="banner"><div class="container"><div class="sassdoc__searchbar searchbar"><label for="js-search-input" class="visually-hidden">Search</label><div class="searchbar__form" id="js-search"><input name="search" type="search" class="searchbar__field" autocomplete="off" autofocus id="js-search-input" placeholder="Search"><ul class="searchbar__suggestions" id="js-search-suggestions"></ul></div></div></div></header><section class="main__section"><h1 class="main__heading" id="undefined"><div class="container">General</div></h1><section class="main__sub-section" id="undefined-function"><h2 class="main__heading--secondary"><div class="container">functions</div></h2><section class="main__item container item" id="undefined-function-im-intercepts-static-breakpoint"><h3 class="item__heading"><a class="item__name" href="#function-im-intercepts-static-breakpoint">im-intercepts-static-breakpoint</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@function im-intercepts-static-breakpoint($conditions...) { 
+  $no-media-breakpoint-value: map.get($breakpoints, $im-no-media-breakpoint);
 
-			<nav>
-				<ul>
-					<li><a href="#overview">Overview</a></li>
-					<li><a href="#features">Features</a></li>
-					<li><a href="#download">Download</a></li>
-					<li><a href="#documentation">Documentation</a></li>
-					<li><a href="#authors">Authors</a></li>
-				</ul>
-			</nav>
-			<a class="github-ribbon" href="https://github.com/eduardoboucas/include-media"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png"></a>					
-		</header>
+  @if not $no-media-breakpoint-value {
+    /* stylelint-disable-next-line block-no-empty */
+    @if im-log(&#39;`#{$im-no-media-breakpoint}` is not a valid breakpoint.&#39;) {}
+  }
 
-		<div class="content">
-			<section id="overview">
-				<h2 class="what-is-it">What is it?</h2>
-				<p><span class="brand">include-media</span> is a Sass library for writing CSS media queries in an easy and maintainable way, using a natural and simplistic syntax.</p>
-				
-				<video autoplay loop>
-				  <source src="assets/video/include-media.mov" type="video/mp4">
-				  <source src="assets/video/include-media.webm" type="video/webm">
-				</video>
+  @each $condition in $conditions {
+    @if not map.has-key($media-expressions, $condition) {
+      $operator: get-expression-operator($condition);
+      $prefix: get-expression-prefix($operator);
+      $value: get-expression-value($condition, $operator);
 
-				<h2>Why another library?</h2>
-				<p>I spent quite some time experimenting with different libraries and mixins available out there, but eventually all of them failed to do everything I needed in an elegant way. Some of them wouldn't let me mix set breakpoints with case-specific values, others wouldn't properly handle the CSS OR operator and most of them had a syntax that I found complicated and unnatural.</p>
-				<p><span class="brand">include-media</span> was the result of that experience and it includes all the features I wish I had found before, whilst maintaining a simplistic and natural syntax.</p>
-				<p>I wrote an <a href="http://css-tricks.com/approaches-media-queries-sass/">article on CSS-Tricks</a> about this experience, where I explain in detail the problems I found with each of the solutions I experimented with. I also wrote on <a href="http://davidwalsh.name/sass-media-query">David Walsh's blog</a> about the implementation details of <span class="brand">include-media</span>.</p>
-			</section>
+      @if ($prefix == &#39;max&#39; and $value &lt;= $no-media-breakpoint-value) or
+        ($prefix == &#39;min&#39; and $value &gt; $no-media-breakpoint-value) {
+        @return false;
+      }
+    } @else if not index($im-no-media-expressions, $condition) {
+      @return false;
+    }
+  }
 
-			<section id="features">
-				<h2>Features</h2>
-				<h3>Flexible declaration of breakpoints</h3>
-				<p>The library comes with a list of default breakpoints: phone, tablet and desktop. If you want to change them or add more, you can simply re-declare <code>$breakpoints</code> using the Sass map syntax.</p>
-				<ul class="sublime">
-				  <li class="buttons"></li>
-				  <li><span class="orange">$breakpoints</span>: (phone: <span class="blue">320px</span>, tablet: <span class="blue">768px</span>, desktop: <span class="blue">1024px</span>);</li>
-				  <li></li>
-				  <li><span class="gray">/* Inclusive and exclusive operators for a finer control over the intervals */</span></li>
-				  <li><span class="red">@include media</span>(<span class="yellow">"&gt;phone"</span>,<span class="yellow"> "&lt;=tablet"</span>) {</li>
-				  <ul class="tab">
-					  <li><span class="blue">width:</span> <span class="purple">50%</span>;<span class="cursor"></span></li>
-				  </ul>
-				  <li>}</li>
-				  <li></li>
-				  <li><span class="gray">/* Use ligatured operators if you fancy a slicker declaration */</span></li>
-				  <li><span class="red">@include media</span>(<span class="yellow">"&geq;phone"</span>,<span class="yellow"> "&leq;tablet"</span>) {</li>
-				  <ul class="tab">
-					  <li><span class="blue">line-height:</span> <span class="purple">1.5</span>;</li>
-				  </ul>
-				  <li>}</li>				  
-				</ul>
+  @return true;
+ }" data-collapsed="@function im-intercepts-static-breakpoint($conditions...) { ... }"><code>@function im-intercepts-static-breakpoint($conditions...) { ... }</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/src/_no-media.scss#L8-L32" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Description</h3><div class="item__description"><p>Determines whether a list of conditions is intercepted by the static breakpoint.</p></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter </span>Name</th><th scope="col"><span class="visually-hidden">parameter </span>Description</th><th scope="col"><span class="visually-hidden">parameter </span>Type</th><th scope="col"><span class="visually-hidden">parameter </span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$conditions</code></th><td data-label="desc"><p>Media query conditions</p></td><td data-label="type"><code>Arglist</code></td><td data-label="default">&mdash;<span class="visually-hidden"> none</span></td></tr></tbody></table><h3 class="item__sub-heading">Returns</h3><div class="item__description item__description--inline"><code>Boolean</code> &mdash;<p>Returns true if the conditions are intercepted by the static breakpoint</p></div></section></section><section class="main__sub-section" id="undefined-mixin"><h2 class="main__heading--secondary"><div class="container">mixins</div></h2><section class="main__item container item" id="undefined-mixin-media-context"><h3 class="item__heading"><a class="item__name" href="#mixin-media-context">media-context</a></h3><div class="item__code-wrapper"><pre class="item__code item__code--togglable language-scss" data-current-state="collapsed" data-expanded="@mixin media-context($tweakpoints: (), $tweak-media-expressions: ()) { 
+  // Save global configuration
+  $global-breakpoints: $breakpoints;
+  $global-media-expressions: $media-expressions;
 
-				<p>Because they're completely dynamic, you can adopt whatever naming convention you want for the breakpoints. Not a fan of using device names? Not a problem.</p>
-				<ul class="sublime">
-				  <li class="buttons"></li>
-				  <li><span class="orange">$breakpoints</span>: (small: <span class="blue">320px</span>, medium: <span class="blue">768px</span>, large: <span class="blue">1024px</span>);</li>
-				  <li></li>
-				  <li><span class="gray">/* Inclusive and exclusive operators for a finer control over the intervals */</span></li>
-				  <li><span class="red">@include media</span>(<span class="yellow">"&gt;medium"</span>,<span class="yellow"> "&lt;=large"</span>) {</li>
-				  <ul class="tab">
-					  <li><span class="blue">width:</span> <span class="purple">100%</span>;<span class="cursor"></span></li>
-				  </ul>
-				  <li>}</li>
-				</ul>				
+  // Update global configuration
+  $breakpoints: map.merge($breakpoints, $tweakpoints) !global;
+  $media-expressions: map.merge($media-expressions, $tweak-media-expressions) !global;
 
-				<h3>On-the-fly breakpoints</h3>
-				<p>Some elements require additional rules on intermediate breakpoints, so you can create media queries that use both global breakpoints and case-specific values, specified in the units of your preference.</p>
-				<ul class="sublime">
-					<li class="buttons"></li>
-					<li><span class="red">@include media</span>(<span class="yellow">"&gt;desktop", "&lt;=1150px"</span>) {</li>
-					<ul class="tab">
-						<li><span class="blue">font-size: </span><span class="purple">4.0rem</span>;<span class="cursor"></span></li>
-					</ul>
-					<li>}</li>
-				</ul>
+  @content;
 
-				<h3>Smart support for media types</h3>
-				<p>Media types and static expressions are optional and automatically deferred. The list of media types can be modified by declaring <code>$media-expressions</code>.</p>
-				<p>Expressions containing logical disjunctions, such as <a href="http://css-tricks.com/snippets/css/retina-display-media-query/">Chris Coyier's retina declaration</a>, are correctly handled, even when combined with other media types or breakpoints.</p>
-				<ul class="sublime">
-					<li class="buttons"></li>
-					<li><span class="red">@include media</span>(<span class="yellow">"retina2x", "&gt;desktop"</span>) {</li>
-					<ul class="tab">
-						<li><span class="blue">width: </span><span class="purple">100%</span>;<span class="cursor"></span></li>
-					</ul>
-					<li>}</li>
-				</ul>
+  // Restore global configuration
+  $breakpoints: $global-breakpoints !global;
+  $media-expressions: $global-media-expressions !global;
+ }" data-collapsed="@mixin media-context($tweakpoints: (), $tweak-media-expressions: ()) { ... }"><code>@mixin media-context($tweakpoints: (), $tweak-media-expressions: ()) { ... }</code></pre><a href="https://github.com/eduardoboucas/include-media/blob/master/src/_tweakpoints.scss#L42-L56" class="item__source-link" target="_blank">View source</a></div><h3 class="item__sub-heading">Parameters</h3><table class="item__parameters"><thead><tr><th scope="col"><span class="visually-hidden">parameter </span>Name</th><th scope="col"><span class="visually-hidden">parameter </span>Description</th><th scope="col"><span class="visually-hidden">parameter </span>Type</th><th scope="col"><span class="visually-hidden">parameter </span>Default value</th></tr></thead><tbody><tr class="item__parameter"><th scope="row" data-label="name"><code>$tweakpoints</code></th><td data-label="desc"><p>Map of tweakpoints to be merged with <code>$breakpoints</code></p></td><td data-label="type"><code>Map</code></td><td data-label="default"><code>()</code></td></tr><tr class="item__parameter"><th scope="row" data-label="name"><code>$tweak-media-expressions</code></th><td data-label="desc"><p>Map of tweaked media expressions to be merged with <code>$media-expression</code></p></td><td data-label="type"><code>Map</code></td><td data-label="default"><code>()</code></td></tr></tbody></table><h3 class="item__sub-heading">Example</h3><div class="item__example example"><div class="example__description"><p>Extend the global breakpoints with a tweakpoint</p></div><pre class="example__code language-scss"><code>@include media-context((&#39;custom&#39;: 678px)) {
+  .foo {
+    @include media(&#39;&gt;phone&#39;, &#39;&lt;=custom&#39;) {
+     // ...
+    }
+  }
+}</code></pre></div><div class="item__example example"><div class="example__description"><p>Extend the global media expressions with a custom one</p></div><pre class="example__code language-scss"><code>@include media-context($tweak-media-expressions: (&#39;all&#39;: &#39;all&#39;)) {
+  .foo {
+    @include media(&#39;all&#39;, &#39;&gt;phone&#39;) {
+     // ...
+    }
+  }
+}</code></pre></div><div class="item__example example"><div class="example__description"><p>Extend both configuration maps</p></div><pre class="example__code language-scss"><code>@include media-context((&#39;custom&#39;: 678px), (&#39;all&#39;: &#39;all&#39;)) {
+  .foo {
+    @include media(&#39;all&#39;, &#39;&gt;phone&#39;, &#39;&lt;=custom&#39;) {
+     // ...
+    }
+  }
+}</code></pre></div></section></section></section><footer class="footer" role="contentinfo"><div class="container"><div class="footer__project-info project-info"><!-- Name and URL --> <a class="project-info__name" href="https://eduardoboucas.github.io/include-media">include-media</a><!-- Version --> <span class="project-info__version">- v1.4.10</span><!-- License --> <span class="project-info__license">, under MIT</span></div><a class="footer__watermark" href="http://sassdoc.com"><img src="assets/images/logo_light_inline.svg" alt="SassDoc Logo"></a></div></footer></article><script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script><script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-				<h3>Support for different units</h3>
-				<p>Life isn't just about pixels. Fancy writing your media queries using em or rem units? We've got you covered.</p>
-				<ul class="sublime">
-				  <li class="buttons"></li>
-				  <li><span class="orange">$breakpoints</span>: (phone: <span class="blue">20em</span>, tablet: <span class="blue">48em</span>, desktop: <span class="blue">64em</span>);</li>
-				  <li></li>
-				  <li><span class="red">@include media</span>(<span class="yellow">"&gt;tablet"</span>,<span class="yellow"> "&lt;=52em"</span>) {</li>
-				  <ul class="tab">
-					  <li><span class="blue">background-color:</span> <span class="purple">#bad</span>;<span class="cursor"></span></li>
-				  </ul>
-				  <li>}</li>
-				</ul>
-
-				<h3>Expression aliases</h3>
-				<p>You can create aliases for expressions that you find yourself reusing a lot, no matter how complex they are (watch out for the three dots next to the variable name in the mixin call).</p>
-				<ul class="sublime">
-				  <li class="buttons"></li>
-				  <li><span class="orange">$my-weird-bp</span>: <span class="yellow">"&gt;=tablet"</span>, <span class="yellow">"&lt;815px"</span>, <span class="yellow">"landscape"</span>, <span class="yellow">"retina3x"</span>;</li>
-				  <li></li>
-				  <li><span class="red">@include media</span>(<span class="orange">$my-weird-bp</span>...) {</li>
-				  <ul class="tab">
-					  <li><span class="blue">display:</span> <span class="blue">inline-block</span>;<span class="cursor"></span></li>
-				  </ul>
-				  <li>}</li>
-				</ul>
-
-				<h3>Height-based media queries</h3>
-				<p>All expressions result in a <code>min-width</code> expression by default, but you can explicitly use any breakpoint with <code>min-height</code> instead</p>
-				<ul class="sublime">
-				  <li class="buttons"></li>
-				  <li><span class="orange">$breakpoints</span>: (small: <span class="blue">320px</span>, medium: <span class="blue">768px</span>, large: <span class="blue">1024px</span>);</li>
-				  <li></li>
-				  <li><span class="red">@include media</span>(<span class="yellow">"height&gt;small"</span>,<span class="yellow"> "height&lt;=medium"</span>) {</li>
-				  <ul class="tab">
-					  <li><span class="blue">height:</span> <span class="purple">50%</span>;<span class="cursor"></span></li>
-				  </ul>
-				  <li>}</li>
-				</ul>
-
-				<h3>Context-specific breakpoints and expressions</h3>
-				<p>If a component has a set of breakpoints or media expressions that aren't shared with the rest of the application, you can set them to exist only within the scope of the component</p>
-				<ul class="sublime">
-				  <li class="buttons"></li>
-                  <li><span class="red">@include media-context</span>(('custom': <span class="purple">678px</span>)) {</li>
-                  <ul class="tab">
-	                  <li><span class="green">.my-component</span> {</li>
-	                  <ul class="tab">
-						<li><span class="red">@include media</span>(<span class="yellow">"&gt;phone"</span>,<span class="yellow"> "&lt;=custom"</span>) {</li>
-							<ul class="tab">
-							  <li><span class="blue">border-radius:</span> <span class="purple">100%</span>;<span class="cursor"></span></li>
-							</ul>
-						<li>}</li>
-	                  </ul>	                  
-	                  <li>}</li>
-                  </ul>
-                  <li>}</li>
-				</ul>				
-			</section>
-
-			<section id="download">
-				<h2>Download</h2>
-				<p><span class="brand">include-media</span> is just one SCSS file that you can import into your project and start using right away.</p>
-				<p>You can <a href="https://raw.githubusercontent.com/eduardoboucas/include-media/master/dist/_include-media.scss">download the file manually</a>, install via npm with <code>npm install include-media</code> or via Yarn with <code>yarn add include-media</code>.</p>
-				<p>Finally, import the file <code>dist/_include-media.scss</code> into your project.</p>
-			</section>
-
-			<section id="documentation">
-				<h2>Documentation</h2>
-				<p>Documentation generated with <a href="http://sassdoc.com/">SassDoc</a> is available <a href="documentation">here</a>.</p>
-			</section>
-
-			<section class="cf" id="authors">
-				<h2>The authors</h2>
-				<div class="col-1-3 author-image-col">
-					<a href="https://eduardoboucas.com"><img class="headshot" src="assets/images/eduardo.jpg"/></a>
-				</div>
-				<div class="col-2-3 author-copy-col">
-					<h3>Eduardo Bouças</h3>
-					<p>Software engineer with a crush on the web. Created <a href="https://staticman.net">Staticman</a>, <a href="https://speedtracker.org">SpeedTracker</a> and a bunch of other stuff. He <a href="https://eduardoboucas.com">blogs</a>, <a href="https://twitter.com/eduardoboucas">tweets</a>, and sleeps.</p>
-				</div>
-
-				<div class="col-1-3 author-image-col">
-					<a href="http://hugogiraudel.com"><img class="headshot" src="assets/images/hugo.jpg"/></a>
-				</div>
-				<div class="col-2-3 author-copy-col">
-					<h3>Hugo Giraudel</h3>
-					<p>CSS goblin. Sass hacker. Margin psycho. Author of <a href="http://sass-guidelin.es/">Sass Guidelines</a>, <a href="http://sassdoc.com/">SassDoc</a>, <a href="http://sass-compatibility.github.io/">Sass Compatibility</a>, <a href="http://browserhacks.com/">Browserhacks</a> and a lot of <a href="https://github.com/HugoGiraudel/awesome-sass">Sass stuff</a>.</p>
-				</div>				
-			</section>
-
-			<footer>
-				<p>Built by <a href="https://eduardoboucas.com">Eduardo Bouças</a>. Hosted by <a href="https://github.com">GitHub</a>.</p>
-			</footer>
-		</div>
-
-		<!-- Google Analytics -->
-		<script>
-			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-			ga('create', 'UA-54012006-4', 'auto');
-			ga('send', 'pageview');
-		</script>
-	</body>
-	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-	<script src="js/main.js"></script>
-</html>
+  ga('create', 'UA-54012006-4', 'auto');
+  ga('send', 'pageview');</script><script src="assets/js/main.min.js"></script></body></html>
