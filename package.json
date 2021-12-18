@@ -1,0 +1,24 @@
+{
+  "name": "include-media.com",
+  "version": "1.0.0",
+  "description": "Website for the include-media Sass library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eduardoboucas/include-media.com.git"
+  },
+  "author": "Eduardo Boucas <mail@eduardoboucas.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eduardoboucas/include-media.com/issues"
+  },
+  "homepage": "https://github.com/eduardoboucas/include-media.com",
+  "devDependencies": {
+    "grunt-contrib-sass": "latest",
+    "grunt-autoprefixer": "latest",
+    "grunt-contrib-watch": "latest"
+  }
+}

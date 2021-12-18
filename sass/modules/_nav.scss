@@ -1,0 +1,46 @@
+nav {
+	$nav-animation-duration: 0.6s;
+
+	text-align: center;
+	margin-top: 30px;
+	overflow: hidden;
+
+	ul {
+		display: inline-block;		
+	}
+
+	li {
+		display: inline-block;
+		float: left;
+		margin: 0 20px;
+		padding-bottom: 10px;
+		@include font-size(18);
+
+		&:hover {
+			a {
+				color: $colour-black;
+				border-bottom: 1px solid $colour-secondary;	
+				text-decoration: none;				
+			}
+		}
+	}	
+
+	@include media("<tablet") {
+		max-height: 0;
+		transition: all $nav-animation-duration ease-in-out;
+
+		&.open {
+			max-height: 1000px;
+			transition: all $nav-animation-duration ease-in-out;
+		}
+
+		li {
+			margin: 10px 0;
+			width: 100%;
+		}
+	}
+
+	a {
+		color: inherit;
+	}
+}

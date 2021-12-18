@@ -1,0 +1,78 @@
+/**
+*
+* Page width constrain. Set the max and minimum width and use `@extend %constrain` to constrain the width.
+*
+**/
+
+$layout-max-width: 650px;
+$layout-min-width: 320px;
+$layout-side-padding: 20px;
+
+%constrain {
+	max-width: $layout-max-width + (2 * $layout-side-padding);
+	min-width: $layout-min-width;
+	margin: 0 auto;
+	padding: 0 $layout-side-padding;
+}
+
+body {
+	padding-top: 20px;
+	@include font-size(16);
+	font-family: $font-primary;
+	font-weight: $font-weight-light;
+	background-color: $colour-white;
+	color: $colour-primary;
+}
+
+a {
+	color: $colour-secondary;
+	text-decoration: none;
+
+	&:hover {
+		text-decoration: underline;
+	}
+}
+
+h2 {
+	@include font-size(55);
+	color: $colour-secondary;
+	text-transform: uppercase;
+	font-weight: $font-weight-lighter;
+	margin: 50px 0 15px 0;	
+}
+
+h3 {
+	@include font-size(30);
+	margin: 15px 0;
+	font-weight: $font-weight-lighter;
+}
+
+@include media("<tablet") {
+	h2 {
+		font-weight: $font-weight-light;
+
+		&.what-is-it {
+			margin-top: 0;
+		}
+	}
+}
+
+p {
+	@include font-size(20);
+	line-height: 25px;
+	margin-bottom: 15px;
+}
+
+img {
+	max-width: 100%;
+}
+
+code {
+	font-family: Monospace, sans-serif;
+}
+
+[class*="col-"] {
+	@extend .cf;
+}
+
+@include grid-columns((1, 3));
