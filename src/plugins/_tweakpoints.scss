@@ -42,8 +42,8 @@
   $global-media-expressions: $media-expressions;
 
   // Update global configuration
-  $breakpoints: map-merge($breakpoints, $tweakpoints) !global;
-  $media-expressions: map-merge($media-expressions, $tweak-media-expressions) !global;
+  $breakpoints: map.merge($breakpoints, $tweakpoints) !global;
+  $media-expressions: map.merge($media-expressions, $tweak-media-expressions) !global;
 
   @content;
 

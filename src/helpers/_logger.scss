@@ -4,7 +4,6 @@
 /// @access private
 ////
 
-
 ///
 /// Log a message either with `@error` if supported
 /// else with `@warn`, using `feature-exists('at-error')`
@@ -13,7 +12,7 @@
 /// @param {String} $message - Message to log
 ///
 @function im-log($message) {
-  @if feature-exists('at-error') {
+  @if meta.feature-exists('at-error') {
     @error $message;
   } @else {
     @warn $message;
@@ -22,7 +21,6 @@
 
   @return $message;
 }
-
 
 ///
 /// Wrapper mixin for the log function so it can be used with a more friendly
@@ -33,12 +31,13 @@
 /// @param {String} $message - Message to log
 ///
 @mixin log($message) {
-  @if im-log($message) {}
+  @if im-log($message) {
+  }
 }
-
 
 ///
 /// Function with no `@return` called next to `@warn` in Sass 3.3
 /// to trigger a compiling error and stop the process.
 ///
-@function noop() {}
+@function noop() {
+}

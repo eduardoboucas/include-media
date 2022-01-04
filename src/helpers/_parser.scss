@@ -4,7 +4,6 @@
 /// @access private
 ////
 
-
 ///
 /// Get operator of an expression
 ///
@@ -14,7 +13,7 @@
 ///
 @function get-expression-operator($expression) {
   @each $operator in ('>=', '>', '<=', '<', '≥', '≤') {
-    @if str-index($expression, $operator) {
+    @if string.index($expression, $operator) {
       @return $operator;
     }
   }
@@ -27,7 +26,6 @@
   $_: im-log('No operator found in `#{$expression}`.');
 }
 
-
 ///
 /// Get dimension of an expression, based on a found operator
 ///
@@ -37,17 +35,16 @@
 /// @return {String} - `width` or `height` (or potentially anything else)
 ///
 @function get-expression-dimension($expression, $operator) {
-  $operator-index: str-index($expression, $operator);
-  $parsed-dimension: str-slice($expression, 0, $operator-index - 1);
+  $operator-index: string.index($expression, $operator);
+  $parsed-dimension: string.slice($expression, 0, $operator-index - 1);
   $dimension: 'width';
 
-  @if str-length($parsed-dimension) > 0 {
+  @if string.length($parsed-dimension) > 0 {
     $dimension: $parsed-dimension;
   }
 
   @return $dimension;
 }
-
 
 ///
 /// Get dimension prefix based on an operator
@@ -57,9 +54,8 @@
 /// @return {String} - `min` or `max`
 ///
 @function get-expression-prefix($operator) {
-  @return if(index(('<', '<=', '≤'), $operator), 'max', 'min');
+  @return if(list.index(('<', '<=', '≤'), $operator), 'max', 'min');
 }
-
 
 ///
 /// Get value of an expression, based on a found operator
@@ -70,16 +66,16 @@
 /// @return {Number} - A numeric value
 ///
 @function get-expression-value($expression, $operator) {
-  $operator-index: str-index($expression, $operator);
-  $value: str-slice($expression, $operator-index + str-length($operator));
+  $operator-index: string.index($expression, $operator);
+  $value: string.slice($expression, $operator-index + string.length($operator));
 
-  @if map-has-key($breakpoints, $value) {
-    $value: map-get($breakpoints, $value);
+  @if map.has-key($breakpoints, $value) {
+    $value: map.get($breakpoints, $value);
   } @else {
     $value: to-number($value);
   }
 
-  $interval: map-get($unit-intervals, unit($value));
+  $interval: map.get($unit-intervals, math.unit($value));
 
   @if not $interval {
     // It is not possible to include a mixin inside a function, so we have to
@@ -87,7 +83,7 @@
     // functions cannot be called anywhere in Sass, we need to hack the call in
     // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
     // Sass 3.3, change this line in `@if im-log(..) {}` instead.
-    $_: im-log('Unknown unit `#{unit($value)}`.');
+    $_: im-log('Unknown unit `#{math.unit($value)}`.');
   }
 
   @if $operator == '>' {
@@ -99,7 +95,6 @@
   @return $value;
 }
 
-
 ///
 /// Parse an expression to return a valid media-query expression
 ///
@@ -110,8 +105,8 @@
 @function parse-expression($expression) {
   // If it is part of $media-expressions, it has no operator
   // then there is no need to go any further, just return the value
-  @if map-has-key($media-expressions, $expression) {
-    @return map-get($media-expressions, $expression);
+  @if map.has-key($media-expressions, $expression) {
+    @return map.get($media-expressions, $expression);
   }
 
   $operator: get-expression-operator($expression);

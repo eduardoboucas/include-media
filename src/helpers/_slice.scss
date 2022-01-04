@@ -9,15 +9,15 @@
 ///
 /// @return {List} Sliced list
 ///
-@function slice($list, $start: 1, $end: length($list)) {
-  @if length($list) < 1 or $start > $end {
+@function slice($list, $start: 1, $end: list.length($list)) {
+  @if list.length($list) < 1 or $start > $end {
     @return ();
   }
 
   $result: ();
 
   @for $i from $start through $end {
-    $result: append($result, nth($list, $i));
+    $result: list.append($result, list.nth($list, $i), comma);
   }
 
   @return $result;

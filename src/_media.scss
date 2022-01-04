@@ -4,7 +4,6 @@
 /// @access public
 ////
 
-
 ///
 /// Generates a media query based on a list of conditions
 ///
@@ -29,11 +28,12 @@
 ///  @include media('>=350px', '<tablet', 'retina3x') { }
 ///
 @mixin media($conditions...) {
-  @if ($im-media-support and length($conditions) == 0) or
-      (not $im-media-support and im-intercepts-static-breakpoint($conditions...)) {
+  @if ($im-media-support and list.length($conditions) == 0) or
+    (not $im-media-support and im-intercepts-static-breakpoint($conditions...))
+  {
     @content;
-  } @else if ($im-media-support and length($conditions) > 0) {
-    @media #{unquote(parse-expression(nth($conditions, 1)))} {
+  } @else if ($im-media-support and list.length($conditions) > 0) {
+    @media #{string.unquote(parse-expression(list.nth($conditions, 1)))} {
       // Recursive call
       @include media(slice($conditions, 2)...) {
         @content;
