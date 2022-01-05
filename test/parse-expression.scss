@@ -29,7 +29,6 @@ $tests-parse-expression: map.merge($media-expressions, (
 
   @include test('parse-expression [expression]') {
     @each $assert, $expect in $tests-parse-expression {
-      @debug $assert, $expect;
       @include assert-equal(parse-expression($assert), $expect, 'Must be equal');
     }
   }

@@ -1,0 +1,18 @@
+@use '../../dist/include-media' as *;
+
+@include test-module('Functions') {
+    $tests-get-expression-prefix: (
+      '>100px': 101px,
+      '<100px': 99px,
+      '<phone': 319px,
+      '<=desktop': 1024px,
+      '>tablet': 769px,
+    );
+    @each $assert, $expect in $tests-get-expression-prefix {
+        @include test('get-expression-value [#{$assert}]') {
+        $operator: get-expression-operator($assert);
+        $actual: get-expression-value($assert, $operator);
+        @include assert-equal($actual, $expect, 'Expected #{$actual} to be equal #{$expect}');
+    }
+  }
+}
