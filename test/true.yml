@@ -1,7 +1,0 @@
-options:
-  color: true  # enables colored output
-
-# require ruby sass extension libraries
-require:
-  - 'compass'
-  - 'serialy/sassy'
