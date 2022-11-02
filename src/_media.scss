@@ -35,7 +35,8 @@
   } @else if ($im-media-support and length($conditions) > 0) {
     @media #{unquote(parse-expression(nth($conditions, 1)))} {
       // Recursive call
-      @include media(slice($conditions, 2)...) {
+      $sliced-conditions: slice($conditions, 2);
+      @include media($sliced-conditions...) {
         @content;
       }
     }
