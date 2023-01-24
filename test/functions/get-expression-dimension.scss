@@ -15,8 +15,18 @@
             dimension: 'width',
         )
         (
+            expression: ('>= 768px'),
+            operator: '>=',
+            dimension: 'width',
+        )
+        (
             expression: ('height>=1000px'),
             operator: '>=',
+            dimension: 'height',
+        )
+        (
+            expression: ('height > 100px'),
+            operator: '>',
             dimension: 'height',
         )
     );

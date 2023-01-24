@@ -7,6 +7,10 @@
       '<phone': 319px,
       '<=desktop': 1024px,
       '>tablet': 769px,
+      '> tablet': 769px,
+      '< tablet': 767px,
+      'height > 100px': 101px,
+      'height < tablet': 767px,
     );
     @each $assert, $expect in $tests-get-expression-prefix {
         @include test('get-expression-value [#{$assert}]') {

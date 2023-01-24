@@ -1,0 +1,17 @@
+///
+/// Trims a string of leading and trailing spaces
+///
+/// @param {String} $string - Value to be trimmed
+///
+/// @return {String}
+///
+
+@function str-trim($string) {
+  @if (str-slice($string, 1, 1) == ' ') {
+    @return str-trim(str-slice($string, 2));
+  } @else if (str-slice($string, str-length($string), -1) == ' ') {
+    @return str-trim(str-slice($string, 1, -2));
+  } @else {
+    @return $string;
+  }
+}
