@@ -1,0 +1,32 @@
+@use '../../dist/include-media' as *;
+@use 'sass:map';
+@use 'sass:list';
+
+@include test-module('Functions') {
+    $tests-get-expression-dimension: (
+        (
+            expression: ('>phone'),
+            operator: '>',
+            dimension: 'width',
+        )
+        (
+            expression: ('>=768px'),
+            operator: '>=',
+            dimension: 'width',
+        )
+        (
+            expression: ('height>=1000px'),
+            operator: '>=',
+            dimension: 'height',
+        )
+    );
+    @each $test in $tests-get-expression-dimension {
+        $expression: map.get($test, 'expression');
+        $operator: map.get($test, 'operator');
+        $expect: map.get($test, 'dimension');
+        $assert: get-expression-dimension($expression, $operator);
+        @include test('get-expression-dimension [#{$assert}]') {
+            @include assert-equal($assert, $expect, 'Expected #{$assert} to be equal #{$expect}');
+        }
+    }
+}

@@ -1,0 +1,20 @@
+@use '../../dist/include-media' as *;
+
+@include test-module('Functions') {
+    $tests-get-expression-prefix: (
+      '>': 'min',
+      '<': 'max',
+      '>=': 'min',
+      '≥': 'min',
+      '<=': 'max',
+      '≤': 'max',
+      '': 'min',
+      'badString': 'min',
+    );
+    @each $assert, $expect in $tests-get-expression-prefix {
+        @include test('get-expression-prefix [#{$assert}]') {
+        $actual: get-expression-prefix($assert);
+        @include assert-equal($actual, $expect, 'Expected #{$actual} to be equal #{$expect}');
+    }
+  }
+}

@@ -1,0 +1,40 @@
+@use '../../dist/include-media' as *;
+@use 'sass:map';
+@use 'sass:list';
+
+@include test-module('Functions') {
+    $test-slices: (
+        (
+            check: ('>desktop', '<=1350px'),
+            start: 1,
+            expect: ('>desktop', '<=1350px'),
+        ),
+        (
+            check: ('<850px', '>=358px'),
+            start: 2,
+            expect: ('>=358px',),
+        ),
+        (
+            check: ('retina2x'),
+            start: 1,
+            expect: ('retina2x',),
+        ),
+        (
+            check: ('>=350px', '<tablet', 'retina3x'),
+            start: 3,
+            end: 3,
+            expect: ('retina3x',),
+        ),
+    );
+    @each $test in $test-slices {
+        $assert: map.get($test, 'check');
+        $expect: map.get($test, 'expect');
+        $start: if(map.has-key($test, 'start'), map.get($test, 'start'), 1);
+        $end: if(map.has-key($test, 'end'), map.get($test, 'end'), list.length(map.get($test, 'check')));
+
+        @include test('slice [#{$assert}]') {
+            $actual: slice($assert, $start, $end);
+            @include assert-equal($actual, $expect, 'Expected #{$actual} to be equal #{$expect}');
+        }
+    }
+}

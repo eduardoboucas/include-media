@@ -9,6 +9,10 @@
 
 **include-media** is a Sass library for writing CSS media queries in an easy and maintainable way, using a natural and simplistic syntax.
 
+## 2.0 Release
+
+As of 2.0 *include-media* only supports dart-sass 1.25+
+
 ## Why?
 
 I spent quite some time experimenting with different libraries and mixins available out there, but eventually all of them failed to do everything I needed in an elegant way. Some of them wouldn't let me mix set breakpoints with case-specific values, others wouldn't properly handle the CSS OR operator and most of them had a syntax that I found complicated and unnatural.

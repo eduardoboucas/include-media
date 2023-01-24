@@ -1,0 +1,22 @@
+@use '../../dist/include-media' as *;
+
+@include test-module('Functions') {
+  @for $i from 1 through 10 {
+    $tests-to-number: (
+      '#{$i}': $i,
+      '#{-$i}': -$i,
+      '#{$i * 0.1}': ($i * 0.1),
+      '#{$i * 0.01}': ($i * 0.01),
+      '#{$i}px': $i * 1px,
+      '#{$i}em': $i * 1em,
+      '#{$i}rem': $i * 1rem,
+      '#{-$i}px': -$i * 1px,
+    );
+    @each $assert, $expect in $tests-to-number {
+      @include test('to-number [#{$assert}]') {
+        $actual: to-number($assert);
+        @include assert-equal($actual, $expect, 'Expected #{$actual} to be equal #{$expect}');
+      }
+    }
+  }
+}

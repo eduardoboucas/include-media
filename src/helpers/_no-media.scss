@@ -6,23 +6,25 @@
 /// @return {Boolean} - Returns true if the conditions are intercepted by the static breakpoint
 ///
 @function im-intercepts-static-breakpoint($conditions...) {
-  $no-media-breakpoint-value: map-get($breakpoints, $im-no-media-breakpoint);
+  $no-media-breakpoint-value: map.get($breakpoints, $im-no-media-breakpoint);
 
   @if not $no-media-breakpoint-value {
-    @if im-log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {}
+    @if im-log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {
+    }
   }
 
   @each $condition in $conditions {
-    @if not map-has-key($media-expressions, $condition) {
+    @if not map.has-key($media-expressions, $condition) {
       $operator: get-expression-operator($condition);
       $prefix: get-expression-prefix($operator);
       $value: get-expression-value($condition, $operator);
 
       @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
-          ($prefix == 'min' and $value > $no-media-breakpoint-value) {
+        ($prefix == 'min' and $value > $no-media-breakpoint-value)
+      {
         @return false;
       }
-    } @else if not index($im-no-media-expressions, $condition) {
+    } @else if not list.index($im-no-media-expressions, $condition) {
       @return false;
     }
   }

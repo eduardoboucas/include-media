@@ -1,7 +1,7 @@
 {
   "title": "include-media",
   "name": "include-media",
-  "version": "1.4.10",
+  "version": "2.0.0",
   "description": "Simple, elegant and maintainable media queries in Sass",
   "repository": {
     "type": "git",
@@ -25,23 +25,29 @@
     "needs": "*"
   },
   "scripts": {
-    "test": "npm run lint && node tests/index.js",
-    "lint": "scss-lint . --config ./.scss-lint.yml"
+    "sassTest": "sass --load-path=node_modules test/index.scss test/index.css",
+    "test": "npm run lint && mocha",
+    "pretest": "npm run build",
+    "build": "concat -o dist/_include-media.scss ./banner.txt src/_config.scss src/helpers/*.scss src/plugins/*.scss src/_media.scss",
+    "postbuild": "node replace",
+    "lint": "prettier --check src",
+    "prepublish": "npm run test",
+    "docs": "sassdoc src -c .sassdocrc"
   },
   "sass": "dist/_include-media.scss",
   "license": "MIT",
   "devDependencies": {
-    "gh-pages": "^0.12.0",
-    "gulp": "^3.9.0",
-    "gulp-concat": "^2.5.2",
-    "gulp-header": "^1.2.2",
-    "gulp-load-plugins": "^1.4.0",
-    "gulp-replace": "^0.5.3",
-    "gulp-ruby-sass": "^2.1.1",
-    "gulp-sass": "^3.0.0",
-    "js-yaml": "^3.3.1",
-    "node-sass": "^4.1.1",
+    "concat": "^1.0.3",
+    "gh-pages": "^4.0.0",
+    "mocha": "^10.0.0",
     "pre-commit": "^1.2.2",
+    "prettier": "^2.5.1",
+    "replace-in-file": "^6.3.2",
+    "sass": "^1.45.0",
+    "sass-true": "^6.0.1",
     "sassdoc": "^2.1.13"
-  }
+  },
+  "pre-commit": [
+    "lint"
+  ]
 }

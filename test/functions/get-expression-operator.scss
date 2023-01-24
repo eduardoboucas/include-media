@@ -1,0 +1,32 @@
+@use '../../dist/include-media' as *;
+
+@include test-module('Functions') {
+    $tests-get-expression-operator: (
+      '>phone': '>',
+      '<phone': '<',
+      '>=phone': '>=',
+      '≥phone': '≥',
+      '<=phone': '<=',
+      '≤phone': '≤',
+
+      '>tablet': '>',
+      '<tablet': '<',
+      '>=tablet': '>=',
+      '≥tablet': '≥',
+      '<=tablet': '<=',
+      '≤tablet': '≤',
+
+      '>desktop': '>',
+      '<desktop': '<',
+      '>=desktop': '>=',
+      '≥desktop': '≥',
+      '<=desktop': '<=',
+      '≤desktop': '≤',
+    );
+    @each $assert, $expect in $tests-get-expression-operator {
+        @include test('get-expression-operator [#{$assert}]') {
+        $actual: get-expression-operator($assert);
+        @include assert-equal($actual, $expect, 'Expected #{$actual} to be equal #{$expect}');
+    }
+  }
+}

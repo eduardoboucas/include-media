@@ -1,9 +1,4 @@
 language: node_js
-# just declaring sudo uses non travis container with ruby 2
-sudo: required
-exclude: vendor/bundle/*
-before_script:
-  - gem install scss_lint
 node_js:
-  - '7'
-  - '6'
+  - '16'
+  - '14'
