@@ -26,7 +26,7 @@
   },
   "scripts": {
     "sassTest": "sass --load-path=node_modules test/index.scss test/index.css",
-    "test": "npm run lint && mocha",
+    "test": "npm run lint && npm run sassTest && mocha",
     "pretest": "npm run build",
     "build": "concat -o dist/_include-media.scss ./banner.txt src/_config.scss src/helpers/*.scss src/plugins/*.scss src/_media.scss src/_container.scss",
     "postbuild": "node replace",
