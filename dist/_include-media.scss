@@ -485,6 +485,12 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
     'vh': 1vh,
     'vmin': 1vmin,
     'vmax': 1vmax,
+    'cqw': 1cqw,
+    'cqh': 1cqh,
+    'cqi': 1cqi,
+    'cqb': 1cqb,
+    'cqmin': 1cqmin,
+    'cqmax': 1cqmax,
   );
 
   @if not list.index(map.keys($units), $unit) {
@@ -493,12 +499,6 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
   @return $value * map.get($units, $unit);
 }
-
-////
-/// String to number converter
-/// @author Jack McNicol
-/// @access private
-////
 
 ///
 /// Trims a string of leading and trailing spaces
@@ -611,6 +611,51 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
       // Recursive call
       $sliced-conditions: slice($conditions, 2);
       @include media($sliced-conditions...) {
+        @content;
+      }
+    }
+  }
+}
+
+////
+/// include-media public exposed API
+/// @author Eduardo Boucas
+/// @access public
+////
+
+///
+/// Generates a media query based on a list of conditions
+///
+/// @param {Arglist}   $conditions  - Media query conditions
+///
+/// @example scss - With a single set breakpoint
+///  @include media('>phone') { }
+///
+/// @example scss - With two set breakpoints
+///  @include media('>phone', '<=tablet') { }
+///
+/// @example scss - With custom values
+///  @include media('>=358px', '<850px') { }
+///
+/// @example scss - With set breakpoints with custom values
+///  @include media('>desktop', '<=1350px') { }
+///
+/// @example scss - With a static expression
+///  @include media('retina2x') { }
+///
+/// @example scss - Mixing everything
+///  @include media('>=350px', '<tablet', 'retina3x') { }
+///
+@mixin container($conditions...) {
+  @if ($im-media-support and list.length($conditions) == 0) or
+    (not $im-media-support and im-intercepts-static-breakpoint($conditions...))
+  {
+    @content;
+  } @else if ($im-media-support and list.length($conditions) > 0) {
+    @container #{string.unquote(parse-expression(list.nth($conditions, 1)))} {
+      // Recursive call
+      $sliced-conditions: slice($conditions, 2);
+      @include container($sliced-conditions...) {
         @content;
       }
     }
