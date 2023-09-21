@@ -11,7 +11,7 @@
 
 ## 2.0 Release
 
-As of 2.0 *include-media* only supports dart-sass 1.25+
+As of 2.0 *include-media* only supports [sass (dart-sass)](https://sass-lang.com/dart-sass/) 1.25+ and no longer supports previous implementations of sass. eg lib-sass, ruby-sass.
 
 ## Why?
 
