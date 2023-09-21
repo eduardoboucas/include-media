@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use '../dist/include-media' as *;
 
-$tests-parse-expression: map.merge($media-expressions, (
+$tests-container-expression: map.merge($media-expressions, (
   '>phone': '(min-width: 321px)',
   '<phone': '(max-width: 319px)',
   '>=phone': '(min-width: 320px)',
@@ -24,10 +24,21 @@ $tests-parse-expression: map.merge($media-expressions, (
   '≤desktop': '(max-width: 1024px)'
 ));
 
-@include test-module('Expression') {
-  @each $assert, $expect in $tests-parse-expression {
-    @include test('parse-expression [#{$assert}]') {
-      @include assert-equal(parse-expression($assert), $expect, 'Must be equal');
+@include test-module('@include container') {
+  @each $assert, $expect in $tests-container-expression {
+    @include test('@container [#{$assert}]') {
+      @include assert {
+        @include output {
+          @include container($assert) {
+            content: 'test';
+          }
+        }
+        @include expect {
+          @container #{$expect} {
+            content: 'test';
+          }
+        }
+      }
     }
   }
 }

@@ -86,6 +86,12 @@
     'vh': 1vh,
     'vmin': 1vmin,
     'vmax': 1vmax,
+    'cqw': 1cqw,
+    'cqh': 1cqh,
+    'cqi': 1cqi,
+    'cqb': 1cqb,
+    'cqmin': 1cqmin,
+    'cqmax': 1cqmax,
   );
 
   @if not list.index(map.keys($units), $unit) {

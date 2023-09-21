@@ -1,4 +1,4 @@
-@import '../node_modules/sass-true/sass/true';
+@import 'sass-true/sass/true';
 
 @import 'functions/to-number.scss';
 @import 'functions/get-expression-operator.scss';
@@ -6,3 +6,6 @@
 @import 'functions/get-expression-dimension.scss';
 @import 'functions/get-expression-value.scss';
 @import 'functions/slice.scss';
+@import 'parse-expression';
+@import 'media';
+// @import 'container'; TODO - issue with sass-true?

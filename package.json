@@ -26,9 +26,9 @@
   },
   "scripts": {
     "sassTest": "sass --load-path=node_modules test/index.scss test/index.css",
-    "test": "npm run lint && mocha",
+    "test": "npm run lint && npm run sassTest && mocha",
     "pretest": "npm run build",
-    "build": "concat -o dist/_include-media.scss ./banner.txt src/_config.scss src/helpers/*.scss src/plugins/*.scss src/_media.scss",
+    "build": "concat -o dist/_include-media.scss ./banner.txt src/_config.scss src/helpers/*.scss src/plugins/*.scss src/_media.scss src/_container.scss",
     "postbuild": "node replace",
     "lint": "prettier --check src",
     "prepublish": "npm run test",
@@ -37,14 +37,15 @@
   "sass": "dist/_include-media.scss",
   "license": "MIT",
   "devDependencies": {
+    "@types/mocha": "^10.0.1",
     "concat": "^1.0.3",
-    "gh-pages": "^4.0.0",
+    "gh-pages": "^5.0.0",
     "mocha": "^10.0.0",
     "pre-commit": "^1.2.2",
     "prettier": "^2.5.1",
     "replace-in-file": "^6.3.2",
     "sass": "^1.45.0",
-    "sass-true": "^6.0.1",
+    "sass-true": "^7.0.0",
     "sassdoc": "^2.1.13"
   },
   "pre-commit": [
