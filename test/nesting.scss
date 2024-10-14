@@ -1,0 +1,103 @@
+@use '../dist/include-media' as *;
+
+@include test-module('Media') {
+  @include test('Media nesting [media]') {
+    @include assert {
+      @include output {
+        .test-inside {
+          content: 'default';
+
+          @include media('>phone') {
+            content: 'phone';
+
+            .inner {
+              content: 'inner';
+            }
+
+            content: 'phone-after';
+          }
+
+          @include media('>=tablet') {
+            content: 'tablet';
+
+            .inner {
+              content: 'inner';
+            }
+          }
+
+          @include media('<desktop') {
+            content: 'desktop';
+
+            .inner {
+              content: 'inner';
+            }
+          }
+        }
+
+        @include media('<phone') {
+          .test-inner {
+            content: 'phone-two';
+          }
+        }
+
+        @include media('<=tablet') {
+          .test-inner {
+            content: 'tablet-two';
+          }
+        }
+
+        @include media('>desktop') {
+          .test-inner {
+            content: 'desktop-two';
+          }
+        }
+      }
+      @include expect {
+        .test-inside {
+          content: 'default';
+        }
+        @media (min-width: 321px) {
+          .test-inside {
+            content: 'phone';
+            content: 'phone-after';
+          }
+          .test-inside .inner {
+            content: 'inner';
+          }
+        }
+        @media (min-width: 768px) {
+          .test-inside {
+            content: 'tablet';
+          }
+          .test-inside .inner {
+            content: 'inner';
+          }
+        }
+        @media (max-width: 1023px) {
+          .test-inside {
+            content: 'desktop';
+          }
+          .test-inside .inner {
+            content: 'inner';
+          }
+        }
+
+        @media (max-width: 319px) {
+          .test-inner {
+            content: 'phone-two';
+          }
+        }
+        @media (max-width: 768px) {
+          .test-inner {
+            content: 'tablet-two';
+          }
+        }
+        @media (min-width: 1025px) {
+          .test-inner {
+            content: 'desktop-two';
+          }
+        }
+      }
+    }
+  }
+}
