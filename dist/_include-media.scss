@@ -217,6 +217,11 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 @function noop() {
 }
 
+////
+/// Determines whether a list of conditions is intercepted by the static breakpoint.
+/// @access private
+////
+
 ///
 /// Determines whether a list of conditions is intercepted by the static breakpoint.
 ///
@@ -495,7 +500,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 }
 
 ////
-/// String to number converter
+/// String trim
 /// @author Jack McNicol
 /// @access private
 ////
