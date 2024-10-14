@@ -29,7 +29,7 @@
     "test": "npm run lint && mocha",
     "pretest": "npm run build",
     "build": "concat -o dist/_include-media.scss ./banner.txt src/_config.scss src/helpers/*.scss src/plugins/*.scss src/_media.scss",
-    "postbuild": "node replace",
+    "postbuild": "node replace.mjs",
     "lint": "prettier --check src",
     "prepublish": "npm run test",
     "docs": "sassdoc src -c .sassdocrc"
@@ -38,13 +38,13 @@
   "license": "MIT",
   "devDependencies": {
     "concat": "^1.0.3",
-    "gh-pages": "^5.0.0",
-    "mocha": "^10.0.0",
+    "gh-pages": "^6.2.0",
+    "mocha": "^10.7.3",
     "pre-commit": "^1.2.2",
-    "prettier": "^2.5.1",
-    "replace-in-file": "^6.3.2",
-    "sass": "^1.45.0",
-    "sass-true": "^6.0.1",
+    "prettier": "^3.3.3",
+    "replace-in-file": "^8.2.0",
+    "sass": "^1.79.5",
+    "sass-true": "^8.1.0",
     "sassdoc": "^2.1.13"
   },
   "pre-commit": [
