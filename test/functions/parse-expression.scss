@@ -1,5 +1,6 @@
 @use 'sass:map';
 @use '../../dist/include-media' as *;
+@use 'pkg:sass-true' as *;
 
 $tests-parse-expression: map.merge($media-expressions, (
   '>phone': '(min-width: 321px)',

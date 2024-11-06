@@ -1,10 +1,8 @@
-@import '../node_modules/sass-true/sass/true';
-
-@import 'functions/to-number.scss';
-@import 'functions/get-expression-operator.scss';
-@import 'functions/get-expression-prefix.scss';
-@import 'functions/get-expression-dimension.scss';
-@import 'functions/get-expression-value.scss';
-@import 'functions/slice.scss';
-@import 'functions/parse-expression.scss';
-@import 'nesting.scss';
+@forward 'functions/to-number.scss';
+@forward 'functions/get-expression-operator.scss';
+@forward 'functions/get-expression-prefix.scss';
+@forward 'functions/get-expression-dimension.scss';
+@forward 'functions/get-expression-value.scss';
+@forward 'functions/slice.scss';
+@forward 'functions/parse-expression.scss';
+@forward 'nesting.scss';
