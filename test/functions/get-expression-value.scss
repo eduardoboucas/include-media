@@ -1,4 +1,5 @@
 @use '../../dist/include-media' as *;
+@use 'pkg:sass-true' as *;
 
 @include test-module('Functions') {
     $tests-get-expression-prefix: (
