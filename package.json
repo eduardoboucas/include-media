@@ -25,13 +25,14 @@
     "needs": "*"
   },
   "scripts": {
-    "sassTest": "sass --load-path=node_modules test/index.scss test/index.css",
+    "sassTest": "sass --pkg-importer=node test/index.scss test/index.css",
     "test": "npm run lint && mocha",
     "pretest": "npm run build",
     "build": "concat -o dist/_include-media.scss ./banner.txt src/_config.scss src/helpers/*.scss src/plugins/*.scss src/_media.scss",
     "postbuild": "node replace.mjs",
     "lint": "prettier --check src",
     "prepublish": "npm run test",
+    "deploy": "gh-pages -d docs",
     "docs": "sassdoc src -c .sassdocrc"
   },
   "sass": "dist/_include-media.scss",
@@ -39,13 +40,17 @@
   "devDependencies": {
     "concat": "^1.0.3",
     "gh-pages": "^6.2.0",
-    "mocha": "^10.7.3",
+    "mocha": "^11.0.1",
     "pre-commit": "^1.2.2",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "replace-in-file": "^8.2.0",
-    "sass": "^1.79.5",
+    "sass": "^1.83.0",
     "sass-true": "^8.1.0",
-    "sassdoc": "^2.1.13"
+    "sassdoc": "^2.7.4"
+  },
+  "exports": {
+    "sass": "./dist/_include-media.scss",
+    "default": "./dist/_include-media.scss"
   },
   "pre-commit": [
     "lint"
