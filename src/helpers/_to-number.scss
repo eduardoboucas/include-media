@@ -16,7 +16,7 @@
   @if meta.type-of($value) == 'number' {
     @return $value;
   } @else if meta.type-of($value) != 'string' {
-    $_: im-log('Value for `to-number` should be a number or a string.');
+    @error 'Value for `to-number` should be a number or a string.';
   }
 
   $first-character: string.slice($value, 1, 1);
@@ -89,7 +89,7 @@
   );
 
   @if not list.index(map.keys($units), $unit) {
-    $_: im-log('Invalid unit `#{$unit}`.');
+    @error 'Invalid unit `#{$unit}`.';
   }
 
   @return $value * map.get($units, $unit);

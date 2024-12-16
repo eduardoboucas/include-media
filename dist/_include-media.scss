@@ -174,50 +174,6 @@ $im-no-media-breakpoint: 'desktop' !default;
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
 ////
-/// Cross-engine logging engine
-/// @author Kitty Giraudel
-/// @access private
-////
-
-///
-/// Log a message either with `@error` if supported
-/// else with `@warn`, using `feature-exists('at-error')`
-/// to detect support.
-///
-/// @param {String} $message - Message to log
-///
-@function im-log($message) {
-  @if meta.feature-exists('at-error') {
-    @error $message;
-  } @else {
-    @warn $message;
-    $_: noop();
-  }
-
-  @return $message;
-}
-
-///
-/// Wrapper mixin for the log function so it can be used with a more friendly
-/// API than `@if im-log('..') {}` or `$_: im-log('..')`. Basically, use the function
-/// within functions because it is not possible to include a mixin in a function
-/// and use the mixin everywhere else because it's much more elegant.
-///
-/// @param {String} $message - Message to log
-///
-@mixin log($message) {
-  @if im-log($message) {
-  }
-}
-
-///
-/// Function with no `@return` called next to `@warn` in Sass 3.3
-/// to trigger a compiling error and stop the process.
-///
-@function noop() {
-}
-
-////
 /// Determines whether a list of conditions is intercepted by the static breakpoint.
 /// @access private
 ////
@@ -233,8 +189,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   $no-media-breakpoint-value: map.get($breakpoints, $im-no-media-breakpoint);
 
   @if not $no-media-breakpoint-value {
-    @if im-log('`#{$im-no-media-breakpoint}` is not a valid breakpoint.') {
-    }
+    @error '#{$im-no-media-breakpoint}` is not a valid breakpoint.';
   }
 
   @each $condition in $conditions {
@@ -276,12 +231,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
     }
   }
 
-  // It is not possible to include a mixin inside a function, so we have to
-  // rely on the `im-log(..)` function rather than the `log(..)` mixin. Because
-  // functions cannot be called anywhere in Sass, we need to hack the call in
-  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-  // Sass 3.3, change this line in `@if im-log(..) {}` instead.
-  $_: im-log('No operator found in `#{$expression}`.');
+  @error 'No operator found in `#{$expression}`.';
 }
 
 ///
@@ -338,12 +288,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   $interval: map.get($unit-intervals, math.unit($value));
 
   @if not $interval {
-    // It is not possible to include a mixin inside a function, so we have to
-    // rely on the `im-log(..)` function rather than the `log(..)` mixin. Because
-    // functions cannot be called anywhere in Sass, we need to hack the call in
-    // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-    // Sass 3.3, change this line in `@if im-log(..) {}` instead.
-    $_: im-log('Unknown unit `#{math.unit($value)}`.');
+    @error 'Unknown unit `#{math.unit($value)}`.';
   }
 
   @if $operator == '>' {
@@ -420,7 +365,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   @if meta.type-of($value) == 'number' {
     @return $value;
   } @else if meta.type-of($value) != 'string' {
-    $_: im-log('Value for `to-number` should be a number or a string.');
+    @error 'Value for `to-number` should be a number or a string.';
   }
 
   $first-character: string.slice($value, 1, 1);
@@ -493,7 +438,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
   );
 
   @if not list.index(map.keys($units), $unit) {
-    $_: im-log('Invalid unit `#{$unit}`.');
+    @error 'Invalid unit `#{$unit}`.';
   }
 
   @return $value * map.get($units, $unit);

@@ -18,12 +18,7 @@
     }
   }
 
-  // It is not possible to include a mixin inside a function, so we have to
-  // rely on the `im-log(..)` function rather than the `log(..)` mixin. Because
-  // functions cannot be called anywhere in Sass, we need to hack the call in
-  // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-  // Sass 3.3, change this line in `@if im-log(..) {}` instead.
-  $_: im-log('No operator found in `#{$expression}`.');
+  @error 'No operator found in `#{$expression}`.';
 }
 
 ///
@@ -80,12 +75,7 @@
   $interval: map.get($unit-intervals, math.unit($value));
 
   @if not $interval {
-    // It is not possible to include a mixin inside a function, so we have to
-    // rely on the `im-log(..)` function rather than the `log(..)` mixin. Because
-    // functions cannot be called anywhere in Sass, we need to hack the call in
-    // a dummy variable, such as `$_`. If anybody ever raise a scoping issue with
-    // Sass 3.3, change this line in `@if im-log(..) {}` instead.
-    $_: im-log('Unknown unit `#{math.unit($value)}`.');
+    @error 'Unknown unit `#{math.unit($value)}`.';
   }
 
   @if $operator == '>' {
