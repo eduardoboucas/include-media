@@ -3,4 +3,5 @@ node_modules
 .DS_Store
 *.map
 sassdoc
+test/output
 test/index.css

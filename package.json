@@ -25,7 +25,7 @@
     "needs": "*"
   },
   "scripts": {
-    "sassTest": "sass --pkg-importer=node test/index.scss test/index.css",
+    "sassTest": "sass --pkg-importer=node test:test/output",
     "test": "npm run lint && mocha",
     "pretest": "npm run build",
     "build": "concat -o dist/_include-media.scss ./banner.txt src/_config.scss src/helpers/*.scss src/plugins/*.scss src/_media.scss",
