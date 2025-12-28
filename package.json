@@ -39,12 +39,12 @@
   "license": "MIT",
   "devDependencies": {
     "concat": "^1.0.3",
-    "gh-pages": "^6.2.0",
-    "mocha": "^11.0.1",
+    "gh-pages": "^6.3.0",
+    "mocha": "^11.7.5",
     "pre-commit": "^1.2.2",
-    "prettier": "^3.4.2",
-    "replace-in-file": "^8.2.0",
-    "sass": "^1.83.0",
+    "prettier": "^3.7.4",
+    "replace-in-file": "^8.4.0",
+    "sass": "^1.97.1",
     "sass-true": "^8.1.0",
     "sassdoc": "^2.7.4"
   },

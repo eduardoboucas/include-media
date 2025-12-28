@@ -60,10 +60,12 @@
         @media (min-width: 321px) {
           .test-inside {
             content: 'phone';
-            content: 'phone-after';
           }
           .test-inside .inner {
             content: 'inner';
+          }
+          .test-inside {
+            content: 'phone-after';
           }
         }
         @media (min-width: 768px) {
