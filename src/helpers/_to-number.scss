@@ -41,11 +41,16 @@
     $value: string.slice($value, 2);
   }
 
+  $sign: 1;
+  @if $minus {
+    $sign: -1;
+  }
+
   @for $i from 1 through string.length($value) {
     $character: string.slice($value, $i, $i);
 
     @if not(list.index(map.keys($numbers), $character) or $character == '.') {
-      @return to-length(if($minus, -$result, $result), string.slice($value, $i));
+      @return to-length($sign * $result, string.slice($value, $i));
     }
 
     @if $character == '.' {
@@ -58,7 +63,7 @@
     }
   }
 
-  @return if($minus, -$result, $result);
+  @return $sign * $result;
 }
 
 ///
