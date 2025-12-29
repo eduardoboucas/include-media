@@ -1,0 +1,47 @@
+@use 'sass:map';
+@use '../../dist/include-media' as * with (
+  $im-use-range-syntax: true
+);
+@use 'pkg:sass-true' as *;
+
+$tests-parse-expression-range: map.merge($media-expressions, (
+  '>phone': '(width > 320px)',
+  '<phone': '(width < 320px)',
+  '>=phone': '(width >= 320px)',
+  '≥phone': '(width ≥ 320px)',
+  '<=phone': '(width <= 320px)',
+  '≤phone': '(width ≤ 320px)',
+
+  '>tablet': '(width > 768px)',
+  '<tablet': '(width < 768px)',
+  '>=tablet': '(width >= 768px)',
+  '≥tablet': '(width ≥ 768px)',
+  '<=tablet': '(width <= 768px)',
+  '≤tablet': '(width ≤ 768px)',
+
+  '>desktop': '(width > 1024px)',
+  '<desktop': '(width < 1024px)',
+  '>=desktop': '(width >= 1024px)',
+  '≥desktop': '(width ≥ 1024px)',
+  '<=desktop': '(width <= 1024px)',
+  '≤desktop': '(width ≤ 1024px)',
+
+  // Custom values
+  '>500px': '(width > 500px)',
+  '>=500px': '(width >= 500px)',
+  '<1200px': '(width < 1200px)',
+  '<=1200px': '(width <= 1200px)',
+
+  // Height dimension
+  'height>500px': '(height > 500px)',
+  'height<=800px': '(height <= 800px)'
+));
+
+@include test-module('Range Syntax - Expression') {
+
+  @include test('parse-expression with range syntax [expression]') {
+    @each $assert, $expect in $tests-parse-expression-range {
+      @include assert-equal(parse-expression($assert), $expect, 'Must be equal');
+    }
+  }
+}
