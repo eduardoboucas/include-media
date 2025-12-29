@@ -30,8 +30,14 @@
     @each $test in $test-slices {
         $assert: map.get($test, 'check');
         $expect: map.get($test, 'expect');
-        $start: if(map.has-key($test, 'start'), map.get($test, 'start'), 1);
-        $end: if(map.has-key($test, 'end'), map.get($test, 'end'), list.length(map.get($test, 'check')));
+        $start: 1;
+        @if map.has-key($test, 'start') {
+            $start: map.get($test, 'start');
+        }
+        $end: list.length(map.get($test, 'check'));
+        @if map.has-key($test, 'end') {
+            $end: map.get($test, 'end');
+        }
 
         @include test('slice [#{$assert}]') {
             $actual: slice($assert, $start, $end);

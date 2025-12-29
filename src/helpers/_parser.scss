@@ -50,7 +50,11 @@
 /// @return {String} - `min` or `max`
 ///
 @function get-expression-prefix($operator) {
-  @return if(list.index(('<', '<=', '≤'), $operator), 'max', 'min');
+  @if list.index(('<', '<=', '≤'), $operator) {
+    @return 'max';
+  } @else {
+    @return 'min';
+  }
 }
 
 ///
