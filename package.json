@@ -42,10 +42,10 @@
     "gh-pages": "^6.3.0",
     "mocha": "^11.7.5",
     "pre-commit": "^1.2.2",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "replace-in-file": "^8.4.0",
-    "sass": "^1.97.1",
-    "sass-true": "^8.1.0",
+    "sass": "^1.97.3",
+    "sass-true": "^10.1.0",
     "sassdoc": "^2.7.4"
   },
   "exports": {
