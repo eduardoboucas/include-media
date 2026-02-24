@@ -173,6 +173,57 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
+///
+/// Defines whether to use modern range syntax for media queries instead of legacy min-/max- prefixes.
+/// Modern range syntax is supported in ~95% of browsers and provides a more natural syntax.
+///
+/// @example scss - Modern range syntax (default)
+///  $im-use-range-syntax: true;
+///  @include media('>phone', '<=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+///  /* Generates: */
+///  @media (width > 320px) and (width <= 768px) {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+/// @example scss - Legacy min-/max- syntax
+///  $im-use-range-syntax: false;
+///  @include media('>phone', '<=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+///  /* Generates: */
+///  @media (min-width: 321px) and (max-width: 768px) {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+/// @example scss - Clamping syntax (combines two conditions with &)
+///  $im-use-range-syntax: true;
+///  @include media('>phone&<=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+///  /* Generates: */
+///  @media (320px < width <= 768px) {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+$im-use-range-syntax: false !default;
+
 ////
 /// Determines whether a list of conditions is intercepted by the static breakpoint.
 /// @access private
@@ -194,14 +245,27 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 
   @each $condition in $conditions {
     @if not map.has-key($media-expressions, $condition) {
-      $operator: get-expression-operator($condition);
-      $prefix: get-expression-prefix($operator);
-      $value: get-expression-value($condition, $operator);
+      @if is-clamping-expression($condition) {
+        $and-index: string.index($condition, '&');
+        $left: str-trim(string.slice($condition, 1, $and-index - 1));
+        $right: str-trim(string.slice($condition, $and-index + 1));
 
-      @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
-        ($prefix == 'min' and $value > $no-media-breakpoint-value)
-      {
-        @return false;
+        @if not
+          im-intercepts-static-breakpoint($left) or not
+          im-intercepts-static-breakpoint($right)
+        {
+          @return false;
+        }
+      } @else {
+        $operator: get-expression-operator($condition);
+        $prefix: get-expression-prefix($operator);
+        $value: get-expression-value($condition, $operator);
+
+        @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
+          ($prefix == 'min' and $value > $no-media-breakpoint-value)
+        {
+          @return false;
+        }
       }
     } @else if not list.index($im-no-media-expressions, $condition) {
       @return false;
@@ -222,10 +286,10 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///
 /// @param {String} $expression - Expression to extract operator from
 ///
-/// @return {String} - Any of `>=`, `>`, `<=`, `<`, `≥`, `≤`
+/// @return {String} - Any of `>=`, `>`, `<=`, `<`, `=`, `≥`, `≤`
 ///
 @function get-expression-operator($expression) {
-  @each $operator in ('>=', '>', '<=', '<', '≥', '≤') {
+  @each $operator in ('>=', '>', '<=', '<', '=', '≥', '≤') {
     @if string.index($expression, $operator) {
       @return $operator;
     }
@@ -263,7 +327,9 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 /// @return {String} - `min` or `max`
 ///
 @function get-expression-prefix($operator) {
-  @if list.index(('<', '<=', '≤'), $operator) {
+  @if $operator == '=' {
+    @return '';
+  } @else if list.index(('<', '<=', '≤'), $operator) {
     @return 'max';
   } @else {
     @return 'min';
@@ -275,10 +341,11 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
 ///
 /// @param {String} $expression - Expression to extract value from
 /// @param {String} $operator - Operator from `$expression`
+/// @param {Bool} $apply-interval - Whether to apply unit intervals (default: true)
 ///
 /// @return {Number} - A numeric value
 ///
-@function get-expression-value($expression, $operator) {
+@function get-expression-value($expression, $operator, $apply-interval: true) {
   $operator-index: string.index($expression, $operator);
   $value: string.slice($expression, $operator-index + string.length($operator));
   $trimmedValue: str-trim($value);
@@ -295,13 +362,119 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
     @error 'Unknown unit `#{math.unit($value)}`.';
   }
 
-  @if $operator == '>' {
-    $value: $value + $interval;
-  } @else if $operator == '<' {
-    $value: $value - $interval;
+  // Only apply interval adjustments for legacy syntax (not range syntax)
+  @if $apply-interval {
+    @if $operator == '>' {
+      $value: $value + $interval;
+    } @else if $operator == '<' {
+      $value: $value - $interval;
+    }
   }
 
   @return $value;
+}
+
+///
+/// Check if an expression contains the clamping operator (&)
+///
+/// @param {String} $expression - Expression to check
+///
+/// @return {Bool} - True if expression contains &
+///
+@function is-clamping-expression($expression) {
+  @return string.index($expression, '&') != null;
+}
+
+///
+/// Invert an operator for range syntax
+/// >phone means "width > phone", which in range syntax is "phone < width"
+///
+/// @param {String} $operator - Operator to invert
+///
+/// @return {String} - Inverted operator
+///
+@function invert-operator($operator) {
+  @if $operator == '>' {
+    @return '<';
+  } @else if $operator == '>=' or $operator == '≥' {
+    @return '<=';
+  } @else if $operator == '<' {
+    @return '>';
+  } @else if $operator == '<=' or $operator == '≤' {
+    @return '>=';
+  }
+  @return $operator;
+}
+
+///
+/// Normalize Unicode operators to ASCII equivalents
+///
+/// @param {String} $operator - Operator to normalize
+///
+/// @return {String} - Normalized operator
+///
+@function normalize-operator($operator) {
+  @if $operator == '≥' {
+    @return '>=';
+  } @else if $operator == '≤' {
+    @return '<=';
+  }
+  @return $operator;
+}
+
+///
+/// Parse a clamping expression (e.g., '>phone&<=tablet') into range syntax
+///
+/// @param {String} $expression - Clamping expression to parse
+///
+/// @return {String} - Valid media query with range syntax
+///
+@function parse-clamping-expression($expression) {
+  $and-index: string.index($expression, '&');
+
+  @if not $and-index {
+    @error 'Invalid clamping expression `#{$expression}`. Expected & operator.';
+  }
+
+  // Split into left and right expressions
+  $left-expr: str-trim(string.slice($expression, 1, $and-index - 1));
+  $right-expr: str-trim(string.slice($expression, $and-index + 1));
+
+  // Parse left side
+  $left-operator: get-expression-operator($left-expr);
+  $left-dimension: get-expression-dimension($left-expr, $left-operator);
+  $left-value: get-expression-value($left-expr, $left-operator, $im-use-range-syntax == false);
+
+  // Parse right side
+  $right-operator: get-expression-operator($right-expr);
+  $right-dimension: get-expression-dimension($right-expr, $right-operator);
+  $right-value: get-expression-value($right-expr, $right-operator, $im-use-range-syntax == false);
+
+  // Validate that both expressions use the same dimension
+  @if $left-dimension != $right-dimension {
+    @error 'Clamping expressions must use the same dimension. Got `#{$left-dimension}` and `#{$right-dimension}` in `#{$expression}`.';
+  }
+
+  @if $im-use-range-syntax {
+    // Modern range syntax: (320px < width <= 768px)
+    // Invert operators: >phone means "width > phone" → "phone < width"
+    $left-inverted: invert-operator($left-operator);
+    $right-inverted: invert-operator($right-operator);
+
+    // Determine the order based on operators
+    @if list.index(('>', '>=', '≥'), $left-operator) {
+      // Left is min bound: >phone becomes 320px < width
+      @return '(#{$left-value} #{$left-inverted} #{$left-dimension} #{normalize-operator($right-operator)} #{$right-value})';
+    } @else {
+      // Left is max bound, swap order
+      @return '(#{$right-value} #{$right-inverted} #{$right-dimension} #{normalize-operator($left-operator)} #{$left-value})';
+    }
+  } @else {
+    // Legacy syntax: combine with 'and'
+    $left-prefix: get-expression-prefix($left-operator);
+    $right-prefix: get-expression-prefix($right-operator);
+    @return '(#{$left-prefix}-#{$left-dimension}: #{$left-value}) and (#{$right-prefix}-#{$right-dimension}: #{$right-value})';
+  }
 }
 
 ///
@@ -318,12 +491,26 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
     @return map.get($media-expressions, $expression);
   }
 
+  // Check for clamping expression with &
+  @if is-clamping-expression($expression) {
+    @return parse-clamping-expression($expression);
+  }
+
   $operator: get-expression-operator($expression);
   $dimension: get-expression-dimension($expression, $operator);
   $prefix: get-expression-prefix($operator);
-  $value: get-expression-value($expression, $operator);
+  $value: get-expression-value($expression, $operator, $im-use-range-syntax == false);
 
-  @return '(#{$prefix}-#{$dimension}: #{$value})';
+  @if $im-use-range-syntax {
+    // Modern range syntax: (width > 320px)
+    @return '(#{$dimension} #{normalize-operator($operator)} #{$value})';
+  } @else if $operator == '=' {
+    // Exact match: (width: 320px)
+    @return '(#{$dimension}: #{$value})';
+  } @else {
+    // Legacy syntax: (min-width: 321px)
+    @return '(#{$prefix}-#{$dimension}: #{$value})';
+  }
 }
 
 ///

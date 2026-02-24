@@ -1,0 +1,38 @@
+@use 'sass:map';
+@use '../../dist/include-media' as * with (
+  $im-use-range-syntax: true
+);
+@use 'pkg:sass-true' as *;
+
+$tests-clamping-expression: (
+  // Basic clamping with named breakpoints
+  '>phone&<=tablet': '(320px < width <= 768px)',
+  '>=phone&<tablet': '(320px <= width < 768px)',
+  '>phone&<tablet': '(320px < width < 768px)',
+  '>=phone&<=tablet': '(320px <= width <= 768px)',
+
+  // Clamping with custom values
+  '>320px&<=768px': '(320px < width <= 768px)',
+  '>=500px&<1200px': '(500px <= width < 1200px)',
+
+  // Mixed named and custom
+  '>phone&<=1000px': '(320px < width <= 1000px)',
+  '>=600px&<=tablet': '(600px <= width <= 768px)',
+
+  // Unicode operators
+  '≥phone&<tablet': '(320px <= width < 768px)',
+  '>phone&≤tablet': '(320px < width <= 768px)',
+  '≥phone&≤tablet': '(320px <= width <= 768px)',
+
+  // Height dimension
+  'height>300px&height<=900px': '(300px < height <= 900px)'
+);
+
+@include test-module('Clamping Syntax - Range Mode') {
+
+  @include test('parse-clamping-expression with range syntax [expression]') {
+    @each $assert, $expect in $tests-clamping-expression {
+      @include assert-equal(parse-expression($assert), $expect, 'Must be equal');
+    }
+  }
+}

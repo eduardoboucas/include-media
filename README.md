@@ -13,6 +13,34 @@
 
 As of 2.0 *include-media* only supports [sass (dart-sass)](https://sass-lang.com/dart-sass/) 1.25+ and no longer supports previous implementations of sass. eg lib-sass, ruby-sass.
 
+## Range Syntax
+
+include-media supports modern [CSS media query range syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries#syntax_improvements_in_level_4). Enable it with `$im-use-range-syntax`:
+
+```scss
+@use 'include-media' as * with (
+  $im-use-range-syntax: true
+);
+
+// Single condition
+@include media('>phone') { }
+// → @media (width > 320px) { }
+
+// Multiple conditions
+@include media('>phone', '<=tablet') { }
+// → @media (width > 320px) { @media (width <= 768px) { } }
+
+// Clamped range with &
+@include media('>phone&<=tablet') { }
+// → @media (320px < width <= 768px) { }
+
+// Exact match
+@include media('=tablet') { }
+// → @media (width = 768px) { }
+```
+
+Default is `false` (legacy `min-width`/`max-width`) for backwards compatibility. See [RANGE_SYNTAX.md](RANGE_SYNTAX.md) for full documentation.
+
 ## Why?
 
 I spent quite some time experimenting with different libraries and mixins available out there, but eventually all of them failed to do everything I needed in an elegant way. Some of them wouldn't let me mix set breakpoints with case-specific values, others wouldn't properly handle the CSS OR operator and most of them had a syntax that I found complicated and unnatural.

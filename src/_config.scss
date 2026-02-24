@@ -154,3 +154,54 @@ $im-no-media-breakpoint: 'desktop' !default;
 ///  /* No output */
 ///
 $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
+
+///
+/// Defines whether to use modern range syntax for media queries instead of legacy min-/max- prefixes.
+/// Modern range syntax is supported in ~95% of browsers and provides a more natural syntax.
+///
+/// @example scss - Modern range syntax (default)
+///  $im-use-range-syntax: true;
+///  @include media('>phone', '<=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+///  /* Generates: */
+///  @media (width > 320px) and (width <= 768px) {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+/// @example scss - Legacy min-/max- syntax
+///  $im-use-range-syntax: false;
+///  @include media('>phone', '<=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+///  /* Generates: */
+///  @media (min-width: 321px) and (max-width: 768px) {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+/// @example scss - Clamping syntax (combines two conditions with &)
+///  $im-use-range-syntax: true;
+///  @include media('>phone&<=tablet') {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+///  /* Generates: */
+///  @media (320px < width <= 768px) {
+///    .foo {
+///      color: tomato;
+///    }
+///  }
+///
+$im-use-range-syntax: false !default;

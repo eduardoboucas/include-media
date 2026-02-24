@@ -1,0 +1,22 @@
+@use 'sass:map';
+@use '../../dist/include-media' as * with (
+  $im-use-range-syntax: false
+);
+@use 'pkg:sass-true' as *;
+
+$tests-clamping-legacy: (
+  // Legacy syntax should combine with 'and'
+  '>phone&<=tablet': '(min-width: 321px) and (max-width: 768px)',
+  '>=phone&<tablet': '(min-width: 320px) and (max-width: 767px)',
+  '>phone&<tablet': '(min-width: 321px) and (max-width: 767px)',
+  '>=phone&<=tablet': '(min-width: 320px) and (max-width: 768px)'
+);
+
+@include test-module('Clamping Syntax - Legacy Mode') {
+
+  @include test('parse-clamping-expression with legacy syntax [expression]') {
+    @each $assert, $expect in $tests-clamping-legacy {
+      @include assert-equal(parse-expression($assert), $expect, 'Must be equal');
+    }
+  }
+}
