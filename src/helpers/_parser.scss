@@ -128,6 +128,22 @@
 }
 
 ///
+/// Normalize Unicode operators to ASCII equivalents
+///
+/// @param {String} $operator - Operator to normalize
+///
+/// @return {String} - Normalized operator
+///
+@function normalize-operator($operator) {
+  @if $operator == '≥' {
+    @return '>=';
+  } @else if $operator == '≤' {
+    @return '<=';
+  }
+  @return $operator;
+}
+
+///
 /// Parse a clamping expression (e.g., '>phone&<=tablet') into range syntax
 ///
 /// @param {String} $expression - Clamping expression to parse
@@ -208,7 +224,7 @@
 
   @if $im-use-range-syntax {
     // Modern range syntax: (width > 320px)
-    @return '(#{$dimension} #{$operator} #{$value})';
+    @return '(#{$dimension} #{normalize-operator($operator)} #{$value})';
   } @else {
     // Legacy syntax: (min-width: 321px)
     @return '(#{$prefix}-#{$dimension}: #{$value})';
