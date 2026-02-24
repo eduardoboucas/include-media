@@ -19,14 +19,27 @@
 
   @each $condition in $conditions {
     @if not map.has-key($media-expressions, $condition) {
-      $operator: get-expression-operator($condition);
-      $prefix: get-expression-prefix($operator);
-      $value: get-expression-value($condition, $operator);
+      @if is-clamping-expression($condition) {
+        $and-index: string.index($condition, '&');
+        $left: str-trim(string.slice($condition, 1, $and-index - 1));
+        $right: str-trim(string.slice($condition, $and-index + 1));
 
-      @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
-        ($prefix == 'min' and $value > $no-media-breakpoint-value)
-      {
-        @return false;
+        @if not
+          im-intercepts-static-breakpoint($left) or not
+          im-intercepts-static-breakpoint($right)
+        {
+          @return false;
+        }
+      } @else {
+        $operator: get-expression-operator($condition);
+        $prefix: get-expression-prefix($operator);
+        $value: get-expression-value($condition, $operator);
+
+        @if ($prefix == 'max' and $value <= $no-media-breakpoint-value) or
+          ($prefix == 'min' and $value > $no-media-breakpoint-value)
+        {
+          @return false;
+        }
       }
     } @else if not list.index($im-no-media-expressions, $condition) {
       @return false;

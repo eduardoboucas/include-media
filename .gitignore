@@ -5,3 +5,4 @@ node_modules
 sassdoc
 test/output
 test/index.css
+.claude/

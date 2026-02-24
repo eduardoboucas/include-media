@@ -23,6 +23,9 @@
       '≥desktop': '≥',
       '<=desktop': '<=',
       '≤desktop': '≤',
+
+      '=phone': '=',
+      '=500px': '=',
     );
     @each $assert, $expect in $tests-get-expression-operator {
         @include test('get-expression-operator [#{$assert}]') {

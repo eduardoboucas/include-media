@@ -32,6 +32,11 @@ $tests-parse-expression-range: map.merge($media-expressions, (
   '<1200px': '(width < 1200px)',
   '<=1200px': '(width <= 1200px)',
 
+  // Equality operator
+  '=phone': '(width = 320px)',
+  '=tablet': '(width = 768px)',
+  '=500px': '(width = 500px)',
+
   // Height dimension
   'height>500px': '(height > 500px)',
   'height<=800px': '(height <= 800px)'

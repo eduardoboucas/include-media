@@ -22,7 +22,10 @@ $tests-parse-expression: map.merge($media-expressions, (
   '>=desktop': '(min-width: 1024px)',
   '≥desktop': '(min-width: 1024px)',
   '<=desktop': '(max-width: 1024px)',
-  '≤desktop': '(max-width: 1024px)'
+  '≤desktop': '(max-width: 1024px)',
+
+  // Equality operator
+  '=phone': '(width: 320px)'
 ));
 
 @include test-module('Expression') {

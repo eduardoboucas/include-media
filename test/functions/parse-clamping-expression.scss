@@ -19,6 +19,11 @@ $tests-clamping-expression: (
   '>phone&<=1000px': '(320px < width <= 1000px)',
   '>=600px&<=tablet': '(600px <= width <= 768px)',
 
+  // Unicode operators
+  '≥phone&<tablet': '(320px <= width < 768px)',
+  '>phone&≤tablet': '(320px < width <= 768px)',
+  '≥phone&≤tablet': '(320px <= width <= 768px)',
+
   // Height dimension
   'height>300px&height<=900px': '(300px < height <= 900px)'
 );

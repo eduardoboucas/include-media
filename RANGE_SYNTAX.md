@@ -79,12 +79,32 @@ Outputs:
 }
 ```
 
+### Equality Operator
+
+The `=` operator targets an exact breakpoint value:
+
+```scss
+@include media('=tablet') {
+  width: 100%;
+}
+```
+
+With range syntax enabled:
+```css
+@media (width = 768px) { width: 100%; }
+```
+
+With legacy syntax:
+```css
+@media (width: 768px) { width: 100%; }
+```
+
 ### Benefits
 
 1. **No interval adjustments**: Range syntax doesn't require the `+1px` or `-1px` hacks
 2. **More readable**: `width > 320px` is more intuitive than `min-width: 321px`
 3. **Concise clamping**: Combine ranges with `&` operator
-4. **Modern standard**: Aligns with CSS specification
+4. **Modern standard**: Aligns with CSS Media Queries Level 4 specification
 
 ### Backwards Compatibility
 
@@ -97,12 +117,17 @@ All operators work with both syntaxes:
 - `>=` or `≥` - greater than or equal
 - `<` - less than
 - `<=` or `≤` - less than or equal
+- `=` - equal (exact match)
 
 ## Clamping Operator
 
-- `&` - combines two conditions (only works with range syntax enabled)
+The `&` operator combines two conditions into a single clamped range expression. It works with both range and legacy syntax.
 
-Examples:
+With range syntax (`$im-use-range-syntax: true`):
 - `'>phone&<=tablet'` → `(320px < width <= 768px)`
 - `'>=500px&<1200px'` → `(500px <= width < 1200px)`
 - `'height>300px&height<=900px'` → `(300px < height <= 900px)`
+
+With legacy syntax (`$im-use-range-syntax: false`):
+- `'>phone&<=tablet'` → `(min-width: 321px) and (max-width: 768px)`
+- `'>=500px&<1200px'` → `(min-width: 500px) and (max-width: 1199px)`

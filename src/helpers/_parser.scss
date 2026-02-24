@@ -9,10 +9,10 @@
 ///
 /// @param {String} $expression - Expression to extract operator from
 ///
-/// @return {String} - Any of `>=`, `>`, `<=`, `<`, `≥`, `≤`
+/// @return {String} - Any of `>=`, `>`, `<=`, `<`, `=`, `≥`, `≤`
 ///
 @function get-expression-operator($expression) {
-  @each $operator in ('>=', '>', '<=', '<', '≥', '≤') {
+  @each $operator in ('>=', '>', '<=', '<', '=', '≥', '≤') {
     @if string.index($expression, $operator) {
       @return $operator;
     }
@@ -50,7 +50,9 @@
 /// @return {String} - `min` or `max`
 ///
 @function get-expression-prefix($operator) {
-  @if list.index(('<', '<=', '≤'), $operator) {
+  @if $operator == '=' {
+    @return '';
+  } @else if list.index(('<', '<=', '≤'), $operator) {
     @return 'max';
   } @else {
     @return 'min';
@@ -185,10 +187,10 @@
     // Determine the order based on operators
     @if list.index(('>', '>=', '≥'), $left-operator) {
       // Left is min bound: >phone becomes 320px < width
-      @return '(#{$left-value} #{$left-inverted} #{$left-dimension} #{$right-operator} #{$right-value})';
+      @return '(#{$left-value} #{$left-inverted} #{$left-dimension} #{normalize-operator($right-operator)} #{$right-value})';
     } @else {
       // Left is max bound, swap order
-      @return '(#{$right-value} #{$right-inverted} #{$right-dimension} #{$left-operator} #{$left-value})';
+      @return '(#{$right-value} #{$right-inverted} #{$right-dimension} #{normalize-operator($left-operator)} #{$left-value})';
     }
   } @else {
     // Legacy syntax: combine with 'and'
@@ -225,6 +227,9 @@
   @if $im-use-range-syntax {
     // Modern range syntax: (width > 320px)
     @return '(#{$dimension} #{normalize-operator($operator)} #{$value})';
+  } @else if $operator == '=' {
+    // Exact match: (width: 320px)
+    @return '(#{$dimension}: #{$value})';
   } @else {
     // Legacy syntax: (min-width: 321px)
     @return '(#{$prefix}-#{$dimension}: #{$value})';

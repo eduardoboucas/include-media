@@ -1,0 +1,169 @@
+@use '../dist/include-media' as * with (
+  $im-use-range-syntax: true
+);
+@use 'pkg:sass-true' as *;
+
+@include test-module('Range Syntax Media') {
+  @include test('Single condition [media]') {
+    @include assert {
+      @include output {
+        .test {
+          @include media('>phone') {
+            content: 'phone';
+          }
+        }
+      }
+      @include expect {
+        @media (width > 320px) {
+          .test {
+            content: 'phone';
+          }
+        }
+      }
+    }
+  }
+
+  @include test('Multiple conditions nesting [media]') {
+    @include assert {
+      @include output {
+        .test {
+          @include media('>phone', '<=tablet') {
+            content: 'between';
+          }
+        }
+      }
+      @include expect {
+        @media (width > 320px) {
+          @media (width <= 768px) {
+            .test {
+              content: 'between';
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include test('Clamped range [media]') {
+    @include assert {
+      @include output {
+        .test {
+          @include media('>phone&<=tablet') {
+            content: 'clamped';
+          }
+        }
+      }
+      @include expect {
+        @media (320px < width <= 768px) {
+          .test {
+            content: 'clamped';
+          }
+        }
+      }
+    }
+  }
+
+  @include test('Mixed with static expression [media]') {
+    @include assert {
+      @include output {
+        .test {
+          @include media('>phone', 'landscape') {
+            content: 'mixed';
+          }
+        }
+      }
+      @include expect {
+        @media (width > 320px) {
+          @media (orientation: landscape) {
+            .test {
+              content: 'mixed';
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include test('Nested selectors inside media [media]') {
+    @include assert {
+      @include output {
+        .test-inside {
+          content: 'default';
+
+          @include media('>phone') {
+            content: 'phone';
+
+            .inner {
+              content: 'inner';
+            }
+
+            content: 'phone-after';
+          }
+
+          @include media('>=tablet') {
+            content: 'tablet';
+
+            .inner {
+              content: 'inner';
+            }
+          }
+        }
+
+        @include media('<desktop') {
+          .test-inner {
+            content: 'desktop';
+          }
+        }
+      }
+      @include expect {
+        .test-inside {
+          content: 'default';
+        }
+        @media (width > 320px) {
+          .test-inside {
+            content: 'phone';
+          }
+          .test-inside .inner {
+            content: 'inner';
+          }
+          .test-inside {
+            content: 'phone-after';
+          }
+        }
+        @media (width >= 768px) {
+          .test-inside {
+            content: 'tablet';
+          }
+          .test-inside .inner {
+            content: 'inner';
+          }
+        }
+
+        @media (width < 1024px) {
+          .test-inner {
+            content: 'desktop';
+          }
+        }
+      }
+    }
+  }
+
+  @include test('Equality operator [media]') {
+    @include assert {
+      @include output {
+        .test {
+          @include media('=tablet') {
+            content: 'exact';
+          }
+        }
+      }
+      @include expect {
+        @media (width = 768px) {
+          .test {
+            content: 'exact';
+          }
+        }
+      }
+    }
+  }
+}
